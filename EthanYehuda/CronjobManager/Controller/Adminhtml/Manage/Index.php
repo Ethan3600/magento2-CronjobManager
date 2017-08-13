@@ -1,7 +1,7 @@
 <?php
 
 
-namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Index;
+namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage;
 
 class Index extends \Magento\Backend\App\Action
 {
@@ -18,8 +18,8 @@ class Index extends \Magento\Backend\App\Action
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
     	\Magento\Backend\App\Action\Context $context
     ) {
+    	parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        parent::__construct($context);
     }
     
     /**
