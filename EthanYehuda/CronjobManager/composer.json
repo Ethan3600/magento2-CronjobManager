@@ -1,0 +1,21 @@
+{
+    "name": "EthanYehuda/CronjobManager",
+    "description": "A module for managing cronjobs from magento's admin panel",
+    "require": {
+        "php": "~5.6.5|7.0.2|7.0.4|~7.0.6"
+    },
+    "type": "magento2-module",
+    "version": "0.0.1",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "EthanYehuda\\CronjobManager\\": ""
+        }
+    }
+}
