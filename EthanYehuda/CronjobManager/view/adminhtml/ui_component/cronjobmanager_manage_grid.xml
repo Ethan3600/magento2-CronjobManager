@@ -116,6 +116,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -125,6 +126,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Job Code</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -134,6 +136,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sorting" xsi:type="string">asc</item>
                     <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -143,6 +146,7 @@
                     <item name="filter" xsi:type="string">text</item>
                     <item name="sortable" xsi:type="boolean">false</item>
                     <item name="label" xsi:type="string" translate="true">Messages</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -153,6 +157,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Created Date</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -163,6 +168,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Scheduled Date</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -173,6 +179,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Executed Date</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
@@ -183,6 +190,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Finished Date</item>
+                    <item name="draggable" xsi:type="boolean">false</item>
                 </item>
             </argument>
         </column>
