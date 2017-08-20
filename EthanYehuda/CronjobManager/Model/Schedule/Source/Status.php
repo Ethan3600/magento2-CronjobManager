@@ -11,7 +11,8 @@ class Status implements \Magento\Framework\Data\OptionSourceInterface
 	 *
 	 * @return array Format: array(array('value' => '<value>', 'label' => '<label>'), ...)
 	 */
-	public function toOptionArray() {
+	public function toOptionArray() 
+	{
 		return [
 			[
 				'value' => Schedule::STATUS_ERROR,
