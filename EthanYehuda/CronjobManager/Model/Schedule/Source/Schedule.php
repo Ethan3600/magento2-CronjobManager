@@ -35,6 +35,15 @@ class Schedule implements \Magento\Framework\Data\OptionSourceInterface
 		return $options;
 	}
 	
+	/**
+	 * Returns array of all cron jobs
+	 * 
+	 * Magento separates index related crons and "default" crons
+	 * This method merges them into one array
+	 *  
+	 * @param array $cronTypeArrays
+	 * @return array
+	 */
 	private function mergeCronArrays($cronTypeArrays)
 	{
 		$merged = [];
