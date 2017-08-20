@@ -11,27 +11,27 @@ class Status implements \Magento\Framework\Data\OptionSourceInterface
 	 *
 	 * @return array Format: array(array('value' => '<value>', 'label' => '<label>'), ...)
 	 */
-	public function toOptionArray(){
+	public function toOptionArray() {
 		return [
 			[
-					'value' => Schedule::STATUS_ERROR,
-					'label' => __('Error')
+				'value' => Schedule::STATUS_ERROR,
+				'label' => __('Error')
 			],
 			[
-					'value' => Schedule::STATUS_MISSED,
-					'label' => __('Missed')
+				'value' => Schedule::STATUS_MISSED,
+				'label' => __('Missed')
 			],
 			[
-					'value' => Schedule::STATUS_PENDING,
-					'label' => __('Pending')
+				'value' => Schedule::STATUS_PENDING,
+				'label' => __('Pending')
 			],
 			[
-					'value' => Schedule::STATUS_RUNNING,
-					'label' => __('Running')
+				'value' => Schedule::STATUS_RUNNING,
+				'label' => __('Running')
 			],
 			[
-					'value' => Schedule::STATUS_SUCCESS,
-					'label' => __('Success')
+				'value' => Schedule::STATUS_SUCCESS,
+				'label' => __('Success')
 			],
 		];
 	}
