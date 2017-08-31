@@ -19,15 +19,15 @@ class ScheduleDataProvider extends AbstractDataProvider
 	 * @param array $data
 	 */
 	public function __construct(
-			$name,
-			$primaryFieldName,
-			$requestFieldName,
-			CollectionFactory $collectionFactory,
-			array $meta = [],
-			array $data = []
-			) {
-				parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-				$this->collection = $collectionFactory->create();
+		$name,
+		$primaryFieldName,
+		$requestFieldName,
+		CollectionFactory $collectionFactory,
+		array $meta = [],
+		array $data = []
+		) {
+			parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+			$this->collection = $collectionFactory->create();
 	}
 	
 	/**

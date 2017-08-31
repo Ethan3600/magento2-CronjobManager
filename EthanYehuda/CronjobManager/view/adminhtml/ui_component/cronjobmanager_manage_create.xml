@@ -32,7 +32,8 @@
                 <item name="sortOrder" xsi:type="number">10</item>
             </item>
         </argument>
-        <field name="schedule_id">
+        <!-- Not neccessary for creation -->
+        <!-- <field name="schedule_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
@@ -42,10 +43,23 @@
                     <item name="dataScope" xsi:type="string">schedule_id</item>
                 </item>
             </argument>
-        </field>
+        </field> -->
         <field name="job_code">
             <argument name="data" xsi:type="array">
             	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Name</item>
+                    <item name="notice" xsi:type="string" translate="true">Hello! I'm a notice node. Look at me!</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataScope" xsi:type="string">job_code</item>
+                </item>
+            </argument>
+        </field>
+        <!-- Status is going to be "pending" by default -->
+        <!-- <field name="status">
+            <argument name="data" xsi:type="array">
+            	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Cron Job Name</item>
@@ -54,19 +68,9 @@
                     <item name="dataScope" xsi:type="string">job_code</item>
                 </item>
             </argument>
-        </field>
-        <field name="status">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Cron Job Status</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="source" xsi:type="string">schedule</item>
-                    <item name="dataScope" xsi:type="string">status</item>
-                </item>
-            </argument>
-        </field>
-        <field name="messages">
+        </field> -->
+        <!-- Not neccessary for creation -->
+        <!-- <field name="messages">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
@@ -74,6 +78,26 @@
                     <item name="formElement" xsi:type="string">textarea</item>
                     <item name="source" xsi:type="string">schedule</item>
                     <item name="dataScope" xsi:type="string">messages</item>
+                </item>
+            </argument>
+        </field> -->
+        <field name="scheduled_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Scheduled At</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="options" xsi:type="array">
+		                <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+		                <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
+		                <item name="showsTime" xsi:type="boolean">true</item>
+		                <item name="minDate" xsi:type="string">new Date()</item>
+		            </item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-date" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="dataScope" xsi:type="string">scheduled_at</item>
                 </item>
             </argument>
         </field>
