@@ -50,7 +50,7 @@
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="label" xsi:type="string" translate="true">Cron Job Name</item>
-                    <item name="notice" xsi:type="string" translate="true">Hello! I'm a notice node. Look at me!</item>
+                    <!-- <item name="notice" xsi:type="string" translate="true">Select a Cron</item> -->
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="dataScope" xsi:type="string">job_code</item>
                 </item>
