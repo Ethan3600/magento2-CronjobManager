@@ -11,6 +11,19 @@
             <item name="namespace" xsi:type="string">cronjobmanager_manage_create</item>
         </item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+            <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
+            <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
+            <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
+            <!-- Not Needed for Creation -->
+            <!-- <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item> -->
+        </item>
     </argument>
     <dataSource name="cronjobmanager_manage_create_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
