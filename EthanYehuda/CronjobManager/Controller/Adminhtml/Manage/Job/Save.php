@@ -1,8 +1,8 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage;
+namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage\Job;
 
-class Index extends \Magento\Backend\App\Action
+class Save extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
@@ -31,16 +31,12 @@ class Index extends \Magento\Backend\App\Action
     }
 
     /**
-     * Product list page
+     * Save cronjob
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Void
      */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-        $resultPage = $this->resultPageFactory->create();
-        $resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
-        $resultPage->getConfig()->getTitle()->prepend(__('Cron Job Dashboard'));
-        return $resultPage;
+    	$this->_redirect('*/manage/index/');
     }
 }

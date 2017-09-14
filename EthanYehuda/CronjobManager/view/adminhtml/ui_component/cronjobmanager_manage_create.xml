@@ -36,6 +36,9 @@
             <item name="js_config" xsi:type="array">
                 <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
             </item>
+            <item name="config" xsi:type="array">
+                <item name="submit_url" xsi:type="url" path="cronjobmanager/manage_job/save"/>
+            </item>
         </argument>
     </dataSource>
     <fieldset name="cron_schedule">
