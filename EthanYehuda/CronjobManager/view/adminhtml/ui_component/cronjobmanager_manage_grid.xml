@@ -45,6 +45,7 @@
         </argument>
         <columnsControls name="columns_controls"/>
         <filters name="listing_filters" />
+        <filterSearch name="fulltext"/>
         <!-- <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
