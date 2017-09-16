@@ -114,6 +114,7 @@
 		            </item>
                     <item name="validation" xsi:type="array">
                         <item name="validate-date" xsi:type="boolean">true</item>
+                        <item name="validate-no-empty" xsi:type="boolean">true</item>
                     </item>
                     <item name="dataScope" xsi:type="string">scheduled_at</item>
                 </item>
