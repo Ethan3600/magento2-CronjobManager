@@ -67,7 +67,7 @@ class CronActions extends Column
                             'href' => $this->urlBuilder->getUrl(
                                 static::URL_PATH_EDIT,
                                 [
-                                    'schedule_id' => $item['schedule_id']
+                                    'id' => $item['schedule_id']
                                 ]
                             ),
                             'label' => __('Edit')
