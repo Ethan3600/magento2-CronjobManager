@@ -20,7 +20,8 @@
             </item>
             <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
             <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
-            <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
+            <!-- Hiding "save and continue" button -->
+            <!--item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item-->
             <!-- Not Needed for Creation -->
             <!-- <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item> -->
         </item>
