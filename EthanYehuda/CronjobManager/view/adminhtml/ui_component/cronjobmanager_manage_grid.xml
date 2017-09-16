@@ -97,12 +97,36 @@
                         <item name="url" xsi:type="url" path="catalog/product_action_attribute/edit"/>
                     </item>
                 </argument>
-            </action>
+            </action> 
         </massaction> -->
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="cronjobmanager_manage_columns">
-        <!--The list of columns-->
+        <!-- This is for inline editing -->
+        <!-- @todo this should be a feature release after the inital release -->
+        <!-- <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="editorConfig" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">cronjobmanager_manage_grid.cronjobmanager_manage_grid.cronjobmanager_manage_columns_columns.ids</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                    <item name="indexField" xsi:type="string">schedule_id</item>
+                    <item name="clientConfig" xsi:type="array">
+                        <item name="saveUrl" xsi:type="url" path="cms/block/inlineEdit"/>
+                        <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                    </item>
+                </item>
+                <item name="childDefaults" xsi:type="array">
+                    <item name="fieldAction" xsi:type="array">
+                        <item name="provider" xsi:type="string">cronjobmanager_manage_grid.cronjobmanager_manage_grid.cronjobmanager_manage_columns_columns_editor</item>
+                        <item name="target" xsi:type="string">startEdit</item>
+                        <item name="params" xsi:type="array">
+                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                            <item name="1" xsi:type="boolean">true</item>
+                        </item>
+                    </item>
+                </item>
+            </item>
+        </argument> -->
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -197,5 +221,12 @@
                 </item>
             </argument>
         </column>
+        <actionsColumn name="actions" class="EthanYehuda\CronjobManager\Ui\Component\Listing\Column\CronActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">schedule_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>
