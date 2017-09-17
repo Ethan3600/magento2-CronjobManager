@@ -5,9 +5,6 @@ namespace EthanYehuda\CronjobManager\Ui\DataProvider;
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
-/**
- * DataProvider for cron job edit form
- */
 class ScheduleDataProvider extends AbstractDataProvider
 {	
 	/**
@@ -25,9 +22,9 @@ class ScheduleDataProvider extends AbstractDataProvider
 		CollectionFactory $collectionFactory,
 		array $meta = [],
 		array $data = []
-		) {
-			parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-			$this->collection = $collectionFactory->create();
+	) {
+		parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+		$this->collection = $collectionFactory->create();
 	}
 	
 	/**
