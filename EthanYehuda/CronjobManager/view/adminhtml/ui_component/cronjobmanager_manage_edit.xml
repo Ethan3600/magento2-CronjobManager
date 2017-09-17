@@ -20,10 +20,9 @@
             </item>
             <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
             <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
-            <!-- Hiding "save and continue" button -->
-            <!--item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item -->
-            <!-- Not Needed for Creation -->
-            <!-- <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item> -->
+            
+            <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
+            <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item>
         </item>
     </argument>
     <dataSource name="cronjobmanager_manage_edit_data_source">
@@ -51,8 +50,7 @@
                 <item name="sortOrder" xsi:type="number">10</item>
             </item>
         </argument>
-        <!-- Not neccessary for creation -->
-        <!-- <field name="schedule_id">
+        <field name="schedule_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
@@ -60,9 +58,10 @@
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="source" xsi:type="string">schedule</item>
                     <item name="dataScope" xsi:type="string">schedule_id</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
-        </field> -->
+        </field>
         <field name="job_code">
             <argument name="data" xsi:type="array">
             	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
@@ -75,21 +74,19 @@
                 </item>
             </argument>
         </field>
-        <!-- Status is going to be "pending" by default -->
-        <!-- <field name="status">
+        <field name="status">
             <argument name="data" xsi:type="array">
             	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">select</item>
-                    <item name="label" xsi:type="string" translate="true">Cron Job Name</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Status</item>
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="source" xsi:type="string">schedule</item>
                     <item name="dataScope" xsi:type="string">job_code</item>
                 </item>
             </argument>
-        </field> -->
-        <!-- Not neccessary for creation -->
-        <!-- <field name="messages">
+        </field>
+        <field name="messages">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="dataType" xsi:type="string">text</item>
@@ -97,9 +94,10 @@
                     <item name="formElement" xsi:type="string">textarea</item>
                     <item name="source" xsi:type="string">schedule</item>
                     <item name="dataScope" xsi:type="string">messages</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
                 </item>
             </argument>
-        </field> -->
+        </field>
         <field name="scheduled_at">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
