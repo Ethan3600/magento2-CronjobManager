@@ -3,7 +3,7 @@
     <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <uiComponent name="cronjobmanager_manage_create"/>
+            <uiComponent name="cronjobmanager_manage_edit"/>
         </referenceContainer>
     </body>
 </page>
