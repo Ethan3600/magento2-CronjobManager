@@ -15,6 +15,7 @@ class CronActions extends Column
      */
     const URL_PATH_EDIT = 'conjobmanager/manage/edit';
     const URL_PATH_DELETE = 'conjobmanager/manage_job/delete';
+    const URL_PATH_DISPATCH = 'conjobmanager/manage_job/dispatch';
 
     /**
      * @var UrlInterface
@@ -76,15 +77,29 @@ class CronActions extends Column
                             'href' => $this->urlBuilder->getUrl(
                                 static::URL_PATH_DELETE,
                                 [
-                                    'schedule_id' => $item['schedule_id']
+                                    'id' => $item['schedule_id']
                                 ]
                             ),
                             'label' => __('Delete'),
                             'confirm' => [
                                 'job_code' => __('Delete %1', $jobCode),
-                                'message' => __('Are you sure you wan\'t to delete a %1 record?', $jobCode),
+                                'message' => __('Are you sure you want to delete <b>%1</b>?', $jobCode),
                             ],
                         ],
+                   		'dispatch' => [
+              				'href' => $this->urlBuilder->getUrl(
+                   				static::URL_PATH_DISPATCH,
+                   				[
+                   					'id' => $item['schedule_id']
+                   				]
+                   						),
+                   				'label' => __('Dispatch'),
+                   				'confirm' => [
+                   					'job_code' => __('Dispatch %1', $jobCode),
+                   					'message' => __('Are you sure you want to <b>dispatch %1</b>? This may cause performace 
+													issues with Magento while it\'s running.', $jobCode),
+                    		],
+                    	],
                     ];
                 }
             }
