@@ -20,7 +20,6 @@
             </item>
             <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
             <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
-            
             <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
             <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item>
         </item>
@@ -71,6 +70,7 @@
                     <!-- <item name="notice" xsi:type="string" translate="true">Select a Cron</item> -->
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="dataScope" xsi:type="string">job_code</item>
+                    <item name="caption" xsi:type="string" translate="true">-- Please Select --</item>
                 </item>
             </argument>
         </field>
@@ -82,7 +82,7 @@
                     <item name="label" xsi:type="string" translate="true">Cron Job Status</item>
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="source" xsi:type="string">schedule</item>
-                    <item name="dataScope" xsi:type="string">job_code</item>
+                    <item name="dataScope" xsi:type="string">status</item>
                 </item>
             </argument>
         </field>
@@ -109,7 +109,6 @@
 		                <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
 		                <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
 		                <item name="showsTime" xsi:type="boolean">true</item>
-		                <item name="minDate" xsi:type="string">new Date()</item>
 		            </item>
                     <item name="validation" xsi:type="array">
                         <item name="validate-date" xsi:type="boolean">true</item>

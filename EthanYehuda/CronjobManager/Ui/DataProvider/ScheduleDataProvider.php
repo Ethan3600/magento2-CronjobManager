@@ -7,6 +7,8 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class ScheduleDataProvider extends AbstractDataProvider
 {	
+	protected $loadedData;
+	
 	/**
 	 * @param string $name
 	 * @param string $primaryFieldName
@@ -31,8 +33,16 @@ class ScheduleDataProvider extends AbstractDataProvider
 	 * {@inheritdoc}
 	 */
 	public function getData()
-	{	
-		return $this->data;
+	{
+		if($this->loadedData) {
+			return $this->loadedData;
+		}
+		
+		foreach($this->collection->getItems() as $item) {
+			$this->loadedData[$item->getId()] = $item->getData();
+		}
+				
+		return $this->loadedData;
 	}
 	
 	/**

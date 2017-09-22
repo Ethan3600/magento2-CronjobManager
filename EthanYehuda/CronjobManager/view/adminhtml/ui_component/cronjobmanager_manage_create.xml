@@ -56,6 +56,7 @@
                     <!-- <item name="notice" xsi:type="string" translate="true">Select a Cron</item> -->
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="dataScope" xsi:type="string">job_code</item>
+                    <item name="caption" xsi:type="string" translate="true">-- Please Select --</item>
                 </item>
             </argument>
         </field>
