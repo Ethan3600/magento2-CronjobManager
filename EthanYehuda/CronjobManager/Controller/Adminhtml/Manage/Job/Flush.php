@@ -43,8 +43,6 @@ class Flush extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-    	$jobCode = $this->getRequest()->getParam('job_code');
-    	$scheduledAt = $this->getRequest()->getParam('scheduled_at');
     	try {
     		$this->cronJobManager->flushCrons();
     	} catch (\Magento\Framework\Exception\CronException $e) {
