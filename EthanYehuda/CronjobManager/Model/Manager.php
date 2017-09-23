@@ -23,6 +23,17 @@ class Manager extends ProcessCronQueueObserver
 		$schedule->getResource()->save($schedule);
 	}
 	
+	public function deleteCronJob($jobId)
+	{
+		/**
+		 * @var $scheduleResource \Magento\Cron\Model\ResourceModel\Schedule
+		 */
+		$schedule = $this->_scheduleFactory->create();
+		$scheduleResource = $schedule->getResource();
+		$scheduleResource->load($schedule, $jobId);
+		$scheduleResource->delete($schedule);
+	}
+	
 	public function flushCrons() 
 	{
 		$jobGroups = $this->_config->getJobs();
