@@ -28,9 +28,7 @@ class Manager extends ProcessCronQueueObserver
 	{
 		$filteredTime = $this->filterTimeInput($time);
 		
-		$schedule = $this->_scheduleFactory->create();
-		$scheduleResource = $schedule->getResource();
-		$scheduleResource->load($schedule, $jobId);
+		$schedule = $this->loadSchedule($jobId);
 		
 		if(!is_null($jobCode))
 			$schedule->setJobCode($jobCode);
@@ -39,18 +37,16 @@ class Manager extends ProcessCronQueueObserver
 		if(!is_null($time))
 			$schedule->setScheduledAt($filteredTime);
 		
-		$scheduleResource->save($schedule);
+			$schedule->getResource()->save($schedule);
 	}
 	
 	public function deleteCronJob($jobId)
 	{
 		/**
-		 * @var $scheduleResource \Magento\Cron\Model\ResourceModel\Schedule
+		 * @var $schedule \Magento\Cron\Model\Schedule
 		 */
-		$schedule = $this->_scheduleFactory->create();
-		$scheduleResource = $schedule->getResource();
-		$scheduleResource->load($schedule, $jobId);
-		$scheduleResource->delete($schedule);
+		$schedule = $this->loadSchedule($jobId);
+		$schedule->getResource()->delete($schedule);
 	}
 	
 	public function flushCrons() 
