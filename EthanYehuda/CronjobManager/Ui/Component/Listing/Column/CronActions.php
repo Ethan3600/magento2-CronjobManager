@@ -91,7 +91,8 @@ class CronActions extends Column
               				'href' => $this->urlBuilder->getUrl(
                    				static::URL_PATH_DISPATCH,
                    				[
-                   					'id' => $item['schedule_id']
+                   					'id' => $item['schedule_id'],
+                   					'job_code' => $item['job_code']
                    				]
                    						),
                    				'label' => __('Dispatch'),

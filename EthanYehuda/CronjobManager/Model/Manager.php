@@ -61,6 +61,20 @@ class Manager extends ProcessCronQueueObserver
 		}
 	}
 	
+	public function dispatchCron($jobId, $jobCode)
+	{
+		$groups = $this->_config->getJobs();
+		$groupId = $this->getGroupId($jobCode, $groups);
+		$jobConfig = $groups[$groupId][$jobCode];
+		$schedule = $this->loadSchedule($jobId);
+		$scheduledTime = $this->timezone->scopeTimeStamp();
+		
+		/* We need to trick the method into thinking it should run now so we
+		 *  set the scheduled and current time to be equal to one another */ 
+		$this->_runJob($scheduledTime, $scheduledTime, $jobConfig, $schedule, $groupId);
+		$schedule->getResource()->save($schedule);
+	}
+	
 	protected function filterTimeInput($time) 
 	{
 		$matches = [];
@@ -68,5 +82,24 @@ class Manager extends ProcessCronQueueObserver
 		$yearMonthDate = $matches[1];
 		$hourMinuets = " " . $matches[2];
 		return $yearMonthDate . $hourMinuets;
+	}
+	
+	protected function getGroupId($jobCode, $groups)
+	{
+		foreach($groups as $groupId => $crons) {
+			if(isset($crons[$jobCode]))
+				return $groupId;
+		}
+	}
+	
+	protected function loadSchedule($jobId)
+	{
+		/**
+		 * @var $scheduleResource \Magento\Cron\Model\ResourceModel\Schedule
+		 */
+		$schedule = $this->_scheduleFactory->create();
+		$scheduleResource = $schedule->getResource();
+		$scheduleResource->load($schedule, $jobId);
+		return $schedule;
 	}
 }
