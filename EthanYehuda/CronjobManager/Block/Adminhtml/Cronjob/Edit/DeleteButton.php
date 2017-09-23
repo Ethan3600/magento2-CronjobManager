@@ -12,14 +12,15 @@ class DeleteButton extends GenericButton implements ButtonProviderInterface
      */
     public function getButtonData()
     {
-    	$cronId = '';
+    	$params = $this->getRequestParams();
+    	$cronId = $params['id'];
 
 		$data = [
             'label' => __('Delete'),
             'class' => 'delete',
             'on_click' => 'deleteConfirm(\'' . __(
                 'Are you sure you want to delete this?'
-            ) . '\', \'' . $this->urlBuilder->getUrl('*/*/delete', ['id' => $cronId]) . '\')',
+            ) . '\', \'' . $this->urlBuilder->getUrl('*/manage_job/delete', ['id' => $cronId]) . '\')',
             'sort_order' => 20,
         ];
         return $data;

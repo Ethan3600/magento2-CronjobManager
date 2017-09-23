@@ -2,6 +2,9 @@
 
 namespace EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit;
 
+use EthanYehuda\CronjobManager\Model\RegistryConstants;
+use Magento\Framework\Registry;
+
 class GenericButton
 {
     /**
@@ -16,22 +19,25 @@ class GenericButton
      *
      * @var \Magento\Framework\Registry
      */
-    // protected $registry;
+     protected $registry;
 
     /**
      * Constructor
      * 
-     * @todo is the Registry really needed?
-     *
      * @param \Magento\Backend\Block\Widget\Context $context
      * @param \Magento\Framework\Registry $registry
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context
-        // \Magento\Framework\Registry $registry
+        \Magento\Backend\Block\Widget\Context $context,
+        \Magento\Framework\Registry $registry
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
-        // $this->registry = $registry;
+        $this->registry = $registry;
+    }
+    
+    public function getRequestParams()
+    {
+    	return $this->registry->registry(RegistryConstants::CURRENT_CRON_JOB);
     }
 
     /**

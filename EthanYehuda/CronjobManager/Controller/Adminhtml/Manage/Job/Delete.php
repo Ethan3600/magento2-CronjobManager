@@ -44,7 +44,6 @@ class Delete extends \Magento\Backend\App\Action
     public function execute()
     {
     	$jobId = $this->getRequest()->getParam('id');
-    	$jobCode = $this->getRequest()->getParam('job_code');
     	try {
      		$this->cronJobManager->deleteCronJob($jobId);
     	} catch (\Exception $e) {
@@ -52,7 +51,7 @@ class Delete extends \Magento\Backend\App\Action
     		$this->_redirect('*/manage/index/');
     		return;
     	}
-    	$this->getMessageManager()->addSuccessMessage("Successfully Deleted Cron Job: {$jobCode}");
+    	$this->getMessageManager()->addSuccessMessage("Successfully Deleted Cron Job");
     	$this->_redirect('*/manage/index/');
     }
 }
