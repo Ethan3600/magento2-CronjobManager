@@ -21,7 +21,7 @@ class Schedule implements \Magento\Framework\Data\OptionSourceInterface
 	 */
 	public function toOptionArray() 
 	{
-		$cronJobs = $this->mergeCronArrays($this->cronConfig->getJobs());
+		$cronJobs = $this->mergeCronGroups($this->cronConfig->getJobs());
 		
 		$options = [];
 		foreach ($cronJobs as $cron) {
@@ -38,17 +38,17 @@ class Schedule implements \Magento\Framework\Data\OptionSourceInterface
 	/**
 	 * Returns array of all cron jobs
 	 * 
-	 * Magento separates index related crons and "default" crons
+	 * Magento separates crons into "groups"
 	 * This method merges them into one array
 	 *  
 	 * @param array $cronTypeArrays
 	 * @return array
 	 */
-	private function mergeCronArrays($cronTypeArrays)
+	private function mergeCronGroups($groups)
 	{
 		$merged = [];
-		foreach ($cronTypeArrays as $cronArray) {
-			$merged = array_merge($merged, $cronArray);
+		foreach ($groups as $group) {
+			$merged = array_merge($merged, $group);
 		}
 		
 		return $merged;
