@@ -69,7 +69,7 @@
                     <item name="formElement" xsi:type="string">date</item>
                     <item name="options" xsi:type="array">
 		                <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
-		                <item name="timeFormat" xsi:type="string">HH:mm:ss</item>
+		                <item name="timeFormat" xsi:type="string">HH:mm</item>
 		                <item name="showsTime" xsi:type="boolean">true</item>
 		                <item name="minDate" xsi:type="string">new Date()</item>
 		            </item>

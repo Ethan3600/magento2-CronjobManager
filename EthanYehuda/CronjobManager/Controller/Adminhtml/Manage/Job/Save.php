@@ -2,12 +2,16 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage\Job;
 
+use EthanYehuda\CronjobManager\Model\Manager;
+
 class Save extends \Magento\Backend\App\Action
 {
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     protected $resultPageFactory;
+    
+    protected $cronJobManager;
 
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
@@ -15,10 +19,12 @@ class Save extends \Magento\Backend\App\Action
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-    	\Magento\Backend\App\Action\Context $context
+    	\Magento\Backend\App\Action\Context $context,
+    	Manager $cronJobManager
     ) {
     	parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
+        $this->cronJobManager= $cronJobManager;
     }
     
     /**
@@ -37,6 +43,16 @@ class Save extends \Magento\Backend\App\Action
      */
     public function execute()
     {
+    	$jobCode = $this->getRequest()->getParam('job_code');
+    	$scheduledAt = $this->getRequest()->getParam('scheduled_at');
+    	try {
+    		$this->cronJobManager->saveCronJob($jobCode, $scheduledAt);
+    	} catch (\Magento\Framework\Exception\CronException $e) {
+    		$this->getMessageManager()->addErrorMessage($e->getMessage());
+    		$this->_redirect('*/manage/create/');
+    		return;
+    	}
+    	$this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
     	$this->_redirect('*/manage/index/');
     }
 }
