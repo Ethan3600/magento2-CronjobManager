@@ -43,11 +43,19 @@ class Save extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-    	$jobCode = $this->getRequest()->getParam('job_code');
-    	$scheduledAt = $this->getRequest()->getParam('scheduled_at');
+    	$params = $this->getRequest()->getParams();
+    	$jobId = $params['schedule_id'] ? $params['schedule_id'] : null;
+    	if (!$jobId) {
+    		$this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
+    		$this->_redirect('*/manage/edit/');
+    		return;
+    	}
+    	$jobCode = $params['job_code'] ? $params['job_code'] : null;
+    	$status = $params['status'] ? $params['status'] : null;
+    	$scheduledAt = $params['scheduled_at'] ? $params['scheduled_at'] : null;
     	try {
-    		$this->cronJobManager->saveCronJob($jobCode, $scheduledAt);
-    	} catch (\Magento\Framework\Exception\CronException $e) {
+    		$this->cronJobManager->saveCronJob($jobId, $jobCode, $status, $scheduledAt);
+    	} catch (\Exception $e) {
     		$this->getMessageManager()->addErrorMessage($e->getMessage());
     		$this->_redirect('*/manage/create/');
     		return;

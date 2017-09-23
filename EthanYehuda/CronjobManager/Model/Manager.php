@@ -7,6 +7,7 @@ use \Magento\Cron\Model\Schedule;
 
 class Manager extends ProcessCronQueueObserver
 {
+	
 	public function createCronJob($jobCode, $time)
 	{
 		$filteredTime = $this->filterTimeInput($time);
@@ -21,6 +22,24 @@ class Manager extends ProcessCronQueueObserver
 			->setScheduledAt($filteredTime);
 
 		$schedule->getResource()->save($schedule);
+	}
+	
+	public function saveCronJob($jobId, $jobCode = null, $status = null, $time = null)
+	{
+		$filteredTime = $this->filterTimeInput($time);
+		
+		$schedule = $this->_scheduleFactory->create();
+		$scheduleResource = $schedule->getResource();
+		$scheduleResource->load($schedule, $jobId);
+		
+		if(!is_null($jobCode))
+			$schedule->setJobCode($jobCode);
+		if(!is_null($status))
+			$schedule->setStatus($status);
+		if(!is_null($time))
+			$schedule->setScheduledAt($filteredTime);
+		
+		$scheduleResource->save($schedule);
 	}
 	
 	public function deleteCronJob($jobId)
