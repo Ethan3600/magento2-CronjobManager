@@ -23,6 +23,14 @@ class Manager extends ProcessCronQueueObserver
 		$schedule->getResource()->save($schedule);
 	}
 	
+	public function flushCrons() 
+	{
+		$jobGroups = $this->_config->getJobs();
+		foreach ($jobGroups as $groupId => $crons) {
+			$this->_cleanup($groupId);
+		}
+	}
+	
 	protected function filterTimeInput($time) 
 	{
 		$matches = [];

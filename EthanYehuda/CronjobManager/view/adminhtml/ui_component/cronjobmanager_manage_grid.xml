@@ -16,7 +16,12 @@
                 <item name="class" xsi:type="string">primary</item>
                 <item name="url" xsi:type="string">*/*/create</item>
             </item>
-            <!--The button on the top of the Grid-->
+            <item name="flush" xsi:type="array">
+                <item name="name" xsi:type="string">flush</item>
+                <item name="label" xsi:type="string" translate="true">Flush Jobs</item>
+                <item name="class" xsi:type="string">secondary</item>
+                <item name="url" xsi:type="string">*/manage_job/flush</item>
+            </item>
         </item>
     </argument>
     <dataSource name="cronjobmanager_manage_grid_data_source">
