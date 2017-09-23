@@ -30,7 +30,7 @@
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
 	            <item name="config" xsi:type="array">
-	                <item name="submit_url" xsi:type="url" path="cronjobmanager/manage_job/save"/>
+	                <item name="submit_url" xsi:type="url" path="cronjobmanager/manage_job/create"/>
 	            </item>
 	        </argument>
         </argument>

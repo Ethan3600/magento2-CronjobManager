@@ -7,7 +7,7 @@ use \Magento\Cron\Model\Schedule;
 
 class Manager extends ProcessCronQueueObserver
 {
-	public function saveCronJob($jobCode, $time)
+	public function createCronJob($jobCode, $time)
 	{
 		$filteredTime = $this->filterTimeInput($time);
 		
