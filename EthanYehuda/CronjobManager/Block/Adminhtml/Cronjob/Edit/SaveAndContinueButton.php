@@ -12,11 +12,11 @@ class SaveAndContinueButton extends GenericButton implements ButtonProviderInter
     public function getButtonData()
     {
         $data = [
-            'label' => __('Save and Continue Edit'),
+            'label' => __('Save and Continue'),
             'class' => 'save',
         	'data_attribute' => [
         		'mage-init' => [
-        			'button' => ['event' => 'saveAndContinueEdit'],
+        			'button' => ['event' => 'saveAndContinue'],
         		]
         	],
             'sort_order' => 90,

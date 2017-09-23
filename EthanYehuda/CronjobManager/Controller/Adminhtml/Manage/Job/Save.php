@@ -61,6 +61,9 @@ class Save extends \Magento\Backend\App\Action
     		return;
     	}
     	$this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
-    	$this->_redirect('*/manage/index/');
+    	if(!$params['back'])
+    		$this->_redirect("*/manage/index/");
+    	else
+    		$this->_redirect("*/manage/{$params['back']}/", ['id' => $jobId]);
     }
 }
