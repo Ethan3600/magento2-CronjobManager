@@ -80,8 +80,17 @@ class Manager extends ProcessCronQueueObserver
 		return $yearMonthDate . $hourMinuets;
 	}
 	
-	protected function getGroupId($jobCode, $groups)
+	/**
+	 * @param String $jobCode
+	 * @param Array | Optional $groups
+	 * @return String $groupId
+	 */
+	protected function getGroupId($jobCode, $groups = null)
 	{
+		if (is_null($groups)) {
+			$groups = $this->_config->getJobs();
+		}
+		
 		foreach($groups as $groupId => $crons) {
 			if(isset($crons[$jobCode]))
 				return $groupId;
