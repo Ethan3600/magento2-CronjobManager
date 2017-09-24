@@ -66,7 +66,8 @@ class Manager extends ProcessCronQueueObserver
 		$scheduledTime = $this->timezone->scopeTimeStamp();
 		
 		/* We need to trick the method into thinking it should run now so we
-		 *  set the scheduled and current time to be equal to one another */ 
+		 * set the scheduled and current time to be equal to one another 
+		 */ 
 		$this->_runJob($scheduledTime, $scheduledTime, $jobConfig, $schedule, $groupId);
 		$schedule->getResource()->save($schedule);
 	}
