@@ -57,7 +57,7 @@ class Save extends \Magento\Backend\App\Action
     		$this->cronJobManager->saveCronJob($jobId, $jobCode, $status, $scheduledAt);
     	} catch (\Exception $e) {
     		$this->getMessageManager()->addErrorMessage($e->getMessage());
-    		$this->_redirect('*/manage/create/');
+    		$this->_redirect('*/manage/edit/', ['id' => $jobId]);
     		return;
     	}
     	$this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
