@@ -37,7 +37,7 @@ class Manager extends ProcessCronQueueObserver
 		if(!is_null($time))
 			$schedule->setScheduledAt($filteredTime);
 		
-			$schedule->getResource()->save($schedule);
+		$schedule->getResource()->save($schedule);
 	}
 	
 	public function deleteCronJob($jobId)
@@ -72,13 +72,33 @@ class Manager extends ProcessCronQueueObserver
 		$schedule->getResource()->save($schedule);
 	}
 	
+	// ========================= UTILITIES ========================= //
+	
+	/**
+	 * Generates filtered time input from user to formatted time (YYYY-MM-DD)
+	 * 
+	 * User input gets converted to UTC time by Javascript on the client
+	 * This method will convert the UTC time to the store timezone
+	 * 
+	 * @todo this could use some clean up
+	 * @param unknown $time
+	 * @return string
+	 */
 	protected function filterTimeInput($time) 
 	{
 		$matches = [];
 		preg_match('/(\d+-\d+-\d+)T(\d+:\d+)/', $time, $matches);
-		$yearMonthDate = $matches[1];
-		$hourMinuets = " " . $matches[2];
-		return $yearMonthDate . $hourMinuets;
+		$time = $matches[1] . " " . $matches[2];
+		
+		$date = new \DateTime($time, new \DateTimeZone('UTC'));
+
+		$timezone = $this->_scopeConfig->getValue($this->timezone->getDefaultTimezonePath(), 'default');
+		$currentTimezone = @date_default_timezone_get();
+		@date_default_timezone_set($timezone);
+		$timestamp = date('Y-m-d H:i:s', $date->getTimestamp());
+		@date_default_timezone_set($currentTimezone);
+		
+		return strftime('%Y-%m-%d %H:%M:00', strtotime($timestamp));
 	}
 	
 	/**
