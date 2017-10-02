@@ -77,22 +77,18 @@ class Manager extends ProcessCronQueueObserver
 	/**
 	 * Generates filtered time input from user to formatted time (YYYY-MM-DD)
 	 * 
-	 * User input gets converted to UTC time by Javascript on the client
-	 * This method will convert the UTC time to the store timezone
-	 * 
 	 * @todo this could use some clean up
 	 * @param unknown $time
 	 * @return string
 	 */
 	protected function filterTimeInput($time) 
 	{
+		$timezone = $this->_scopeConfig->getValue($this->timezone->getDefaultTimezonePath(), 'default');
 		$matches = [];
 		preg_match('/(\d+-\d+-\d+)T(\d+:\d+)/', $time, $matches);
 		$time = $matches[1] . " " . $matches[2];
 		
-		$date = new \DateTime($time, new \DateTimeZone('UTC'));
-
-		$timezone = $this->_scopeConfig->getValue($this->timezone->getDefaultTimezonePath(), 'default');
+		$date = new \DateTime($time, new \DateTimeZone($timezone));		
 		$currentTimezone = @date_default_timezone_get();
 		@date_default_timezone_set($timezone);
 		$timestamp = date('Y-m-d H:i:s', $date->getTimestamp());

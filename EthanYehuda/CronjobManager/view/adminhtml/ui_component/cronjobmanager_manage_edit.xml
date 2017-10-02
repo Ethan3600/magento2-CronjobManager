@@ -105,11 +105,12 @@
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">date</item>
+                    <!-- This is used to "trick" moment.js to not calculate the shifted/offset value -->
+                    <item name="storeTimeZone" xsi:type="string">UTC</item>
                     <item name="options" xsi:type="array">
 		                <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
 		                <item name="timeFormat" xsi:type="string">HH:mm</item>
 		                <item name="showsTime" xsi:type="boolean">true</item>
-                        <item name="timezone" xsi:type="boolean">false</item>
 		            </item>
                     <item name="validation" xsi:type="array">
                         <item name="validate-date" xsi:type="boolean">true</item>
