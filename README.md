@@ -1,4 +1,4 @@
-# EthanYehuda_CronjobManager [Work In Progress]
+# EthanYehuda_CronjobManager 
 ### Cron Job Manager for Magento 2 
 
 
