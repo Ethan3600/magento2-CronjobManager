@@ -2,7 +2,16 @@
 ### Cron Job Manager for Magento 2 
 
 
-_This module has several goals:_
+
+## Installation
+
+In your Magento2 root directory, you may install this package via composer:
+
+`composer require ethanyehuda/magento2-cronjobmanager`
+
+## Usage
+
+This module can:
 
 * **Dispatch** (more than once) magento cron jobs (as long as they're scheduled)
 
@@ -15,7 +24,3 @@ _This module has several goals:_
 * **Update** scheduled magento cron jobs
 
 * **Flush** out old magento cron jobs
-
-------
-
-This module is based off my previous [Magento 1.9.x Cron Job Manager](https://github.com/Ethan3600/magento-cronjob-manager)
