@@ -1,5 +1,5 @@
 {
-    "name": "EthanYehuda/magento2-CronjobManager",
+    "name": "ethanyehuda/magento2-cronjobmanager",
     "description": "A module for managing scheduled cron jobs from magento's admin panel",
     "require": {
         "php": "~5.6.5|7.0.2|7.0.4|~7.0.6",
