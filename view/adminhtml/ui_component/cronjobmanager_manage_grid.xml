@@ -192,7 +192,7 @@
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Created Date</item>
                     <item name="draggable" xsi:type="boolean">false</item>
-                    <item name="timezone" xsi:type="boolean">false</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
@@ -204,7 +204,7 @@
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Scheduled Date</item>
                     <item name="draggable" xsi:type="boolean">false</item>
-                    <item name="timezone" xsi:type="boolean">false</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
@@ -216,7 +216,7 @@
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Executed Date</item>
                     <item name="draggable" xsi:type="boolean">false</item>
-                    <item name="timezone" xsi:type="boolean">false</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>
@@ -228,7 +228,7 @@
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="label" xsi:type="string" translate="true">Finished Date</item>
                     <item name="draggable" xsi:type="boolean">false</item>
-                    <item name="timezone" xsi:type="boolean">false</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
                 </item>
             </argument>
         </column>

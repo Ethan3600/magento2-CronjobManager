@@ -18,7 +18,7 @@ class Manager extends ProcessCronQueueObserver
 		$schedule = $this->_scheduleFactory->create()
 			->setJobCode($jobCode)
 			->setStatus(Schedule::STATUS_PENDING)
-			->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', $this->timezone->scopeTimeStamp()))
+			->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()))
 			->setScheduledAt($filteredTime);
 
 		$schedule->getResource()->save($schedule);
@@ -63,7 +63,7 @@ class Manager extends ProcessCronQueueObserver
 		$groupId = $this->getGroupId($jobCode, $groups);
 		$jobConfig = $groups[$groupId][$jobCode];
 		$schedule = $this->loadSchedule($jobId);
-		$scheduledTime = $this->timezone->scopeTimeStamp();
+		$scheduledTime = $this->dateTime->gmtTimestamp();
 		
 		/* We need to trick the method into thinking it should run now so we
 		 * set the scheduled and current time to be equal to one another 
@@ -77,24 +77,15 @@ class Manager extends ProcessCronQueueObserver
 	/**
 	 * Generates filtered time input from user to formatted time (YYYY-MM-DD)
 	 * 
-	 * @todo this could use some clean up
 	 * @param unknown $time
 	 * @return string
 	 */
 	protected function filterTimeInput($time) 
 	{
-		$timezone = $this->_scopeConfig->getValue($this->timezone->getDefaultTimezonePath(), 'default');
 		$matches = [];
 		preg_match('/(\d+-\d+-\d+)T(\d+:\d+)/', $time, $matches);
 		$time = $matches[1] . " " . $matches[2];
-		
-		$date = new \DateTime($time, new \DateTimeZone($timezone));		
-		$currentTimezone = @date_default_timezone_get();
-		@date_default_timezone_set($timezone);
-		$timestamp = date('Y-m-d H:i:s', $date->getTimestamp());
-		@date_default_timezone_set($currentTimezone);
-		
-		return strftime('%Y-%m-%d %H:%M:00', strtotime($timestamp));
+		return strftime('%Y-%m-%d %H:%M:00', strtotime($time));
 	}
 	
 	/**
