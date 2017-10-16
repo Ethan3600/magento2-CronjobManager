@@ -1,6 +1,9 @@
 # EthanYehuda_CronjobManager 
+
+<p align="center"><img width="400" src="https://raw.githubusercontent.com/Ethan3600/randomStuff/master/Images/logo1.png"/></p>
+
 ### Cron Job Manager for Magento 2 
-_Take control of your cron_
+_Control your cron_
 
 ## Installation
 
