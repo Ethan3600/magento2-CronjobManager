@@ -13,6 +13,15 @@ In your Magento2 root directory, you may install this package via composer:
 
 `php bin/magento setup:upgrade`
 
+
+## Support
+
+CM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
+--- | :---: | :---: | :---: | :---:
+0.x | :question: | :white_check_mark: | :x: | :x:
+1.x | :x: | :x: | :white_check_mark: | :question:
+
+
 ## Usage
 
 
