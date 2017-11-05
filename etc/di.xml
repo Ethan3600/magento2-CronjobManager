@@ -10,6 +10,7 @@
         <arguments>
             <argument name="collections" xsi:type="array">
                 <item name="cronjobmanager_manage_grid_data_source" xsi:type="string">Magento\Cron\Model\ResourceModel\Schedule\Virtual\Collection</item>
+                <item name="cronjobmanager_visualizer_data_source" xsi:type="string">Magento\Cron\Model\ResourceModel\Schedule\Virtual\Collection</item>
             </argument>
         </arguments>
     </type>

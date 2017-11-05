@@ -1,20 +1,171 @@
-<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-	<argument name="data" xsi:type="array">
-        <item name="template" xsi:type="string">templates/cronjobmanager_visualizer/default</item>
-        <item name="config" xsi:type="array">
-            <item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/cronjobmanager_visualizer_component</item>
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <!--Declare data source, columns list, button...-->
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">cronjobmanager_visualizer.cronjobmanager_visualizer_data_source</item>
+            <item name="deps" xsi:type="string">cronjobmanager_visualizer.cronjobmanager_visualizer_data_source</item>
+            <!--Declare the data source name which will be defined below-->
+        </item>
+        <item name="spinner" xsi:type="string">cronjobmanager_manage_columns</item>
+        <!--Declare the listing of columns which will be defined below-->
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">add</item>
+                <item name="label" xsi:type="string" translate="true">Add New Cron Job</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/create</item>
+            </item>
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">back</item>
+                <item name="class" xsi:type="string">secondary</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
         </item>
     </argument>
-	<dataSource name="cronjobmanager_visualizer_data_source">                        
+    <dataSource name="cronjobmanager_visualizer_data_source">
+        <!--The data source-->
         <argument name="dataProvider" xsi:type="configurableObject">
-            <!-- the PHP class that implements a data provider -->
-            <argument name="class" xsi:type="string">EthanYehuda\CronjobManager\Model\DataProvider</argument>    
-            <!-- redundant with the `dataSource` name -->
+            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
             <argument name="name" xsi:type="string">cronjobmanager_visualizer_data_source</argument>
-            <!-- required: means ui components are meant to work with models -->
-            <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
-            <!-- required: means ui components are meant to work with URL passing -->
+            <argument name="primaryFieldName" xsi:type="string">schedule_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
-        </argument>        
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">schedule_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
     </dataSource>
-</container>
+    <listingToolbar name="listing_top">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sticky" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <bookmark name="bookmarks"/>
+        <filters name="listing_filters" />
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="cronjobmanager_manage_columns">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+            	<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/timeline</item>
+                <item name="template" xsi:type="string">cronjobManager/timeline/timeline</item>
+                <item name="recordTmpl" xsi:type="string">cronjobManager/timeline/record</item>
+                <item name="detailsTmpl" xsi:type="string">cronjobManager/timeline/details</item>
+                <item name="detailsFormat" xsi:type="string">MMM D, YYYY h:mm A</item>
+            </item>
+        </argument>
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">schedule_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
+        <column name="schedule_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="job_code">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="label" xsi:type="string" translate="true">Job Code</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="sorting" xsi:type="string">asc</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Status</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="messages">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sortable" xsi:type="boolean">false</item>
+                    <item name="label" xsi:type="string" translate="true">Messages</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Created Date</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="scheduled_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Scheduled Date</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="executed_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Executed Date</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <column name="finished_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">dateRange</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+                    <item name="dataType" xsi:type="string">date</item>
+                    <item name="label" xsi:type="string" translate="true">Finished Date</item>
+                    <item name="draggable" xsi:type="boolean">true</item>
+                    <item name="timezone" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+        <actionsColumn name="actions" class="EthanYehuda\CronjobManager\Ui\Component\Listing\Column\CronActions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">schedule_id</item>
+                </item>
+            </argument>
+        </actionsColumn>
+    </columns>
+</listing>
