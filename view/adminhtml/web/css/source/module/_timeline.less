@@ -2,13 +2,51 @@
 // Variables
 // ____________________________
 
-.timeline-items {
-    .timeline-item {
-        &._success {
-            .timeline-event {
-               // min-width: 0rem;
-               // padding: 0rem;
+@timeline-item__missed--background: #414141;
+@timeline-item__missed--color: #fff;
+@timeline-item__missed--border: solid 1px black;
+
+@timeline-item_pending--background: #effb82;
+@timeline-item_pending--color: #c2af1d;
+
+.timeline-items .timeline-item {
+    .timeline-event {
+    }
+
+    &._pending,
+    &._running {
+        .timeline-event {
+            overflow: visible;
+            
+            svg {
+                display: inline-block;
             }
         }
+    }
+
+    &._success {
+        .timeline-event {
+        }
+    }
+
+    &._missed {
+        .timeline-event {
+            background: @timeline-item__missed--background;
+            color: @timeline-item__missed--color;
+            border: @timeline-item__missed--border;
+        } 
+    }
+    
+    &._running {
+
+    }
+
+    &._error {
+
+    }
+    
+    &._pending {
+        background: @timeline-item_pending--background;
+        color: @timeline-item_pending--color;
     }
 }

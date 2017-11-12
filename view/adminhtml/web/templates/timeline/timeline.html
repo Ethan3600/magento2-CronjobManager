@@ -57,9 +57,11 @@
                     repeat="foreach: rows, item: '$row'"
                     attr="'data-tooltip-search-scope': 'search-scope-' + $index"
                     css="
-                        _active: isActive($row()),
-                        _permanent: isPermanent($row()),
-                        _success: isSuccess($row())
+                        _success: isSuccess($row()),
+                        _error: isError($row()),
+                        _missed: isMissed($row()),
+                        _running: isRunning($row()),
+                        _pending: isPending($row())	
                     "
                     render="recordTmpl"/>
             </if>
@@ -83,8 +85,6 @@
                 max: maxScale,
                 step: scaleStep
             ">
-            <span class="data-slider-from" text="daysToWeeks(minScale) + 'w'"/>
-            <span class="data-slider-to" text="daysToWeeks(maxScale) + 'w'"/>
         </div>
     </div>
 </div>

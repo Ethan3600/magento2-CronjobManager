@@ -45,11 +45,11 @@
     <listingToolbar name="listing_top">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-                <item name="sticky" xsi:type="boolean">false</item>
+                <item name="sticky" xsi:type="boolean">true</item>
             </item>
         </argument>
         <bookmark name="bookmarks"/>
-        <filters name="listing_filters" />
+        <filters name="listing_filters"/>
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="cronjobmanager_manage_columns">

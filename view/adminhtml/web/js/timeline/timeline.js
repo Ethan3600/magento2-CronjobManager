@@ -7,17 +7,17 @@ define([
     'use strict';
     
     // milliseconds in a day: 24 * 60 * 60 * 1000 = 86400000
-    var ONE_DAY = 86400000 / (24 * 12);
+    var ONE_DAY = 86400000 / (24);
 
     return Timeline.extend({
         defaults: {
         	dateFormat: 'YYYY-MM-DD HH:mm:ss',
             headerFormat: 'ddd MM/DD HH:mm',
-            scale: 12,
+            scale: 5,
             scaleStep: 1,
-            minScale: 12,
-            maxScale: 60,
-            minDays: 60,
+            minScale: 5,
+            maxScale: 24,
+            minDays: 24,
             displayMode: 'timeline',
             displayModes: {
                 timeline: {
@@ -87,7 +87,72 @@ define([
 
             return this;
         },
-
+        
+        /**
+         * Checks if cron ran successfully
+         * 
+         * @param {Object} record
+         * @returns {Boolean}
+         */
+        isSuccess: function (record) {
+        	if(!record) {
+        		return false;
+        	}
+        	return record.status === 'success';
+        },
+        
+        /**
+         * Checks if cron failed
+         * 
+         * @param {Object} record
+         * @returns {Boolean}
+         */
+        isError: function (record) {
+        	if(!record) {
+        		return false;
+        	}
+        	return record.status === 'error';
+        },
+        
+        /**
+         * Checks if cron was missed
+         * 
+         * @param {Object} record
+         * @returns {Boolean}
+         */
+        isMissed: function (record) {
+        	if(!record) {
+        		return false;
+        	}
+        	return record.status === 'missed';
+        },
+        
+        /**
+         * Checks if cron is pending
+         * 
+         * @param {Object} record
+         * @returns {Boolean}
+         */
+        isPending: function (record) {
+        	if(!record) {
+        		return false;
+        	}
+        	return record.status === 'pending';
+        },
+        
+        /**
+         * Checks if cron is running
+         * 
+         * @param {Object} record
+         * @returns {Boolean}
+         */
+        isRunning: function (record) {
+        	if(!record) {
+        		return false;
+        	}
+        	return record.status === 'running';
+        },
+        
         /**
          * Checks if provided event record is active,
          * i.e. it has already started.
@@ -103,17 +168,6 @@ define([
         },
 
         /**
-         * Checks if provided event record is upcoming,
-         * i.e. it will start later on.
-         *
-         * @param {Object} record
-         * @returns {Boolean}
-         */
-        isUpcoming: function (record) {
-            return Number(record.status) === 2;
-        },
-
-        /**
          * Checks if provided event record is permanent,
          * i.e. it has no ending time.
          *
@@ -122,16 +176,6 @@ define([
          */
         isPermanent: function (record) {
             return !this.getEndDate(record);
-        },
-        
-        /**
-         * Checks if cron ran successfully
-         * 
-         * @param {Object} record
-         * @returns {Boolean}
-         */
-        isSuccess: function (record) {
-        	return record.status === 'success';
         },
 
         /**
@@ -198,7 +242,7 @@ define([
                 end     = this.createDate(this.getEndDate(record));
 
             if (!end.isValid()) {
-                end = this.createDate(record['scheduled_at']).endOf('day') || this.range.lastDay.endOf('day');
+                return 1;
             }
 
             return end.diff(start, 'hours', true);
@@ -221,7 +265,7 @@ define([
          * @returns {Number}
          */
         daysToWeeks: function (days) {
-            var weeks = days / 7;
+            var weeks = days / 5;
 
             if (weeks % 1) {
                 weeks = weeks.toFixed(1);
@@ -293,11 +337,11 @@ define([
                 first = moment.min(dates).subtract(1, 'hour'),
                 today = moment().subtract(1, 'hour');
 
-            if (!first.isValid() || first < today) {
+            if (!first.isValid() || first > today) {
                 first = today;
             }
 
-            return first.startOf('day');
+            return first.startOf('hour');
         },
 
         /**
@@ -312,7 +356,7 @@ define([
                 endDates    = this._getDates('finished_at', 'scheduled_at'),
                 last        = moment.max(startDates.concat(endDates));
 
-            return last.add(1, 'day').startOf('day');
+            return last.add(1, 'hour').startOf('hour');
         },
 
         /**
