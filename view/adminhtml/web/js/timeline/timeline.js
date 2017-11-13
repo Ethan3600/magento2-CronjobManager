@@ -24,6 +24,16 @@ define([
                     label: 'Timeline',
                     value: 'timeline',
                     template: 'cronjobManager/timeline/timeline'
+                },
+                grid: {
+                    value: 'grid',
+                    label: 'Grid',
+                    template: '${ $.template }'
+                },
+                list: {
+                    value: 'list',
+                    label: 'List',
+                    template: '${ $.listTemplate }'
                 }
             },
             viewConfig: {
