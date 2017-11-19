@@ -29,11 +29,8 @@
     </svg>
 
     <div class="timeline-content"
-         css="'_from-now': hasToday(),
-              '_no-records': !hasData()">
-        <div class="timeline-past" if="hasToday()">
-            <time class="timeline-date" translate="'Past'"/>
-        </div>
+         css="'_no-records': !hasData()">
+        <div class="timeline-now" data-bind="style: { left: getNowOffset() } "></div>
         <ul class="timeline-units">
             <li class="timeline-unit" repeat="foreach: updateRange().days, item: '$date'">
                 <div tooltip="

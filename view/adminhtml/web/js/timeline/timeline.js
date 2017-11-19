@@ -12,7 +12,7 @@ define([
     return Timeline.extend({
         defaults: {
         	dateFormat: 'YYYY-MM-DD HH:mm:ss',
-            headerFormat: 'ddd MM/DD HH:mm',
+            headerFormat: 'ddd MM/DD hh:mm',
             scale: 5,
             scaleStep: 1,
             minScale: 5,
@@ -234,6 +234,25 @@ define([
                 firstDay = this.range.firstDay;
 
             return start.diff(firstDay, 'hours', true);
+        },
+        
+        /**
+         * Returns the left offset for the current time
+         * 
+         * @returns {String}
+         */
+        getNowOffset: function () {
+        	var unitScale = 100 / this.scale,
+        		now = moment().format();
+        	
+        	var fakeRecord = {
+        			'scheduled_at' : now
+        	};
+        	
+        	var offset = this.getStartDelta(fakeRecord);
+        	
+        	return (offset * unitScale) + '%';
+        	
         },
 
         /**
