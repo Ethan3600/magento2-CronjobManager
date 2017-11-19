@@ -29,11 +29,6 @@ define([
                     value: 'grid',
                     label: 'Grid',
                     template: '${ $.template }'
-                },
-                list: {
-                    value: 'list',
-                    label: 'List',
-                    template: '${ $.listTemplate }'
                 }
             },
             viewConfig: {
@@ -68,7 +63,7 @@ define([
          */
         initConfig: function () {
             this._super();
-
+            delete this.displayModes['list']; // remove list component
             this.maxScale = Math.min(this.minDays, this.maxScale);
             this.minScale = Math.min(this.maxScale, this.minScale);
 
