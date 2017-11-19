@@ -24,6 +24,13 @@ CM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
 
 ## Usage
 
+### View Cron Jobs On A Timeline
+
+Visualize how your cron jobs are running relative to each other.
+
+Works well with the robust filtering features of uiComponents!
+
+<img src="https://user-images.githubusercontent.com/6549623/32996580-7cc01090-cd52-11e7-8b4d-129d20b1071e.gif"/>
 
 ### Dispatch Cron Jobs Manually
 
