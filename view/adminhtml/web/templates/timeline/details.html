@@ -1,0 +1,65 @@
+<div tooltip=" trigger: '[data-tooltip-trigger=update-' + $index + ']',
+               action: 'click',
+               delay: 0,
+               position: 'right',
+               step: 25,
+               track: false,
+               strict: false,
+               closeButton: true,
+               parentScope: '[data-tooltip-search-scope=search-scope-' + $index + ']'">
+    <div>
+        <div class="data-tooltip-title" ko-scope="requestChild('name')">
+            <text args="getLabel($row())"/>
+        </div>
+ 
+        <div class="data-tooltip-content">
+            <dl class="staging-events-summary">
+            	<dt>
+                    <translate args="'Schedule Id'"/>:
+                </dt>
+                <dd ko-scope="requestChild('schedule_id')">
+                    <text args="getLabel($row())"/>
+                </dd>
+                
+            	<dt>
+                    <translate args="'Job Code'"/>:
+                </dt>
+                <dd ko-scope="requestChild('job_code')">
+                    <text args="getLabel($row())"/>
+                </dd>
+            
+                <dt>
+                    <translate args="'Status'"/>:
+                </dt>
+                <dd ko-scope="requestChild('status')">
+                    <text args="getLabel($row())"/>
+                </dd>
+ 
+                <dt>
+                    <translate args="'Start'"/>:
+                </dt>
+                <dd>
+                    <time text="formatDetails(getStartDate($row()))"/>
+                </dd>
+ 
+                <ifnot args="isPermanent($row())">
+                    <dt>
+                        <translate args="'End'"/>:
+                    </dt>
+                    <dd>
+                        <time text="formatDetails(getEndDate($row()))"/>
+                    </dd>
+                </ifnot>
+            </dl>
+            <div class="staging-events-actions" ko-scope="requestChild('actions')">
+                <a
+                    class="action-secondary action-edit"
+                    repeat="foreach: getVisibleActions($row()._rowIndex), item: '$action'"
+                    attr="href: $action().href"
+                    click="getActionHandler($action())">
+                    <span text="$action().label"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
