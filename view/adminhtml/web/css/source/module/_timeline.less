@@ -7,7 +7,25 @@
 @timeline-item__missed--border: solid 1px black;
 
 @timeline-item_pending--background: #effb82;
-@timeline-item_pending--color: #c2af1d;
+@timeline-item_pending--color: #6f6200;
+@timeline-item_pending--border: solid 1px @timeline-item_pending--color;
+
+@timeline-item_error--background: #f5b7b7;
+@timeline-item_error--color: #f00;
+@timeline-item_error--border: solid 1px @timeline-item_error--color;
+
+@timeline-item_running--background: #bceeff;
+@timeline-item_running--color: #007bdb;
+@timeline-item_running--border: solid 1px #56c2e6;
+
+.timeline-now {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: red;
+    z-index: 3;
+}
+
 
 .timeline-items .timeline-item {
     .timeline-event {
@@ -38,15 +56,38 @@
     }
     
     &._running {
+        .timeline-event {
+            background: @timeline-item_running--background;
+            color: @timeline-item_running--color;
+            border: @timeline-item_running--border;
 
+            .timeline-ending {
+                color: @timeline-item_running--color;
+                fill: @timeline-item_running--background;
+                stroke: @timeline-item_running--border;
+            }
+        }
     }
 
     &._error {
-
+        .timeline-event {
+            background: @timeline-item_error--background;
+            color: @timeline-item_error--color;
+            border: @timeline-item_error--border;
+        }
     }
     
     &._pending {
-        background: @timeline-item_pending--background;
-        color: @timeline-item_pending--color;
+        .timeline-event {
+            background: @timeline-item_pending--background;
+            color: @timeline-item_pending--color;
+            border: @timeline-item_pending--border;
+
+            .timeline-ending {
+                color: @timeline-item_pending--color;
+                fill: @timeline-item_pending--background;
+                stroke: @timeline-item_pending--color;
+            }
+        }
     }
 }
