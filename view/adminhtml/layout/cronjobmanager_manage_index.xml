@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="styles"/>
+    <head>
+        <css src="EthanYehuda_CronjobManager::css/source/_module.css"/>
+    </head>
     <body>
         <referenceContainer name="content">
             <uiComponent name="cronjobmanager_manage_grid"/>
