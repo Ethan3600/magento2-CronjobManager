@@ -45,7 +45,8 @@
     <listingToolbar name="listing_top">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-                <item name="sticky" xsi:type="boolean">true</item>
+                <item name="sticky" xsi:type="boolean">false</item>
+                <item name="template" xsi:type="string">cronjobManager/timeline/toolbar</item>
             </item>
         </argument>
         <bookmark name="bookmarks"/>
@@ -110,7 +111,6 @@
     </listingToolbar>
     <columns name="cronjobmanager_manage_columns">
         <!-- This is for inline editing -->
-        <!-- @todo this should be a feature release after the inital release -->
         <!-- <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="editorConfig" xsi:type="array">
@@ -134,6 +134,15 @@
                 </item>
             </item>
         </argument> -->
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+            	<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/timeline</item>
+                <item name="recordTmpl" xsi:type="string">cronjobManager/timeline/record</item>
+                <item name="detailsTmpl" xsi:type="string">cronjobManager/timeline/details</item>
+                <item name="detailsFormat" xsi:type="string">MMM D, YYYY h:mm A</item>
+                <item name="displayMode" xsi:type="string">grid</item>
+            </item>
+        </argument>
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
