@@ -66,7 +66,7 @@ class Runjob extends Command
 			
 			$schedule = $this->manager->createCronJob($jobCode, $now);
 			$this->manager->dispatchCron(null, $jobCode, $schedule);
-			
+			$output->writeln("$jobCode successfully ran");
 			return Cli::RETURN_SUCCESS;
 		} catch (\Magento\Framework\Exception\LocalizedException $e) {
 			$output->writeln($e->getMessage());
