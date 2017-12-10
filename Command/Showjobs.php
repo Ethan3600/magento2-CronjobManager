@@ -23,7 +23,7 @@ class Showjobs extends Command
 	/**
 	 * @var Array $headers
 	 */
-	private $headers = ['Code', 'Group', 'Frequency', 'Class'];
+	private $headers = ['Job Code', 'Group', 'Frequency', 'Class'];
 	
 	public function __construct(
 		State $state,
@@ -36,7 +36,7 @@ class Showjobs extends Command
     protected function configure()
     {
         $this->setName("cronmanager:showjobs");
-        $this->setDescription("Show all cron jobs in Magento");
+        $this->setDescription("Show all cron job codes in Magento");
         parent::configure();
     }
 
