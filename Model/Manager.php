@@ -71,6 +71,11 @@ class Manager extends ProcessCronQueueObserver
 		$this->_runJob($scheduledTime, $scheduledTime, $jobConfig, $schedule, $groupId);
 		$schedule->getResource()->save($schedule);
 	}
+
+    public function getCronJobs()
+    {
+        return $this->_config->getJobs();
+    }
 	
 	// ========================= UTILITIES ========================= //
 	
