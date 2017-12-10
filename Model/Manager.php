@@ -22,6 +22,7 @@ class Manager extends ProcessCronQueueObserver
 			->setScheduledAt($filteredTime);
 
 		$schedule->getResource()->save($schedule);
+		return $schedule;
 	}
 	
 	public function saveCronJob($jobId, $jobCode = null, $status = null, $time = null)
