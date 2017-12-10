@@ -58,12 +58,14 @@ class Manager extends ProcessCronQueueObserver
 		}
 	}
 	
-	public function dispatchCron($jobId, $jobCode)
+	public function dispatchCron($jobId = null, $jobCode, $schedule = null)
 	{
 		$groups = $this->_config->getJobs();
 		$groupId = $this->getGroupId($jobCode, $groups);
 		$jobConfig = $groups[$groupId][$jobCode];
-		$schedule = $this->loadSchedule($jobId);
+		if(is_null($schedule)) {
+			$schedule = $this->loadSchedule($jobId);
+		}
 		$scheduledTime = $this->dateTime->gmtTimestamp();
 		
 		/* We need to trick the method into thinking it should run now so we
