@@ -22,6 +22,7 @@ class Manager extends ProcessCronQueueObserver
 			->setScheduledAt($filteredTime);
 
 		$schedule->getResource()->save($schedule);
+		return $schedule;
 	}
 	
 	public function saveCronJob($jobId, $jobCode = null, $status = null, $time = null)
@@ -57,12 +58,14 @@ class Manager extends ProcessCronQueueObserver
 		}
 	}
 	
-	public function dispatchCron($jobId, $jobCode)
+	public function dispatchCron($jobId = null, $jobCode, $schedule = null)
 	{
 		$groups = $this->_config->getJobs();
 		$groupId = $this->getGroupId($jobCode, $groups);
 		$jobConfig = $groups[$groupId][$jobCode];
-		$schedule = $this->loadSchedule($jobId);
+		if(is_null($schedule)) {
+			$schedule = $this->loadSchedule($jobId);
+		}
 		$scheduledTime = $this->dateTime->gmtTimestamp();
 		
 		/* We need to trick the method into thinking it should run now so we
@@ -71,6 +74,11 @@ class Manager extends ProcessCronQueueObserver
 		$this->_runJob($scheduledTime, $scheduledTime, $jobConfig, $schedule, $groupId);
 		$schedule->getResource()->save($schedule);
 	}
+
+    public function getCronJobs()
+    {
+        return $this->_config->getJobs();
+    }
 	
 	// ========================= UTILITIES ========================= //
 	
