@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use EthanYehuda\CronjobManager\Model\Manager;
 use \Magento\Framework\App\State;
 use \Magento\Framework\Console\Cli;
-use \Magento\Framework\Stdlib\DateTime\DateTime;
+use \Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 class Runjob extends Command
 {
@@ -25,18 +25,18 @@ class Runjob extends Command
 	private $state;
 	
 	/**
-	 * @var \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+	 * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezone
 	 */
-	private $dateTime;
+	private $timezone;
 	
 	public function __construct(
 		State $state,
 		Manager $manager,
-		DateTime $dateTime
+		TimezoneInterface $timezone
 	) {
 			$this->manager = $manager;
 			$this->state = $state;
-			$this->dateTime = $dateTime;
+			$this->timezone = $timezone;
 			parent::__construct();
 	}
 	protected function configure()
@@ -62,7 +62,7 @@ class Runjob extends Command
 			
 			// lets create a new cron job and dispatch it
 			$jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
-			$now = strftime('%Y-%m-%dT%H:%M:%S', $this->dateTime->gmtTimestamp());
+			$now = strftime('%Y-%m-%dT%H:%M:%S', $this->timezone->scopeTimeStamp());
 			
 			$schedule = $this->manager->createCronJob($jobCode, $now);
 			$this->manager->dispatchCron(null, $jobCode, $schedule);
