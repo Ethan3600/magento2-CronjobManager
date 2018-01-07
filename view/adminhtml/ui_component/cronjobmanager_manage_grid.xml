@@ -22,6 +22,12 @@
                 <item name="class" xsi:type="string">secondary</item>
                 <item name="url" xsi:type="string">*/manage_job/flush</item>
             </item>
+            <item name="config" xsi:type="array">
+                <item name="name" xsi:type="string">config</item>
+                <item name="label" xsi:type="string" translate="true">Job Configuration</item>
+                <item name="class" xsi:type="string">secondary</item>
+                <item name="url" xsi:type="string">*/config/index</item>
+            </item>
         </item>
     </argument>
     <dataSource name="cronjobmanager_manage_grid_data_source">
