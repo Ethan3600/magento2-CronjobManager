@@ -4,16 +4,16 @@ namespace EthanYehuda\CronjobManager\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use EthanYehuda\CronjobManager\Model\Manager;
+use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use \Magento\Framework\App\State;
 use \Magento\Framework\Console\Cli;
 
 class Showjobs extends Command
 {
 	/**
-	 * @var EthanYehuda\CronjobManager\Model\Manager $manager
+	 * @var \EthanYehuda\CronjobManager\Model\ManagerFactory $managerFactory
 	 */
-	private $manager;
+	private $managerFactory;
 	
 	/**
 	 * @var \Magento\Framework\App\State $state
@@ -27,9 +27,9 @@ class Showjobs extends Command
 	
 	public function __construct(
 		State $state,
-		Manager $manager
+		ManagerFactory $managerFactory
 	) {
-		$this->manager = $manager;
+		$this->managerFactory = $managerFactory;
 		$this->state = $state;
 		parent::__construct();
 	}
@@ -42,10 +42,12 @@ class Showjobs extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $manager = $this->managerFactory->create();
+
         try {
         	$this->state->setAreaCode('adminhtml');
         	
-        	$jobs = $this->manager->getCronJobs();
+        	$jobs = $manager->getCronJobs();
         	$table = $this->getHelperSet()->get('table')->setHeaders($this->headers);
         	
         	foreach ($jobs as $group => $crons) {
