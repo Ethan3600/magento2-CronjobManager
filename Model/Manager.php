@@ -4,6 +4,7 @@ Namespace EthanYehuda\CronjobManager\Model;
 
 use Magento\Cron\Observer\ProcessCronQueueObserver;
 use \Magento\Cron\Model\Schedule;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class Manager extends ProcessCronQueueObserver
 {
@@ -27,8 +28,6 @@ class Manager extends ProcessCronQueueObserver
 	
 	public function saveCronJob($jobId, $jobCode = null, $status = null, $time = null)
 	{
-		$filteredTime = $this->filterTimeInput($time);
-		
 		$schedule = $this->loadSchedule($jobId);
 		
 		if(!is_null($jobCode))
@@ -36,7 +35,7 @@ class Manager extends ProcessCronQueueObserver
 		if(!is_null($status))
 			$schedule->setStatus($status);
 		if(!is_null($time))
-			$schedule->setScheduledAt($filteredTime);
+			$schedule->setScheduledAt($this->filterTimeInput($time));
 		
 		$schedule->getResource()->save($schedule);
 	}
@@ -121,6 +120,11 @@ class Manager extends ProcessCronQueueObserver
 		$schedule = $this->_scheduleFactory->create();
 		$scheduleResource = $schedule->getResource();
 		$scheduleResource->load($schedule, $jobId);
+
+        if (!$schedule || !$schedule->getScheduleId()) {
+            throw new NoSuchEntityException(__('No Schedule entry with ID %1.', $jobId));
+        }
+
 		return $schedule;
 	}
 }
