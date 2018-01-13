@@ -5,19 +5,19 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use EthanYehuda\CronjobManager\Model\Manager;
+use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use \Magento\Framework\App\State;
 use \Magento\Framework\Console\Cli;
-use \Magento\Framework\Stdlib\DateTime\DateTime;
+use \Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 
 class Runjob extends Command
 {
 	const INPUT_KEY_JOB_CODE = 'job_code';
 	
 	/**
-	 * @var EthanYehuda\CronjobManager\Model\Manager $manager
+	 * @var ManagerFactory $managerFactory
 	 */
-	private $manager;
+	private $managerFactory;
 	
 	/**
 	 * @var \Magento\Framework\App\State $state
@@ -25,18 +25,18 @@ class Runjob extends Command
 	private $state;
 	
 	/**
-	 * @var \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+	 * @var DateTimeFactory $dateTimeFactory
 	 */
-	private $dateTime;
+	private $dateTimeFactory;
 	
 	public function __construct(
 		State $state,
-		Manager $manager,
-		DateTime $dateTime
+		ManagerFactory $managerFactory,
+		DateTimeFactory $dateTimeFactory
 	) {
-			$this->manager = $manager;
+			$this->managerFactory = $managerFactory;
 			$this->state = $state;
-			$this->dateTime = $dateTime;
+			$this->dateTimeFactory = $dateTimeFactory;
 			parent::__construct();
 	}
 	protected function configure()
@@ -57,15 +57,18 @@ class Runjob extends Command
 	
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+	    $manager = $this->managerFactory->create();
+	    $dateTime = $this->dateTimeFactory->create();
+
 		try {
 			$this->state->setAreaCode('adminhtml');
 			
 			// lets create a new cron job and dispatch it
 			$jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
-			$now = strftime('%Y-%m-%dT%H:%M:%S', $this->dateTime->gmtTimestamp());
+			$now = strftime('%Y-%m-%dT%H:%M:%S', $dateTime->gmtTimestamp());
 			
-			$schedule = $this->manager->createCronJob($jobCode, $now);
-			$this->manager->dispatchCron(null, $jobCode, $schedule);
+			$schedule = $manager->createCronJob($jobCode, $now);
+			$manager->dispatchCron(null, $jobCode, $schedule);
 			$output->writeln("$jobCode successfully ran");
 			return Cli::RETURN_SUCCESS;
 		} catch (\Magento\Framework\Exception\LocalizedException $e) {
