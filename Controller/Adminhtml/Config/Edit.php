@@ -1,8 +1,6 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
-
-use EthanYehuda\CronjobManager\Model\Manager;
+namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
 class Edit extends \Magento\Backend\App\Action
 {
