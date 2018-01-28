@@ -13,6 +13,12 @@
             <item name="class" xsi:type="string">back</item>
             <item name="url" xsi:type="string">*/manage/</item>
          </item>
+         <item name="system" xsi:type="array">
+            <item name="name" xsi:type="string">system</item>
+            <item name="label" xsi:type="string" translate="true">System Configurations</item>
+            <item name="class" xsi:type="string">secondary</item>
+            <item name="url" xsi:type="string">adminhtml/system_config/edit/section/system</item>
+         </item>
       </item>
    </argument>
    <dataSource name="cronjobmanager_config_grid_data_source">
