@@ -3,19 +3,21 @@ namespace EthanYehuda\CronjobManager\Ui\Component\Listing\Column;
 
 class ConfigActions extends \Magento\Ui\Component\Listing\Columns\Column
 {
+    const JOB_CODE = 'job_code';
+    
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource["data"]["items"])) {
             foreach ($dataSource["data"]["items"] as & $item) {
                 $name = $this->getData("name");
-                $id = "X";
-                if(isset($item["id"]))
+                $code = "";
+                if(isset($item[self::JOB_CODE]))
                 {
-                    $id = $item["id"];
+                    $code = $item[self::JOB_CODE];
                 }
                 $item[$name]["view"] = [
                     "href"=>$this->getContext()->getUrl(
-                        "cronjobmanager_config_grid/page/edit",["id"=>$id]),
+                        "cronjobmanager/config_job/edit",["code"=>$code]),
                     "label"=>__("Edit")
                 ];
             }
