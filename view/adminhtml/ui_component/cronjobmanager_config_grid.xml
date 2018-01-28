@@ -6,6 +6,14 @@
          <item name="deps" xsi:type="string">cronjobmanager_config_grid.cronjobmanager_config_grid_data_source</item>
       </item>
       <item name="spinner" xsi:type="string">cronjobmanager_config_grid_columns</item>
+      <item name="buttons" xsi:type="array">
+         <item name="back" xsi:type="array">
+            <item name="name" xsi:type="string">back</item>
+            <item name="label" xsi:type="string" translate="true">Back</item>
+            <item name="class" xsi:type="string">back</item>
+            <item name="url" xsi:type="string">*/manage/</item>
+         </item>
+      </item>
    </argument>
    <dataSource name="cronjobmanager_config_grid_data_source">
       <argument name="dataProvider" xsi:type="configurableObject">
