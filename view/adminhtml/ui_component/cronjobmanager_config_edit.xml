@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">cronjobmanager_config_edit.cronjobmanager_config_edit_data_source</item>
+            <item name="deps" xsi:type="string">cronjobmanager_config_edit.cronjobmanager_config_edit_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Cron Job Information</item>
+        <item name="config" xsi:type="array">
+            <item name="dataScope" xsi:type="string">data</item>
+            <item name="namespace" xsi:type="string">cronjobmanager_config_edit</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+        <item name="buttons" xsi:type="array">
+            <item name="back" xsi:type="array">
+                <item name="name" xsi:type="string">back</item>
+                <item name="label" xsi:type="string" translate="true">Back</item>
+                <item name="class" xsi:type="string">back</item>
+                <item name="url" xsi:type="string">*/*/</item>
+            </item>
+            <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
+            <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
+            <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
+            <item name="delete" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\DeleteButton</item>
+        </item>
+    </argument>
+    <dataSource name="cronjobmanager_config_edit_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">EthanYehuda\CronjobManager\Ui\DataProvider\ConfigDataProvider</argument>
+            <argument name="name" xsi:type="string">cronjobmanager_config_edit_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">schedule_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+	            <item name="config" xsi:type="array">
+	                <item name="submit_url" xsi:type="url" path="cronjobmanager/manage_job/save"/>
+	            </item>
+	        </argument>
+        </argument>
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+    </dataSource>
+    <fieldset name="cron_schedule">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="label" xsi:type="string" translate="true">Cron Job Details</item>
+                <item name="sortOrder" xsi:type="number">10</item>
+            </item>
+        </argument>
+        <field name="schedule_id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Id</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">schedule</item>
+                    <item name="dataScope" xsi:type="string">schedule_id</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field>
+        <field name="job_code">
+            <argument name="data" xsi:type="array">
+            	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Name</item>
+                    <!-- <item name="notice" xsi:type="string" translate="true">Select a Cron</item> -->
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="dataScope" xsi:type="string">job_code</item>
+                    <item name="caption" xsi:type="string" translate="true">-- Please Select --</item>
+                </item>
+            </argument>
+        </field>
+        <field name="status">
+            <argument name="data" xsi:type="array">
+            	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Status</item>
+                    <item name="formElement" xsi:type="string">select</item>
+                    <item name="source" xsi:type="string">schedule</item>
+                    <item name="dataScope" xsi:type="string">status</item>
+                </item>
+            </argument>
+        </field>
+        <field name="messages">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Cron Job Message</item>
+                    <item name="formElement" xsi:type="string">textarea</item>
+                    <item name="source" xsi:type="string">schedule</item>
+                    <item name="dataScope" xsi:type="string">messages</item>
+                    <item name="disabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </field>
+        <field name="scheduled_at">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string">Scheduled At</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="formElement" xsi:type="string">date</item>
+                    <item name="options" xsi:type="array">
+		                <item name="dateFormat" xsi:type="string">yyyy-MM-dd</item>
+		                <item name="timeFormat" xsi:type="string">HH:mm</item>
+		                <item name="showsTime" xsi:type="boolean">true</item>
+		            </item>
+                    <item name="validation" xsi:type="array">
+                        <item name="validate-no-empty" xsi:type="boolean">true</item>
+                    </item>
+                    <item name="dataScope" xsi:type="string">scheduled_at</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>
