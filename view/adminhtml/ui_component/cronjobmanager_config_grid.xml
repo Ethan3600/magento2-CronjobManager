@@ -7,6 +7,12 @@
       </item>
       <item name="spinner" xsi:type="string">cronjobmanager_config_grid_columns</item>
       <item name="buttons" xsi:type="array">
+         <item name="run" xsi:type="array">
+            <item name="name" xsi:type="string">run</item>
+            <item name="label" xsi:type="string" translate="true">Run Cron</item>
+            <item name="class" xsi:type="string">primary</item>
+            <item name="url" xsi:type="string">*/config_job/run</item>
+         </item>
          <item name="back" xsi:type="array">
             <item name="name" xsi:type="string">back</item>
             <item name="label" xsi:type="string" translate="true">Back</item>
