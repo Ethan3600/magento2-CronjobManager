@@ -2,6 +2,8 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
+use EthanYehuda\CronjobManager\Model\RegistryConstants;
+
 class Edit extends \Magento\Backend\App\Action
 {
     /**
