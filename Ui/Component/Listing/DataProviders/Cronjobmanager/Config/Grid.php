@@ -38,6 +38,11 @@ class Grid extends AbstractDataProvider
 	private $sortedColumn = 'job_code';
 	
 	/**
+	 * @var string
+	 */
+	private $sortDirection = '';
+	
+	/**
 	 * @var array
 	 */
 	private $records = [];
@@ -96,9 +101,10 @@ class Grid extends AbstractDataProvider
 	    		self::CACHE_LIFETIME
 	    	);
     	}
-    	
-    	// @todo create sorting function
-    	
+
+    	if (!empty($this->sortDirection)) {
+    	    $this->sortRecords();
+    	}
     	$this->paginate();
     	return $this->records;
     }
@@ -168,5 +174,25 @@ class Grid extends AbstractDataProvider
     		(($this->pageNum - 1) * $this->pageSize),
     		$this->pageSize
     	);
+    }
+    
+    /**
+     * Sort records by the provided column and direction
+     */
+    private function sortRecords()
+    {
+        $items = $this->records['items'];
+        $direction = $this->sortDirection;
+        $col = $this->sortedColumn;
+        
+        usort($items, function($a, $b) use ($direction, $col) {
+            if ($direction == 'asc') {
+                return strcmp($a[$col], $b[$col]);
+            } else if ($direction == 'desc') {
+                return (-1 * strcmp($a[$col], $b[$col]));
+            }       
+        });
+        
+        $this->records['items'] = $items;
     }
 }
