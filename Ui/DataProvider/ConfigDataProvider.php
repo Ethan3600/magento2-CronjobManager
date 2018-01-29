@@ -9,7 +9,7 @@ use Magento\Framework\Registry;
 
 class ConfigDataProvider extends AbstractDataProvider
 {
-    private $loadedData;
+    private $loadedData = [];
     
     /**
      * @var Magento\Framework\Registry;
@@ -47,11 +47,13 @@ class ConfigDataProvider extends AbstractDataProvider
             return $this->loadedData;
         }
 
-        $this->loadedData = $this->coreRegistry->registry(
+        $cron = $this->coreRegistry->registry(
             RegistryConstants::CURRENT_CRON_CONFIG
         );
-
-        return $this->loadedData;
+        
+        $jobCode = $cron['job_code'];
+        $this->loadedData[$jobCode] = $cron;
+        return $this->loadedData;    
     }
 
     /**
