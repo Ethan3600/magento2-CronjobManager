@@ -3,8 +3,10 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use EthanYehuda\CronjobManager\Ui\Component\Listing\DataProviders\Cronjobmanager\Config\Grid as ConfigDataProvider;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Exception\ValidatorException;
+use Magento\Framework\App\CacheInterface;
 
 class Save extends \Magento\Backend\App\Action
 {
@@ -22,17 +24,24 @@ class Save extends \Magento\Backend\App\Action
      * @var ManagerFactory
      */
     private $managerFactory;
+    
+    /**
+     * @var CacheInterface
+     */
+    private $cache;
 
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Backend\App\Action\Context $context,
         WriterInterface $configWriter,
-        ManagerFactory $managerFactory
+        ManagerFactory $managerFactory,
+        CacheInterface $cache
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->configWriter = $configWriter;
         $this->managerFactory = $managerFactory;
+        $this->cache = $cache;
     }
 
     /**
@@ -63,6 +72,7 @@ class Save extends \Magento\Backend\App\Action
         try {
             $path = $this->constructPath($group, $jobCode);
             $this->configWriter->save($path, $frequency);
+            $this->cache->remove(ConfigDataProvider::JOB_CONFIG_IDENTIFIER);
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/config/edit/', ['id' => $jobId]);
