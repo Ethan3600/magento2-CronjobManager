@@ -11,7 +11,7 @@ use Magento\Framework\App\Cache\StateInterface;
 
 class Grid extends AbstractDataProvider
 {
-	const JOB_CONFIG_IDENTIFIER = 'ETHANYEHUDA_CRONJOBMANAGER_DATAPROVIDER_RECORDS';
+	const JOB_CONFIG_IDENTIFIER = 'ethanyehuda_cronjobmanager_dataprovider_records';
 	
 	/**
 	 * @var int cache lifetime in seconds
