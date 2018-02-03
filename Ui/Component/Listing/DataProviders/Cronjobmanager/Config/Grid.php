@@ -124,10 +124,6 @@ class Grid extends AbstractDataProvider
     /**
      * Set the sort order
      * 
-     * @todo we need to override this method to avoid errors,
-     * but this also means we need to implement our own sorting
-     * mechanisim
-     * 
      * @param type $field
      * @param type $direction
      */
