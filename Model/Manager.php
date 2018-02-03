@@ -96,7 +96,7 @@ class Manager extends ProcessCronQueueObserver
     /**
      * @param String $jobCode
      * @param array | null $groups
-     * @return String $groupId
+     * @return String | Boolean $groupId
      */
     public function getGroupId($jobCode, $groups = null)
     {
@@ -109,6 +109,7 @@ class Manager extends ProcessCronQueueObserver
                 return $groupId;
             }
         }
+        return false;
     }
 
     // ========================= UTILITIES ========================= //
