@@ -111,6 +111,12 @@ class Manager extends ProcessCronQueueObserver
         }
         return false;
     }
+    
+    public function scheduleNow($jobCode)
+    {
+        $now = strftime('%Y-%m-%dT%H:%M:%S', $this->dateTime->gmtTimestamp());
+        return $this->createCronJob($jobCode, $now);
+    }
 
     // ========================= UTILITIES ========================= //
 
