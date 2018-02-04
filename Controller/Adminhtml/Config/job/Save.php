@@ -3,13 +3,14 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
-use EthanYehuda\CronjobManager\Ui\Component\Listing\DataProviders\Cronjobmanager\Config\Grid as ConfigDataProvider;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\App\CacheInterface;
 
 class Save extends \Magento\Backend\App\Action
 {
+    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
+    
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -72,7 +73,7 @@ class Save extends \Magento\Backend\App\Action
         try {
             $path = $this->constructPath($group, $jobCode);
             $this->configWriter->save($path, $frequency);
-            $this->cache->remove(ConfigDataProvider::JOB_CONFIG_IDENTIFIER);
+            $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/config/edit/', ['id' => $jobId]);
@@ -82,7 +83,8 @@ class Save extends \Magento\Backend\App\Action
         if (!isset($params['back'])) {
             $this->_redirect("*/config/index/");
         } else {
-            $this->_redirect("*/config/{$params['back']}/", ['id' => $jobId]);
+            unset($params['key'], $params['form_key']);
+            $this->_redirect("*/config/{$params['back']}/", $params);
         }
     }
     

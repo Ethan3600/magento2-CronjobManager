@@ -4,20 +4,9 @@ namespace EthanYehuda\CronjobManager\Ui\Component\Listing\DataProviders\Cronjobm
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use Magento\Ui\DataProvider\AbstractDataProvider;
-use Magento\Framework\App\CacheInterface;
-use Magento\Framework\App\Cache\Type\Collection;
-use Magento\Framework\Serialize\SerializerInterface;
-use Magento\Framework\App\Cache\StateInterface;
 
 class Grid extends AbstractDataProvider
 {
-	const JOB_CONFIG_IDENTIFIER = 'ethanyehuda_cronjobmanager_dataprovider_records';
-	
-	/**
-	 * @var int cache lifetime in seconds
-	 */
-	const CACHE_LIFETIME = 180;
-	
 	/**
 	 * Page size
 	 * 
@@ -48,21 +37,6 @@ class Grid extends AbstractDataProvider
 	private $records = [];
 	
 	/**
-	 * @var CacheInterface
-	 */
-	private $cache;
-	
-	/**
-	 * @var SerializerInterface
-	 */
-	private $serializer;
-	
-	/**
-	 * @var StateInterface
-	 */
-	private $cacheState;
-	
-	/**
 	 * @var EthanYehuda\CronjobManager\Model\Manager $manager
 	 */
 	private $manager;
@@ -72,35 +46,16 @@ class Grid extends AbstractDataProvider
         $primaryFieldName,
         $requestFieldName,
     	ManagerFactory $manager,
-    	CacheInterface $cache,
-    	SerializerInterface $serializer,
-    	StateInterface $cacheState,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->manager = $manager->create();
-        $this->cache = $cache;
-        $this->serializer = $serializer;
-        $this->cacheState = $cacheState;
     }
     
     public function getData()
     {
-    	if($this->cacheState->isEnabled(Collection::TYPE_IDENTIFIER)
-    		&& $loadedData = $this->cache->load(self::JOB_CONFIG_IDENTIFIER)
-    	) {
-    		$this->records = $this->serializer->unserialize($loadedData);
-    	} else {
-	    	$this->prepareJobConfigRecords();
-	    	
-	    	$this->cache->save(
-	    		$this->serializer->serialize($this->records),
-	    		self::JOB_CONFIG_IDENTIFIER, 
-	    		[Collection::CACHE_TAG],
-	    		self::CACHE_LIFETIME
-	    	);
-    	}
+	  	$this->prepareJobConfigRecords();
 
     	if (!empty($this->sortDirection)) {
     	    $this->sortRecords();
@@ -136,8 +91,8 @@ class Grid extends AbstractDataProvider
     private function prepareJobConfigRecords()
     {
     	$this->records = [
-    			'totalRecords' => 0,
-    			'items' => []
+			'totalRecords' => 0,
+			'items' => []
     	];
     	
     	$jobs = $this->manager->getCronJobs();
