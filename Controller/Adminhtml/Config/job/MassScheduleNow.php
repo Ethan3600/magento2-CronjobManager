@@ -45,14 +45,14 @@ class MassScheduleNow extends \Magento\Backend\App\Action
     public function execute()
     {
         $manager = $this->managerFactory->create();
-        $params = $this->getRequest()->getParams();
-        if (!isset($params['selected'])) {
+        $params = $this->getRequest()->getParam('selected');
+        if (!isset($params)) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/index');
             return;
         }
         try {
-            foreach ($params['selected'] as $jobCode) {
+            foreach ($params as $jobCode) {
                 $manager->scheduleNow($jobCode);
             }
         } catch (\Exception $e) {
