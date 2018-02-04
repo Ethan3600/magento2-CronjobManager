@@ -46,19 +46,18 @@ class MassScheduleNow extends \Magento\Backend\App\Action
     {
         $manager = $this->managerFactory->create();
         $params = $this->getRequest()->getParams();
-        $jobCode = $params['job_code'] ? $params['job_code'] : null;
-        if (!$jobCode) {
+        if (!isset($params['selected'])) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/index');
             return;
         }
-        $group = $params['group'] ? $params['group'] : null;
-        $frequency = $params['frequency'] ? $params['frequency'] : null;
         try {
-            
+            foreach ($params['selected'] as $jobCode) {
+                $manager->scheduleNow($jobCode);
+            }
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/config/index/', ['id' => $jobId]);
+            $this->_redirect('*/config/index/');
             return;
         }
         $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedule Now Action");
