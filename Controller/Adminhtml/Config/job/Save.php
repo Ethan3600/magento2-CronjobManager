@@ -76,7 +76,8 @@ class Save extends \Magento\Backend\App\Action
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/config/edit/', ['id' => $jobId]);
+            unset($params['key'], $params['form_key']);
+            $this->_redirect('*/config/edit/', $params);
             return;
         }
         $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
