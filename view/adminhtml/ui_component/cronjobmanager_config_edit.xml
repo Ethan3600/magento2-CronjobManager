@@ -5,6 +5,7 @@
          <item name="provider" xsi:type="string">cronjobmanager_config_edit.cronjobmanager_config_edit_data_source</item>
          <item name="deps" xsi:type="string">cronjobmanager_config_edit.cronjobmanager_config_edit_data_source</item>
       </item>
+      <item name="spinner" xsi:type="string">cronjobmanager_config_edit</item>
       <item name="label" xsi:type="string" translate="true">Cron Job Information</item>
       <item name="config" xsi:type="array">
          <item name="dataScope" xsi:type="string">data</item>
