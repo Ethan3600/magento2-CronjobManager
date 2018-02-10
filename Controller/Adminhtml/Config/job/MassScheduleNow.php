@@ -5,9 +5,7 @@ namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
 
 class MassScheduleNow extends \Magento\Backend\App\Action
-{
-    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
-    
+{   
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
