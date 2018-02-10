@@ -35,6 +35,11 @@ class JobConfig extends AbstractHelper
         $this->configWriter->save($path, $frequency);
     }
     
+    public function restoreSystemDefault($path)
+    {
+        $this->configWriter->delete($path);
+    }
+    
     public function constructFrequencyPath($group, $jobCode)
     {
         $validGroupId = $this->managerFactory->create()->getGroupId($jobCode);
