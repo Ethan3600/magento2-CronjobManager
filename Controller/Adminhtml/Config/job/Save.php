@@ -67,7 +67,7 @@ class Save extends \Magento\Backend\App\Action
         $group = $params['group'] ? $params['group'] : null;
         $frequency = $params['frequency'] ? $params['frequency'] : null;
         try {
-            $path = $this->helper->constructFrequencyPath($group, $jobCode);
+            $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->saveJobFrequencyConfig($path, $frequency);
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
         } catch (\Exception $e) {

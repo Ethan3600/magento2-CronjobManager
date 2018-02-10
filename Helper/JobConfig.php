@@ -40,16 +40,19 @@ class JobConfig extends AbstractHelper
         $this->configWriter->delete($path);
     }
     
-    public function constructFrequencyPath($group, $jobCode)
+    public function constructFrequencyPath($jobCode, $group = null)
     {
         $validGroupId = $this->managerFactory->create()->getGroupId($jobCode);
         if (!$validGroupId) {
             throw new ValidatorException("Job Code: $jobCode does not exist in the system");
         }
-        if ($group != $validGroupId) {
-            throw new ValidatorException("Invalid Group ID: $group for $jobCode");
+        if ($group) {
+            if ($group != $validGroupId) {
+                throw new ValidatorException("Invalid Group ID: $group for $jobCode");
+            }
+        } else {
+            $group = $validGroupId;
         }
-        
         return "crontab/$group/jobs/$jobCode/schedule/cron_expr";
     }
 }
