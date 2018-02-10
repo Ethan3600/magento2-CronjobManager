@@ -24,17 +24,19 @@ class Run extends \Magento\Backend\App\Action
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
+     * @param \Magento\Framework\Event\ObserverFactory $observerFactory
+     * @param Manager $cronJobManager
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Event\ObserverFactory $observerFactory,
         Manager $cronJobManager
-        ) {
-            parent::__construct($context);
-            $this->resultPageFactory = $resultPageFactory;
-            $this->cronJobManager = $cronJobManager;
-            $this->observer = $observerFactory->create('Magento\Framework\Event\Observer');
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+        $this->cronJobManager = $cronJobManager;
+        $this->observer = $observerFactory->create('Magento\Framework\Event\Observer');
     }
     
     /**
