@@ -21,6 +21,7 @@
          <item name="save" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveButton</item>
          <item name="reset" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\ResetButton</item>
          <item name="save_and_continue" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\SaveAndContinueButton</item>
+         <item name="restore" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\RestoreSystemDefault</item>
       </item>
    </argument>
    <dataSource name="cronjobmanager_config_edit_data_source">

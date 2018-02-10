@@ -25,7 +25,7 @@ class Save extends \Magento\Backend\App\Action
     private $cache;
     
     /**
-     * @var ConfigHelper
+     * @var JobConfig
      */
     private $helper;
 
