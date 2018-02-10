@@ -2,9 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
-use EthanYehuda\CronjobManager\Model\ManagerFactory;
-use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\Exception\ValidatorException;
+use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Framework\App\CacheInterface;
 
 class Save extends \Magento\Backend\App\Action
@@ -17,11 +15,6 @@ class Save extends \Magento\Backend\App\Action
     private $resultPageFactory;
     
     /**
-     * @var WriterInterface
-     */    
-    private $configWriter;
-    
-    /**
      * @var ManagerFactory
      */
     private $managerFactory;
@@ -30,19 +23,22 @@ class Save extends \Magento\Backend\App\Action
      * @var CacheInterface
      */
     private $cache;
+    
+    /**
+     * @var ConfigHelper
+     */
+    private $helper;
 
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Backend\App\Action\Context $context,
-        WriterInterface $configWriter,
-        ManagerFactory $managerFactory,
-        CacheInterface $cache
+        CacheInterface $cache,
+        JobConfig $helper
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        $this->configWriter = $configWriter;
-        $this->managerFactory = $managerFactory;
         $this->cache = $cache;
+        $this->helper = $helper;
     }
 
     /**
@@ -71,8 +67,8 @@ class Save extends \Magento\Backend\App\Action
         $group = $params['group'] ? $params['group'] : null;
         $frequency = $params['frequency'] ? $params['frequency'] : null;
         try {
-            $path = $this->constructPath($group, $jobCode);
-            $this->configWriter->save($path, $frequency);
+            $path = $this->helper->constructFrequencyPath($group, $jobCode);
+            $this->helper->saveJobFrequencyConfig($path, $frequency);
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
@@ -87,18 +83,5 @@ class Save extends \Magento\Backend\App\Action
             unset($params['key'], $params['form_key']);
             $this->_redirect("*/config/{$params['back']}/", $params);
         }
-    }
-    
-    private function constructPath($group, $jobCode)
-    {  
-        $validGroupId = $this->managerFactory->create()->getGroupId($jobCode);
-        if (!$validGroupId) {
-            throw new ValidatorException("Job Code: $jobCode does not exist in the system");
-        }
-        if ($group != $validGroupId) {
-            throw new ValidatorException("Invalid Group ID: $group for $jobCode");
-        }
-        
-        return "crontab/$group/jobs/$jobCode/schedule/cron_expr";
     }
 }
