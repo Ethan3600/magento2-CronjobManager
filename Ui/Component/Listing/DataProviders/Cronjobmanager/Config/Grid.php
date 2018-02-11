@@ -44,7 +44,14 @@ class Grid extends AbstractDataProvider
 	/**
 	 * @var Array
 	 */
-	private $filterRegistry;
+	private $filterRegistry = [];
+
+	/**
+	 * Used to point to current filter
+	 * 
+	 * @var Array
+	 */
+	private $currentFilter;
 	
     public function __construct(
         $name,
@@ -108,19 +115,19 @@ class Grid extends AbstractDataProvider
         ];
         switch ($conditionType) {
             case 'like':
-                $filterRegistry['filter'] = function($v, $k) {
-                    $reg = $this->filterRegistry;
+                $filterRegistry['filter'] = function($v) {
+                    $reg = $this->currentFilter;
                     return strpos($v[$reg['field']], $reg['condition']) !== false;
                 };
                 $filterRegistry['condition'] = trim($filterRegistry['condition'], "%");
-                $this->filterRegistry = $filterRegistry;
+                $this->filterRegistry[] = $filterRegistry;
                 break;
             case 'eq':
-                $filterRegistry['filter'] = function($v, $k) {
-                    $reg = $this->filterRegistry;
+                $filterRegistry['filter'] = function($v) {
+                    $reg = $this->currentFilter;
                     return $v[$reg['field']] === $reg['condition'];
                 };
-                $this->filterRegistry = $filterRegistry;
+                $this->filterRegistry[] = $filterRegistry;
                 break;
             default:
                 break;
@@ -188,11 +195,14 @@ class Grid extends AbstractDataProvider
     
     private function filterRecords()
     {
-        $this->records['items'] = array_filter(
-            $this->records['items'],
-            $this->filterRegistry['filter'],
-            ARRAY_FILTER_USE_BOTH
-        );
+        foreach ($this->filterRegistry as $filter) {
+            $this->currentFilter = $filter;
+            $this->records['items'] = array_filter(
+                $this->records['items'],
+                $filter['filter'],
+                ARRAY_FILTER_USE_BOTH
+            );
+        }
         $this->records['totalRecords'] = count($this->records['items']);
     }
 }
