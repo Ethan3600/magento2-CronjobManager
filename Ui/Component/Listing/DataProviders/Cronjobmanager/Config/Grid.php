@@ -41,6 +41,11 @@ class Grid extends AbstractDataProvider
 	 */
 	private $manager;
 	
+	/**
+	 * @var Array
+	 */
+	private $filterRegistry;
+	
     public function __construct(
         $name,
         $primaryFieldName,
@@ -59,6 +64,9 @@ class Grid extends AbstractDataProvider
 
     	if (!empty($this->sortDirection)) {
     	    $this->sortRecords();
+    	}
+    	if (!empty($this->filterRegistry)) {
+    	    $this->filterRecords();
     	}
     	$this->paginate();
     	return $this->records;
@@ -88,6 +96,38 @@ class Grid extends AbstractDataProvider
     	$this->sortDirection = strtolower($dir);
     }
     
+    /**
+     * @inheritdoc
+     */
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        $conditionType = $filter->getConditionType();
+        $filterRegistry = [
+            'field'         => $filter->getField(),
+            'condition'     => $filter->getValue()
+        ];
+        switch ($conditionType) {
+            case 'like':
+                $filterRegistry['filter'] = function($v, $k) {
+                    $reg = $this->filterRegistry;
+                    return strpos($v[$reg['field']], $reg['condition']) !== false;
+                };
+                $filterRegistry['condition'] = trim($filterRegistry['condition'], "%");
+                $this->filterRegistry = $filterRegistry;
+                break;
+            case 'eq':
+                $filterRegistry['filter'] = function($v, $k) {
+                    $reg = $this->filterRegistry;
+                    return $v[$reg['field']] === $reg['condition'];
+                };
+                $this->filterRegistry = $filterRegistry;
+                break;
+            default:
+                return $this->records;
+                break;
+        }
+    }
+    
     private function prepareJobConfigRecords()
     {
     	$this->records = [
@@ -104,10 +144,10 @@ class Grid extends AbstractDataProvider
     			$method = $job['method'];
     			$frequency= (isset($job['schedule']) ? $job['schedule'] : "");
     			$jobData = [
-    					'job_code' => $code,
-    					'group' => $group,
-    					'frequency' => $frequency,
-    					'class' => "$instance::$method()"
+					'job_code' => $code,
+					'group' => $group,
+					'frequency' => $frequency,
+					'class' => "$instance::$method()"
     			];
     			
     			array_push($this->records['items'], $jobData);
@@ -145,5 +185,15 @@ class Grid extends AbstractDataProvider
         });
         
         $this->records['items'] = $items;
+    }
+    
+    private function filterRecords()
+    {
+        $this->records['items'] = array_filter(
+            $this->records['items'],
+            $this->filterRegistry['filter'],
+            ARRAY_FILTER_USE_BOTH
+        );
+        $this->records['totalRecords'] = count($this->records['items']);
     }
 }

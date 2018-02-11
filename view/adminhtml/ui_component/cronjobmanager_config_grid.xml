@@ -54,6 +54,7 @@
             <item name="sticky" xsi:type="boolean">false</item>
          </item>
       </argument>
+      <filters name="listing_filters" />
       <paging name="listing_paging" />
       <bookmark name="bookmarks" />
       <columnsControls name="columns_controls" />
@@ -104,11 +105,14 @@
       </selectionsColumn>
       <column name="job_code">
          <argument name="data" xsi:type="array">
+         	<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
             <item name="config" xsi:type="array">
-               <item name="filter" xsi:type="string">textRange</item>
+               <item name="filter" xsi:type="string">select</item>
+               <item name="dataType" xsi:type="string">select</item>
+               <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
                <item name="sorting" xsi:type="string">asc</item>
                <item name="label" xsi:type="string" translate="true">Job Code</item>
-               <item name="sortOrder" xsi:type="number">20</item>
+               <item name="sortOrder" xsi:type="number">0</item>
             </item>
          </argument>
       </column>
