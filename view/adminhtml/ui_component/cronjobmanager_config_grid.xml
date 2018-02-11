@@ -113,7 +113,7 @@
                <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
                <item name="sorting" xsi:type="string">asc</item>
                <item name="label" xsi:type="string" translate="true">Job Code</item>
-               <item name="sortOrder" xsi:type="number">0</item>
+               <item name="sortOrder" xsi:type="number">20</item>
             </item>
          </argument>
       </column>
