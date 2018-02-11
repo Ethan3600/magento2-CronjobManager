@@ -123,7 +123,6 @@ class Grid extends AbstractDataProvider
                 $this->filterRegistry = $filterRegistry;
                 break;
             default:
-                return $this->records;
                 break;
         }
     }
