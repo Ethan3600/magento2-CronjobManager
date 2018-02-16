@@ -80,4 +80,15 @@ class ConfigDataProvider extends AbstractDataProvider
         $meta = parent::getMeta();
         return $meta;
     }
+    
+    /**
+     * Remove dependency to the collections
+     * 
+     * @see \Magento\Ui\DataProvider\AbstractDataProvider::addFilter()
+     * @return void
+     */
+    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    {
+        return;
+    }
 }
