@@ -16,9 +16,11 @@ class JobConfig extends AbstractHelper
     private $configWriter;
     
     /**
-     * @var ManagerFactory
+     * @var EthanYehuda\CronjobManager\Model\Manager
      */
-    private $managerFactory;
+    private $manager;
+    
+    private $jobs = null;
     
     public function __construct(
         Context $context,
@@ -27,7 +29,23 @@ class JobConfig extends AbstractHelper
     ) {
         parent::__construct($context);
         $this->configWriter = $configWriter;
-        $this->managerFactory = $managerFactory;
+        $this->manager = $managerFactory->create();
+    }
+    
+    public function getJobData($jobCode)
+    {
+        if(is_null($this->jobs)) {
+            $this->jobs = $this->manager->getCronJobs();
+        }
+        
+        foreach($this->jobs as $groupName => $group) {
+            if (isset($group[$jobCode])) {
+                $group[$jobCode]['group'] = $groupName;
+                return $group[$jobCode];
+            }
+        }
+        
+        return false;
     }
     
     public function saveJobFrequencyConfig($path, $frequency)
@@ -42,7 +60,7 @@ class JobConfig extends AbstractHelper
     
     public function constructFrequencyPath($jobCode, $group = null)
     {
-        $validGroupId = $this->managerFactory->create()->getGroupId($jobCode);
+        $validGroupId = $this->manager->getGroupId($jobCode);
         if (!$validGroupId) {
             throw new ValidatorException("Job Code: $jobCode does not exist in the system");
         }
