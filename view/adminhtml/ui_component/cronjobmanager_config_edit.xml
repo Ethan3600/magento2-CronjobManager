@@ -83,6 +83,7 @@
                <item name="validation" xsi:type="array">
                   <item name="cron-validation" xsi:type="boolean">true</item>
                </item>
+               <item name="notice" xsi:type="string" translate="true">TIP: by setting the expression to be empty, you can disable the cron job</item>
             </item>
          </argument>
       </field>
