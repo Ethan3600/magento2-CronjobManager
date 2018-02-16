@@ -21,8 +21,10 @@ class ConfigActions extends \Magento\Ui\Component\Listing\Columns\Column
                     );
                 }
                 $item[$name]["view"] = [
-                    "href"=>$this->getContext()->getUrl(
-                        "cronjobmanager/config/edit", $item),
+                    "href" => $this->getContext()->getUrl(
+                        "cronjobmanager/config/edit", [
+                            'job_code' => $item[self::JOB_CODE]
+                        ]),
                     "label"=>__("Edit")
                 ];
             }
