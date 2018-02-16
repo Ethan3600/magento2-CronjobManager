@@ -65,7 +65,6 @@ class RestoreSystemDefault extends \Magento\Backend\App\Action
             return;
         }
         $group = $params['group'] ? $params['group'] : null;
-        $frequency = $params['frequency'] ? $params['frequency'] : null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->restoreSystemDefault($path);
