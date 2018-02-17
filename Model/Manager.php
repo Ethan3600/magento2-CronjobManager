@@ -1,9 +1,10 @@
 <?php
 
-Namespace EthanYehuda\CronjobManager\Model;
+namespace EthanYehuda\CronjobManager\Model;
 
 use Magento\Cron\Observer\ProcessCronQueueObserver;
-use \Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\Schedule;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class Manager extends ProcessCronQueueObserver
 {
@@ -92,6 +93,7 @@ class Manager extends ProcessCronQueueObserver
     {
         return $this->_config->getJobs();
     }
+<<<<<<< HEAD
     
     /**
      * @param String $jobCode
@@ -117,6 +119,8 @@ class Manager extends ProcessCronQueueObserver
         $now = strftime('%Y-%m-%dT%H:%M:%S', $this->dateTime->gmtTimestamp());
         return $this->createCronJob($jobCode, $now);
     }
+=======
+>>>>>>> 1.x-develop
 
     // ========================= UTILITIES ========================= //
 
@@ -134,6 +138,27 @@ class Manager extends ProcessCronQueueObserver
         return strftime('%Y-%m-%d %H:%M:00', strtotime($time));
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @param String $jobCode
+     * @param array | null $groups
+     * @return String $groupId
+     */
+    protected function getGroupId($jobCode, $groups = null)
+    {
+        if (is_null($groups)) {
+            $groups = $this->_config->getJobs();
+        }
+
+        foreach ($groups as $groupId => $crons) {
+            if (isset($crons[$jobCode])) {
+                return $groupId;
+            }
+        }
+    }
+
+>>>>>>> 1.x-develop
     protected function loadSchedule($jobId)
     {
         /**

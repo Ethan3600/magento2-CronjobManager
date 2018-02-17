@@ -1,0 +1,23 @@
+<div class="timeline-event-details" render="detailsTmpl"/>
+<div class="timeline-event" attr="'data-tooltip-trigger': 'update-' + $index">
+    <strong class="timeline-event-title" ko-scope="requestChild('job_code')">
+        <text args="getLabel($row())"/>
+    </strong>
+    <div class="timeline-event-actions">
+        <button type="button"
+                attr="title: $t('To Start')"
+                class="timeline-action _tostart">
+            <span translate="'To Start'"/>
+        </button>
+        <button type="button"
+                attr="title: $t('To End')"
+                class="timeline-action _toend">
+            <span translate="'To End'"/>
+        </button>
+    </div>
+    <if args="isActive($row())">
+	    <svg>
+	        <use class="timeline-ending" xlink:href="#svg-ending"></use>
+	    </svg>
+    </if>
+</div>

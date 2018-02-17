@@ -10,7 +10,10 @@ class Save extends \Magento\Backend\App\Action
      * @var \Magento\Framework\View\Result\PageFactory
      */
     protected $resultPageFactory;
-    
+
+    /**
+     * @var Manager
+     */
     protected $cronJobManager;
 
     /**
@@ -19,21 +22,21 @@ class Save extends \Magento\Backend\App\Action
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-    	\Magento\Backend\App\Action\Context $context,
-    	Manager $cronJobManager
+        \Magento\Backend\App\Action\Context $context,
+        Manager $cronJobManager
     ) {
-    	parent::__construct($context);
+        parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager= $cronJobManager;
+        $this->cronJobManager = $cronJobManager;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \Magento\Backend\App\AbstractAction::_isAllowed()
      */
     protected function _isAllowed()
     {
-    	return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
+        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
     }
 
     /**
@@ -43,27 +46,28 @@ class Save extends \Magento\Backend\App\Action
      */
     public function execute()
     {
-    	$params = $this->getRequest()->getParams();
-    	$jobId = $params['schedule_id'] ? $params['schedule_id'] : null;
-    	if (!$jobId) {
-    		$this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
-    		$this->_redirect('*/manage/edit/');
-    		return;
-    	}
-    	$jobCode = $params['job_code'] ? $params['job_code'] : null;
-    	$status = $params['status'] ? $params['status'] : null;
-    	$scheduledAt = $params['scheduled_at'] ? $params['scheduled_at'] : null;
-    	try {
-    		$this->cronJobManager->saveCronJob($jobId, $jobCode, $status, $scheduledAt);
-    	} catch (\Exception $e) {
-    		$this->getMessageManager()->addErrorMessage($e->getMessage());
-    		$this->_redirect('*/manage/edit/', ['id' => $jobId]);
-    		return;
-    	}
-    	$this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
-    	if(!isset($params['back']))
-    		$this->_redirect("*/manage/index/");
-    	else
-    		$this->_redirect("*/manage/{$params['back']}/", ['id' => $jobId]);
+        $params = $this->getRequest()->getParams();
+        $jobId = $params['schedule_id'] ? $params['schedule_id'] : null;
+        if (!$jobId) {
+            $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
+            $this->_redirect('*/manage/edit/');
+            return;
+        }
+        $jobCode = $params['job_code'] ? $params['job_code'] : null;
+        $status = $params['status'] ? $params['status'] : null;
+        $scheduledAt = $params['scheduled_at'] ? $params['scheduled_at'] : null;
+        try {
+            $this->cronJobManager->saveCronJob($jobId, $jobCode, $status, $scheduledAt);
+        } catch (\Exception $e) {
+            $this->getMessageManager()->addErrorMessage($e->getMessage());
+            $this->_redirect('*/manage/edit/', ['id' => $jobId]);
+            return;
+        }
+        $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
+        if (!isset($params['back'])) {
+            $this->_redirect("*/manage/index/");
+        } else {
+            $this->_redirect("*/manage/{$params['back']}/", ['id' => $jobId]);
+        }
     }
 }
