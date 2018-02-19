@@ -3,12 +3,17 @@
 namespace EthanYehuda\CronjobManager\Model;
 
 /**
- * Declarations of core registry keys used by the CronjobManager module
+ * Declarations of registry keys used by the CronjobManager module
  */
 class RegistryConstants
 {
     /**
-     * Key for current sales rule in registry
+     * Key for current cron job in registry
      */
     const CURRENT_CRON_JOB = 'ethanyehuda_cronjobmanager_current_cron_job';
+    
+    /**
+     * Key for current cron job in registry
+     */
+    const CURRENT_CRON_CONFIG = 'ethanyehuda_cronjobmanager_current_cron_config';
 }

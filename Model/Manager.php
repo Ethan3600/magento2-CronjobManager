@@ -8,7 +8,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class Manager extends ProcessCronQueueObserver
 {
-
     public function createCronJob($jobCode, $time)
     {
         $filteredTime = $this->filterTimeInput($time);
@@ -94,6 +93,31 @@ class Manager extends ProcessCronQueueObserver
     {
         return $this->_config->getJobs();
     }
+    
+    /**
+     * @param String $jobCode
+     * @param array | null $groups
+     * @return String | Boolean $groupId
+     */
+    public function getGroupId($jobCode, $groups = null)
+    {
+        if (is_null($groups)) {
+            $groups = $this->_config->getJobs();
+        }
+        
+        foreach ($groups as $groupId => $crons) {
+            if (isset($crons[$jobCode])) {
+                return $groupId;
+            }
+        }
+        return false;
+    }
+    
+    public function scheduleNow($jobCode)
+    {
+        $now = strftime('%Y-%m-%dT%H:%M:%S', $this->dateTime->gmtTimestamp());
+        return $this->createCronJob($jobCode, $now);
+    }
 
     // ========================= UTILITIES ========================= //
 
@@ -109,24 +133,6 @@ class Manager extends ProcessCronQueueObserver
         preg_match('/(\d+-\d+-\d+)T(\d+:\d+)/', $time, $matches);
         $time = $matches[1] . " " . $matches[2];
         return strftime('%Y-%m-%d %H:%M:00', strtotime($time));
-    }
-
-    /**
-     * @param String $jobCode
-     * @param array | null $groups
-     * @return String $groupId
-     */
-    protected function getGroupId($jobCode, $groups = null)
-    {
-        if (is_null($groups)) {
-            $groups = $this->_config->getJobs();
-        }
-
-        foreach ($groups as $groupId => $crons) {
-            if (isset($crons[$jobCode])) {
-                return $groupId;
-            }
-        }
     }
 
     protected function loadSchedule($jobId)

@@ -36,7 +36,9 @@ class GenericButton
 
     public function getRequestParams()
     {
-        return $this->registry->registry(RegistryConstants::CURRENT_CRON_JOB);
+        return $this->registry->registry(RegistryConstants::CURRENT_CRON_JOB) ?
+            $this->registry->registry(RegistryConstants::CURRENT_CRON_JOB) :
+            $this->registry->registry(RegistryConstants::CURRENT_CRON_CONFIG);
     }
 
     /**
