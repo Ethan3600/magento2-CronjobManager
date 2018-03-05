@@ -14,12 +14,12 @@ class SaveButton extends GenericButton implements ButtonProviderInterface
         $data = [
             'label' => __('Save'),
             'class' => 'save primary',
-        	'data_attribute' => [
-        		'mage-init' => [
-        			'button' => ['event' => 'save']
-        		],
-        		'form-role' => 'save',
-       		],
+            'data_attribute' => [
+                'mage-init' => [
+                    'button' => ['event' => 'save']
+                ],
+                'form-role' => 'save',
+            ],
         ];
         return $data;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage;
+namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
 
@@ -9,28 +9,27 @@ class Edit extends \Magento\Backend\App\Action
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
-    protected $resultPageFactory;
-
+    private $resultPageFactory;
+    
     /**
      * @var \Magento\Framework\Registry
      */
-    protected $coreRegistry;
-
+    private $coreRegistry;
+    
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
-     * @param \Magento\Framework\Registry
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry
-    ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->coreRegistry = $coreRegistry;
+        ) {
+            parent::__construct($context);
+            $this->resultPageFactory = $resultPageFactory;
+            $this->coreRegistry = $coreRegistry;
     }
-
+    
     /**
      * {@inheritDoc}
      * @see \Magento\Backend\App\AbstractAction::_isAllowed()
@@ -39,24 +38,24 @@ class Edit extends \Magento\Backend\App\Action
     {
         return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
     }
-
+    
     /**
-     * Product list page
+     * Save cronjob
      *
-     * @return \Magento\Backend\Model\View\Result\Page
+     * @return Void
      */
     public function execute()
     {
         // Register cronjob information for later use
         $this->coreRegistry->register(
-            RegistryConstants::CURRENT_CRON_JOB,
+            RegistryConstants::CURRENT_CRON_CONFIG,
             $this->getRequest()->getParams()
         );
-
+        
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
-        $resultPage->getConfig()->getTitle()->prepend(__('Edit Cron Job'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Edit Configuration'));
         return $resultPage;
     }
 }
