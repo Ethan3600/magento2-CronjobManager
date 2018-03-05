@@ -1,4 +1,5 @@
 <?php
+
 namespace EthanYehuda\CronjobManager\Command;
 
 use Symfony\Component\Console\Command\Command;
