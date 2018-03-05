@@ -30,11 +30,11 @@ class CronActions extends Column
     protected $escaper;
 
     /**
-     * Constructor
-     *
+     * CronActions constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
+     * @param Escaper $escaper
      * @param array $components
      * @param array $data
      */
@@ -42,7 +42,7 @@ class CronActions extends Column
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
         UrlInterface $urlBuilder,
-    	Escaper $escaper,
+        Escaper $escaper,
         array $components = [],
         array $data = []
     ) {
@@ -62,23 +62,23 @@ class CronActions extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['schedule_id'])) {
-                	$jobCode = $this->escaper->escapeHtml($item['job_code']);
+                    $jobCode = $this->escaper->escapeHtml($item['job_code']);
                     $item[$this->getData('name')] = [
                         'edit' => [
                             'href' => $this->urlBuilder->getUrl(
                                 static::URL_PATH_EDIT,
                                 [
-                                    'id' => $item['schedule_id']
+                                    'id' => $item['schedule_id'],
                                 ]
                             ),
-                            'label' => __('Edit')
+                            'label' => __('Edit'),
                         ],
                         'delete' => [
                             'href' => $this->urlBuilder->getUrl(
                                 static::URL_PATH_DELETE,
                                 [
                                     'id' => $item['schedule_id'],
-                                	'job_code' => $item['job_code']
+                                    'job_code' => $item['job_code'],
                                 ]
                             ),
                             'label' => __('Delete'),
@@ -87,21 +87,23 @@ class CronActions extends Column
                                 'message' => __('Are you sure you want to delete <b>%1</b>?', $jobCode),
                             ],
                         ],
-                   		'dispatch' => [
-              				'href' => $this->urlBuilder->getUrl(
-                   				static::URL_PATH_DISPATCH,
-                   				[
-                   					'id' => $item['schedule_id'],
-                   					'job_code' => $item['job_code']
-                   				]
-                   						),
-                   				'label' => __('Dispatch'),
-                   				'confirm' => [
-                   					'job_code' => __('Dispatch %1', $jobCode),
-                   					'message' => __('Are you sure you want to <b>dispatch %1</b>? This may cause performace 
-													issues with Magento while it\'s running.', $jobCode),
-                    		],
-                    	],
+                        'dispatch' => [
+                            'href' => $this->urlBuilder->getUrl(
+                                static::URL_PATH_DISPATCH,
+                                [
+                                    'id' => $item['schedule_id'],
+                                    'job_code' => $item['job_code'],
+                                ]
+                            ),
+                            'label' => __('Dispatch'),
+                            'confirm' => [
+                                'job_code' => __('Dispatch %1', $jobCode),
+                                'message' => __(
+                                    'Are you sure you want to <b>dispatch %1</b>? This may cause performace issues with Magento while it\'s running.',
+                                    $jobCode
+                                ),
+                            ],
+                        ],
                     ];
                 }
             }
