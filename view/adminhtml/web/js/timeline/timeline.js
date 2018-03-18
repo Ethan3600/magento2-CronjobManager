@@ -282,22 +282,6 @@ define([
         },
 
         /**
-         * Converts days to weeks.
-         *
-         * @param {Number} days
-         * @returns {Number}
-         */
-        daysToWeeks: function (days) {
-            var weeks = days / 5;
-
-            if (weeks % 1) {
-                weeks = weeks.toFixed(1);
-            }
-
-            return weeks;
-        },
-
-        /**
          * Updates data of a range object,
          * e.g. total days, first day and last day, etc.
          *
