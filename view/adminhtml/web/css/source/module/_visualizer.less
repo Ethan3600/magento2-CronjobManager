@@ -2,21 +2,21 @@
 // Variables
 // ____________________________
 
-@timeline-item__missed--background: #414141;
-@timeline-item__missed--color: #fff;
-@timeline-item__missed--border: solid 1px black;
+@visualizer-item__missed--background: #414141;
+@visualizer-item__missed--color: #fff;
+@visualizer-item__missed--border: solid 1px black;
 
-@timeline-item_pending--background: #effb82;
-@timeline-item_pending--color: #6f6200;
-@timeline-item_pending--border: solid 1px @timeline-item_pending--color;
+@visualizer-item_pending--background: #effb82;
+@visualizer-item_pending--color: #6f6200;
+@visualizer-item_pending--border: solid 1px @visualizer-item_pending--color;
 
-@timeline-item_error--background: #f5b7b7;
-@timeline-item_error--color: #f00;
-@timeline-item_error--border: solid 1px @timeline-item_error--color;
+@visualizer-item_error--background: #f5b7b7;
+@visualizer-item_error--color: #f00;
+@visualizer-item_error--border: solid 1px @visualizer-item_error--color;
 
-@timeline-item_running--background: #bceeff;
-@timeline-item_running--color: #007bdb;
-@timeline-item_running--border: solid 1px #56c2e6;
+@visualizer-item_running--background: #bceeff;
+@visualizer-item_running--color: #007bdb;
+@visualizer-item_running--border: solid 1px #56c2e6;
 
 .timeline-now {
     width: 1px;
@@ -49,44 +49,44 @@
 
     &._missed {
         .timeline-event {
-            background: @timeline-item__missed--background;
-            color: @timeline-item__missed--color;
-            border: @timeline-item__missed--border;
+            background: @visualizer-item__missed--background;
+            color: @visualizer-item__missed--color;
+            border: @visualizer-item__missed--border;
         } 
     }
     
     &._running {
         .timeline-event {
-            background: @timeline-item_running--background;
-            color: @timeline-item_running--color;
-            border: @timeline-item_running--border;
+            background: @visualizer-item_running--background;
+            color: @visualizer-item_running--color;
+            border: @visualizer-item_running--border;
 
             .timeline-ending {
-                color: @timeline-item_running--color;
-                fill: @timeline-item_running--background;
-                stroke: @timeline-item_running--border;
+                color: @visualizer-item_running--color;
+                fill: @visualizer-item_running--background;
+                stroke: @visualizer-item_running--border;
             }
         }
     }
 
     &._error {
         .timeline-event {
-            background: @timeline-item_error--background;
-            color: @timeline-item_error--color;
-            border: @timeline-item_error--border;
+            background: @visualizer-item_error--background;
+            color: @visualizer-item_error--color;
+            border: @visualizer-item_error--border;
         }
     }
     
     &._pending {
         .timeline-event {
-            background: @timeline-item_pending--background;
-            color: @timeline-item_pending--color;
-            border: @timeline-item_pending--border;
+            background: @visualizer-item_pending--background;
+            color: @visualizer-item_pending--color;
+            border: @visualizer-item_pending--border;
 
             .timeline-ending {
-                color: @timeline-item_pending--color;
-                fill: @timeline-item_pending--background;
-                stroke: @timeline-item_pending--color;
+                color: @visualizer-item_pending--color;
+                fill: @visualizer-item_pending--background;
+                stroke: @visualizer-item_pending--color;
             }
         }
     }
