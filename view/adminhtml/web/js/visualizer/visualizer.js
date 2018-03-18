@@ -7,7 +7,7 @@ define([
     'use strict';
     
     // milliseconds in a day: 24 * 60 * 60 * 1000 = 86400000
-    var ONE_DAY = 86400000 / (24);
+    var ONE_DAY = 86400000 / 24;
 
     return Timeline.extend({
         defaults: {
@@ -17,13 +17,13 @@ define([
             scaleStep: 1,
             minScale: 5,
             maxScale: 24,
-            minDays: 24,
-            displayMode: 'timeline',
+            minHours: 24,
+            displayMode: 'visualizer',
             displayModes: {
-                timeline: {
-                    label: 'Timeline',
-                    value: 'timeline',
-                    template: 'cronjobManager/timeline/timeline'
+                visualizer: {
+                    label: 'Visualizer',
+                    value: 'visualizer',
+                    template: 'cronjobManager/visualizer/visualizer'
                 },
                 grid: {
                     value: 'grid',
@@ -32,7 +32,7 @@ define([
                 }
             },
             viewConfig: {
-                component: 'EthanYehuda_CronjobManager/js/timeline/timeline-view',
+                component: 'EthanYehuda_CronjobManager/js/visualizer/visualizer-view',
                 name: '${ $.name }_view',
                 model: '${ $.name }'
             },
@@ -52,7 +52,6 @@ define([
          */
         initialize: function () {
             this._super();
-
             return this;
         },
 
@@ -63,8 +62,9 @@ define([
          */
         initConfig: function () {
             this._super();
-            delete this.displayModes['list']; // remove list component
-            this.maxScale = Math.min(this.minDays, this.maxScale);
+            delete this.displayModes['list']; 
+            delete this.displayModes['timeline'];
+            this.maxScale = Math.min(this.minHours, this.maxScale);
             this.minScale = Math.min(this.maxScale, this.minScale);
 
             return this;
@@ -223,17 +223,17 @@ define([
         },
 
         /**
-         * Returns difference in days between records' start date
-         * and a first day of a range.
+         * Returns difference in hours between the records' start date
+         * and the first hour of the range.
          *
          * @param {Object} record
          * @returns {Number}
          */
         getStartDelta: function (record) {
-            var start    = this.createDate(this.getStartDate(record)),
-                firstDay = this.range.firstDay;
+            var start     = this.createDate(this.getStartDate(record)),
+                firstHour = this.range.firstHour;
 
-            return start.diff(firstDay, 'hours', true);
+            return start.diff(firstHour, 'hours', true);
         },
         
         /**
@@ -246,7 +246,7 @@ define([
         		now = moment().format();
         	
         	var fakeRecord = {
-        			'scheduled_at' : now
+        		'scheduled_at' : now
         	};
         	
         	var offset = this.getStartDelta(fakeRecord);
@@ -256,12 +256,12 @@ define([
         },
 
         /**
-         * Calculates the amount of days that provided event lasts.
+         * Calculates the amount of hours that the cron lasts
          *
          * @param {Object} record
          * @returns {Number}
          */
-        getDaysLength: function (record) {
+        getHoursLength: function (record) {
             var start   = this.createDate(this.getStartDate(record)),
                 end     = this.createDate(this.getEndDate(record));
 
@@ -283,48 +283,32 @@ define([
         },
 
         /**
-         * Converts days to weeks.
-         *
-         * @param {Number} days
-         * @returns {Number}
-         */
-        daysToWeeks: function (days) {
-            var weeks = days / 5;
-
-            if (weeks % 1) {
-                weeks = weeks.toFixed(1);
-            }
-
-            return weeks;
-        },
-
-        /**
          * Updates data of a range object,
-         * e.g. total days, first day and last day, etc.
+         * e.g. total hours, first hour and last hour, etc.
          *
          * @returns {Object} Range instance.
          */
         updateRange: function () {
-            var firstDay    = this._getFirstDay(),
-                lastDay     = this._getLastDay(),
-                totalDays   = lastDay.diff(firstDay, 'hours'),
-                days        = [],
-                i           = -1;
+            var firstHour    = this._getFirstHour(),
+                lastHour     = this._getLastHour(),
+                totalHours   = lastHour.diff(firstHour, 'hours'),
+                hours        = [],
+                i            = -1;
 
-            if (totalDays < this.minDays) {
-                totalDays += this.minDays - totalDays - 1;
+            if (totalHours < this.minHours) {
+                totalHours += this.minHours - totalHours - 1;
             }
 
-            while (++i <= totalDays) {
-                days.push(+firstDay + ONE_DAY * i);
+            while (++i <= totalHours) {
+                hours.push(+firstHour + ONE_DAY * i);
             }
 
             return _.extend(this.range, {
-                days:       days,
-                totalDays:  totalDays,
-                firstDay:   firstDay,
-                lastDay:    moment(_.last(days)),
-                hasToday:   this.isToday(firstDay)
+                hours:       hours,
+                totalHours:  totalHours,
+                firstHour:   firstHour,
+                lastHour:    moment(_.last(hours)),
+                hasToday:    this.isToday(firstHour)
             });
         },
 
@@ -351,12 +335,12 @@ define([
         },
 
         /**
-         * Returns date which is closest to the current day.
+         * Returns date which is closest to the current hour
          *
          * @private
          * @returns {Moment}
          */
-        _getFirstDay: function () {
+        _getFirstHour: function () {
             var dates = this._getDates('executed_at', 'scheduled_at'),
                 first = moment.min(dates).subtract(1, 'hour'),
                 today = moment().subtract(1, 'hour');
@@ -375,32 +359,12 @@ define([
          * @private
          * @returns {Moment}
          */
-        _getLastDay: function () {
+        _getLastHour: function () {
             var startDates  = this._getDates('executed_at', 'scheduled_at'),
                 endDates    = this._getDates('finished_at', 'scheduled_at'),
                 last        = moment.max(startDates.concat(endDates));
 
             return last.add(1, 'hour').startOf('hour');
         },
-
-        /**
-         * TODO: remove after integration with date binding.
-         *
-         * @param {Number} timestamp
-         * @returns {String}
-         */
-        formatHeader: function (timestamp) {
-            return moment(timestamp).format(this.headerFormat);
-        },
-
-        /**
-         * TODO: remove after integration with date binding.
-         *
-         * @param {String} date
-         * @returns {String}
-         */
-        formatDetails: function (date) {
-            return moment(date).format(this.detailsFormat);
-        }
     });
 });

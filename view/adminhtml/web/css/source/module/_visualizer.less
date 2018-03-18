@@ -1,0 +1,93 @@
+//
+// Variables
+// ____________________________
+
+@visualizer-item__missed--background: #414141;
+@visualizer-item__missed--color: #fff;
+@visualizer-item__missed--border: solid 1px black;
+
+@visualizer-item_pending--background: #effb82;
+@visualizer-item_pending--color: #6f6200;
+@visualizer-item_pending--border: solid 1px @visualizer-item_pending--color;
+
+@visualizer-item_error--background: #f5b7b7;
+@visualizer-item_error--color: #f00;
+@visualizer-item_error--border: solid 1px @visualizer-item_error--color;
+
+@visualizer-item_running--background: #bceeff;
+@visualizer-item_running--color: #007bdb;
+@visualizer-item_running--border: solid 1px #56c2e6;
+
+.timeline-now {
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    background-color: red;
+    z-index: 3;
+}
+
+
+.timeline-items .timeline-item {
+    .timeline-event {
+    }
+
+    &._pending,
+    &._running {
+        .timeline-event {
+            overflow: visible;
+            
+            svg {
+                display: inline-block;
+            }
+        }
+    }
+
+    &._success {
+        .timeline-event {
+        }
+    }
+
+    &._missed {
+        .timeline-event {
+            background: @visualizer-item__missed--background;
+            color: @visualizer-item__missed--color;
+            border: @visualizer-item__missed--border;
+        } 
+    }
+    
+    &._running {
+        .timeline-event {
+            background: @visualizer-item_running--background;
+            color: @visualizer-item_running--color;
+            border: @visualizer-item_running--border;
+
+            .timeline-ending {
+                color: @visualizer-item_running--color;
+                fill: @visualizer-item_running--background;
+                stroke: @visualizer-item_running--border;
+            }
+        }
+    }
+
+    &._error {
+        .timeline-event {
+            background: @visualizer-item_error--background;
+            color: @visualizer-item_error--color;
+            border: @visualizer-item_error--border;
+        }
+    }
+    
+    &._pending {
+        .timeline-event {
+            background: @visualizer-item_pending--background;
+            color: @visualizer-item_pending--color;
+            border: @visualizer-item_pending--border;
+
+            .timeline-ending {
+                color: @visualizer-item_pending--color;
+                fill: @visualizer-item_pending--background;
+                stroke: @visualizer-item_pending--color;
+            }
+        }
+    }
+}
