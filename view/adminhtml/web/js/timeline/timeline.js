@@ -222,14 +222,14 @@ define([
         },
 
         /**
-         * Returns difference in days between records' start date
-         * and a first day of a range.
+         * Returns difference in hours between the records' start date
+         * and the first hour of the range.
          *
          * @param {Object} record
          * @returns {Number}
          */
         getStartDelta: function (record) {
-            var start    = this.createDate(this.getStartDate(record)),
+            var start     = this.createDate(this.getStartDate(record)),
                 firstHour = this.range.firstHour;
 
             return start.diff(firstHour, 'hours', true);
@@ -255,7 +255,7 @@ define([
         },
 
         /**
-         * Calculates the amount of days that provided event lasts.
+         * Calculates the amount of hours that the cron lasts
          *
          * @param {Object} record
          * @returns {Number}
@@ -283,7 +283,7 @@ define([
 
         /**
          * Updates data of a range object,
-         * e.g. total days, first day and last day, etc.
+         * e.g. total hours, first hour and last hour, etc.
          *
          * @returns {Object} Range instance.
          */
@@ -291,7 +291,7 @@ define([
             var firstHour    = this._getFirstHour(),
                 lastHour     = this._getLastHour(),
                 totalHours   = lastHour.diff(firstHour, 'hours'),
-                days         = [],
+                hours        = [],
                 i            = -1;
 
             if (totalHours < this.minHours) {
@@ -299,14 +299,14 @@ define([
             }
 
             while (++i <= totalHours) {
-                days.push(+firstHour + ONE_DAY * i);
+                hours.push(+firstHour + ONE_DAY * i);
             }
 
             return _.extend(this.range, {
-                days:        days,
+                hours:       hours,
                 totalHours:  totalHours,
                 firstHour:   firstHour,
-                lastHour:    moment(_.last(days)),
+                lastHour:    moment(_.last(hours)),
                 hasToday:    this.isToday(firstHour)
             });
         },
@@ -334,7 +334,7 @@ define([
         },
 
         /**
-         * Returns date which is closest to the current day.
+         * Returns date which is closest to the current hour
          *
          * @private
          * @returns {Moment}
