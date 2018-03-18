@@ -219,13 +219,13 @@ define([
          * @returns {String}
          */
         getItemWidth: function (record) {
-            var days = 0;
+            var hours = 0;
 
             if (record) {
-                days = this.model.getDaysLength(record);
+                hours = this.model.getHoursLength(record);
             }
 
-            return this.getTimeUnitWidth() * days;
+            return this.getTimeUnitWidth() * hours;
         },
 
         /**

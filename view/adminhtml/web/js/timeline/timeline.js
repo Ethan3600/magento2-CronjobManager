@@ -7,7 +7,7 @@ define([
     'use strict';
     
     // milliseconds in a day: 24 * 60 * 60 * 1000 = 86400000
-    var ONE_DAY = 86400000 / (24);
+    var ONE_DAY = 86400000 / 24;
 
     return Timeline.extend({
         defaults: {
@@ -260,7 +260,7 @@ define([
          * @param {Object} record
          * @returns {Number}
          */
-        getDaysLength: function (record) {
+        getHoursLength: function (record) {
             var start   = this.createDate(this.getStartDate(record)),
                 end     = this.createDate(this.getEndDate(record));
 
