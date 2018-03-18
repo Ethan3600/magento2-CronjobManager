@@ -52,7 +52,7 @@
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="sticky" xsi:type="boolean">false</item>
-                <item name="template" xsi:type="string">cronjobManager/timeline/toolbar</item>
+                <item name="template" xsi:type="string">cronjobManager/visualizer/toolbar</item>
             </item>
         </argument>
         <bookmark name="bookmarks"/>
@@ -142,9 +142,9 @@
         </argument> -->
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-            	<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/timeline</item>
-                <item name="recordTmpl" xsi:type="string">cronjobManager/timeline/record</item>
-                <item name="detailsTmpl" xsi:type="string">cronjobManager/timeline/details</item>
+            	<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/visualizer/visualizer</item>
+                <item name="recordTmpl" xsi:type="string">cronjobManager/visualizer/record</item>
+                <item name="detailsTmpl" xsi:type="string">cronjobManager/visualizer/details</item>
                 <item name="detailsFormat" xsi:type="string">MMM D, YYYY h:mm A</item>
                 <item name="displayMode" xsi:type="string">grid</item>
             </item>
