@@ -62,7 +62,8 @@ define([
          */
         initConfig: function () {
             this._super();
-            delete this.displayModes['list']; // remove list component
+            delete this.displayModes['list']; 
+            delete this.displayModes['timeline'];
             this.maxScale = Math.min(this.minHours, this.maxScale);
             this.minScale = Math.min(this.maxScale, this.minScale);
 
