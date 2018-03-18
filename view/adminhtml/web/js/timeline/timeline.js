@@ -17,12 +17,12 @@ define([
             scaleStep: 1,
             minScale: 5,
             maxScale: 24,
-            minDays: 24,
-            displayMode: 'timeline',
+            minHours: 24,
+            displayMode: 'visualizer',
             displayModes: {
-                timeline: {
-                    label: 'Timeline',
-                    value: 'timeline',
+                visualizer: {
+                    label: 'Visualizer',
+                    value: 'visualizer',
                     template: 'cronjobManager/timeline/timeline'
                 },
                 grid: {
