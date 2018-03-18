@@ -23,7 +23,7 @@ define([
                 visualizer: {
                     label: 'Visualizer',
                     value: 'visualizer',
-                    template: 'cronjobManager/timeline/timeline'
+                    template: 'cronjobManager/visualizer/visualizer'
                 },
                 grid: {
                     value: 'grid',
@@ -32,7 +32,7 @@ define([
                 }
             },
             viewConfig: {
-                component: 'EthanYehuda_CronjobManager/js/timeline/timeline-view',
+                component: 'EthanYehuda_CronjobManager/js/visualizer/visualizer-view',
                 name: '${ $.name }_view',
                 model: '${ $.name }'
             },
