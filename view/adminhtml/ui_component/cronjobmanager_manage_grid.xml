@@ -28,6 +28,12 @@
                 <item name="class" xsi:type="string">secondary</item>
                 <item name="url" xsi:type="string">*/config/index</item>
             </item>
+            <item name="timeline" xsi:type="array">
+                <item name="name" xsi:type="string">timeline</item>
+                <item name="label" xsi:type="string" translate="true">Timeline</item>
+                <item name="class" xsi:type="string">secondary</item>
+                <item name="url" xsi:type="string">*/timeline/index</item>
+            </item>
         </item>
     </argument>
     <dataSource name="cronjobmanager_manage_grid_data_source">
