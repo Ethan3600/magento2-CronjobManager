@@ -1,6 +1,10 @@
 <?php
+
 namespace EthanYehuda\CronjobManager\Block\Adminhtml;
-class Timeline extends \Magento\Backend\Block\Template
+
+use Magento\Backend\Block\Template;
+
+class Timeline extends Template
 {
-    function _prepareLayout(){}
+
 }
