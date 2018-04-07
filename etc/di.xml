@@ -16,8 +16,8 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="ethanyehuda_cronjobmanager_command_showjobs" xsi:type="object">EthanYehuda\CronjobManager\Command\Showjobs</item>
-                <item name="ethanyehuda_cronjobmanager_command_runjob" xsi:type="object">EthanYehuda\CronjobManager\Command\Runjob</item>
+                <item name="ethanyehuda_cronjobmanager_command_showjobs" xsi:type="object">EthanYehuda\CronjobManager\Console\Command\Showjobs</item>
+                <item name="ethanyehuda_cronjobmanager_command_runjob" xsi:type="object">EthanYehuda\CronjobManager\Console\Command\Runjob</item>
             </argument>
         </arguments>
     </type>
