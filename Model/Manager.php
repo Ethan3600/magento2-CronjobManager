@@ -2,12 +2,47 @@
 
 namespace EthanYehuda\CronjobManager\Model;
 
-use Magento\Cron\Observer\ProcessCronQueueObserver;
+use EthanYehuda\CronjobManager\Helper\Processor;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Cron\Model\ScheduleFactory;
+use Magento\Cron\Model\ConfigInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
-class Manager extends ProcessCronQueueObserver
+class Manager
 {
+    /**
+     * @var Processor
+     */
+    private $processor;
+    
+    /**
+     * @var ScheduleFactory
+     */
+    private $scheduleFactory;
+    
+    /**
+     * @var ConfigInterface
+     */
+    private $config;
+    
+    /**
+     * @var DateTime
+     */
+    private $dateTime;
+    
+    public function __construct(
+        Processor $processor,
+        ScheduleFactory $scheduleFactory,
+        ConfigInterface $config,
+        DateTime $dateTime
+    ) {
+        $this->processor = $processor;
+        $this->scheduleFactory = $scheduleFactory;
+        $this->config = $config;
+        $this->dateTime = $dateTime;
+    }
+    
     public function createCronJob($jobCode, $time)
     {
         $filteredTime = $this->filterTimeInput($time);
@@ -15,7 +50,7 @@ class Manager extends ProcessCronQueueObserver
         /**
          * @var $schedule \Magento\Cron\Model\Schedule
          */
-        $schedule = $this->_scheduleFactory->create()
+        $schedule = $this->scheduleFactory->create()
             ->setJobCode($jobCode)
             ->setStatus(Schedule::STATUS_PENDING)
             ->setCreatedAt(
@@ -59,15 +94,15 @@ class Manager extends ProcessCronQueueObserver
 
     public function flushCrons()
     {
-        $jobGroups = $this->_config->getJobs();
+        $jobGroups = $this->config->getJobs();
         foreach ($jobGroups as $groupId => $crons) {
-            $this->_cleanup($groupId);
+            $this->processor->cleanupJobs($groupId);
         }
     }
 
     public function dispatchCron($jobId = null, $jobCode, $schedule = null)
     {
-        $groups = $this->_config->getJobs();
+        $groups = $this->config->getJobs();
         $groupId = $this->getGroupId($jobCode, $groups);
         $jobConfig = $groups[$groupId][$jobCode];
         if (is_null($schedule)) {
@@ -78,7 +113,7 @@ class Manager extends ProcessCronQueueObserver
         /* We need to trick the method into thinking it should run now so we
          * set the scheduled and current time to be equal to one another
          */
-        $this->_runJob(
+        $this->processor->runJob(
             $scheduledTime,
             $scheduledTime,
             $jobConfig,
@@ -91,7 +126,7 @@ class Manager extends ProcessCronQueueObserver
 
     public function getCronJobs()
     {
-        return $this->_config->getJobs();
+        return $this->config->getJobs();
     }
     
     /**
@@ -102,7 +137,7 @@ class Manager extends ProcessCronQueueObserver
     public function getGroupId($jobCode, $groups = null)
     {
         if (is_null($groups)) {
-            $groups = $this->_config->getJobs();
+            $groups = $this->config->getJobs();
         }
         
         foreach ($groups as $groupId => $crons) {
@@ -140,7 +175,7 @@ class Manager extends ProcessCronQueueObserver
         /**
          * @var $scheduleResource \Magento\Cron\Model\ResourceModel\Schedule
          */
-        $schedule = $this->_scheduleFactory->create();
+        $schedule = $this->scheduleFactory->create();
         $scheduleResource = $schedule->getResource();
         $scheduleResource->load($schedule, $jobId);
 
