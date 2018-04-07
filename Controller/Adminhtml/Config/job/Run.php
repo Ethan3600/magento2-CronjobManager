@@ -2,7 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
-use EthanYehuda\CronjobManager\Model\Manager;
+use Magento\Cron\Observer\ProcessCronQueueObserver;
 
 class Run extends \Magento\Backend\App\Action
 {
@@ -12,9 +12,9 @@ class Run extends \Magento\Backend\App\Action
     protected $resultPageFactory;
     
     /**
-     * @var Manager
+     * @var ProcessCronQueueObserver
      */
-    protected $cronJobManager;
+    protected $cronQueue;
     
     /**
      * @var \Magento\Framework\Event\Observer
@@ -31,11 +31,11 @@ class Run extends \Magento\Backend\App\Action
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Event\ObserverFactory $observerFactory,
-        Manager $cronJobManager
+        ProcessCronQueueObserver $cronQueue
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager = $cronJobManager;
+        $this->cronQueue= $cronQueue;
         $this->observer = $observerFactory->create('Magento\Framework\Event\Observer');
     }
     
@@ -56,7 +56,7 @@ class Run extends \Magento\Backend\App\Action
     public function execute()
     {
         try {
-            $this->cronJobManager->execute($this->observer);
+            $this->cronQueue->execute($this->observer);
         } catch (\Magento\Framework\Exception\CronException $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/config/');

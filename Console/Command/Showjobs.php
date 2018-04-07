@@ -1,6 +1,6 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Command;
+namespace EthanYehuda\CronjobManager\Console\Command;
 
 use Magento\Framework\App\Area;
 use Symfony\Component\Console\Command\Command;
