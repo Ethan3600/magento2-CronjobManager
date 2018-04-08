@@ -2,5 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <referenceBlock name="content">
         <block template="timeline.phtml" class="EthanYehuda\CronjobManager\Block\Adminhtml\Timeline" name="ethanyehuda_cronjobmanager_block_timeline"/>
+        <uiComponent name="cronjobmanager_timeline"/>
     </referenceBlock>
 </page>
