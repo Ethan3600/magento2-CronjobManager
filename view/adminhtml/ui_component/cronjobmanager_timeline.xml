@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" class="EthanYehuda\CronjobManager\Component\Timeline">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">cronjobmanager_timeline.cronjobmanager_timeline_data_source</item>
+            <item name="deps" xsi:type="string">cronjobmanager_timeline.cronjobmanager_timeline_data_source</item>
+        </item>
+        <item name="spinner" xsi:type="string">cronjobmanager_timeline</item>
+        <item name="template" xsi:type="string">templates/container</item>
+    </argument>
+    <dataSource name="cronjobmanager_timeline_data_source">
+        <argument name="dataProvider" xsi:type="configurableObject">
+            <argument name="class" xsi:type="string">EthanYehuda\CronjobManager\Ui\DataProvider\TimelineDataProvider</argument>
+            <argument name="name" xsi:type="string">cronjobmanager_timeline_data_source</argument>
+            <argument name="primaryFieldName" xsi:type="string">schedule_id</argument>
+            <argument name="requestFieldName" xsi:type="string">id</argument>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
+                    <item name="update_url" xsi:type="url" path="mui/index/render"/>
+                    <item name="storageConfig" xsi:type="array">
+                        <item name="indexField" xsi:type="string">schedule_id</item>
+                    </item>
+                </item>
+            </argument>
+        </argument>
+    </dataSource>
+    <container name="timeline_container" >
+    	<argument name="data" xsi:type="array">
+	        <item name="config" xsi:type="array">
+	            <item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/container</item>
+	        </item>
+	    </argument>
+    </container>
+</container>
