@@ -1,13 +1,16 @@
 define([
+    'underscore',
     'uiLayout',
     'Magento_Ui/js/lib/spinner',
     'rjsResolver',
+    'moment',
     'uiCollection'
-], function (layout, loader, resolver, Collection) {
+], function (_, layout, loader, resolver, moment, Collection) {
     'use strict';
 
     return Collection.extend({
         defaults: {
+        	dateFormat: 'YYYY-MM-DD HH:mm:ss',
             ignoreTmpls: {
                 templates: false,
                 childDefaults: true
@@ -19,7 +22,8 @@ define([
             listens: {
                 '${ $.provider }:reload': 'onBeforeReload',
                 '${ $.provider }:reloaded': 'onDataReloaded'
-            }
+            },
+            range: {}
         },
 
         /**
@@ -41,11 +45,74 @@ define([
             this._super()
                 .track({
                     rows: [],
+                    range: {}
                 });
 
             return this;
         },
         
+        /**
+         * Updates data of a range object,
+         * e.g. total hours, first hour and last hour, etc.
+         *
+         * @returns {Object} Range instance.
+         */
+        updateRange: function () {
+            var firstHour    = this._getFirstHour(),
+                lastHour     = this._getLastHour(),
+                totalHours   = lastHour.diff(firstHour, 'hours'),
+                hours        = [],
+                i            = -1;
+
+            while (++i <= totalHours) {
+                // push string formated hours to array
+                // so we can foreach over each hour to create a range
+                //hours.push(firstHour * i);
+            }
+
+            return _.extend(this.range, {
+                hours:       hours,
+                totalHours:  totalHours,
+                firstHour:   firstHour,
+                lastHour:    moment(_.last(hours)),
+            });
+        },
+
+        /**
+         * Converts unix timestamp to moment object
+         *        
+         * @param {String} dateStr
+         * @returns {Moment}
+         */
+        createDate: function (dateStr) {
+            return moment(moment.unix(dateStr));
+        },
+
+        /**
+         * Returns date which is closest to the current hour
+         *
+         * @private
+         * @returns {Moment}
+         */
+        _getFirstHour: function () {
+            var firstHour = this.rows[0].range.first;
+            var first = this.createDate(firstHour); 
+            return first.startOf('hour');
+        },
+
+        /**
+         * Returns the most distant date
+         * specified in available records.
+         *
+         * @private
+         * @returns {Moment}
+         */
+        _getLastHour: function () {
+            var lastHour = this.rows[0].range.last;
+            var last = this.createDate(lastHour); 
+            return last.add(1, 'hour').startOf('hour');
+        },
+
         /**
          * Hides loader.
          */
