@@ -7,6 +7,14 @@
         </item>
         <item name="spinner" xsi:type="string">cronjobmanager_timeline</item>
         <item name="template" xsi:type="string">templates/container</item>
+        <item name="buttons" xsi:type="array">
+         <item name="back" xsi:type="array">
+            <item name="name" xsi:type="string">back</item>
+            <item name="label" xsi:type="string" translate="true">Back</item>
+            <item name="class" xsi:type="string">back</item>
+            <item name="url" xsi:type="string">*/manage/</item>
+         </item>
+      </item>
     </argument>
     <dataSource name="cronjobmanager_timeline_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
