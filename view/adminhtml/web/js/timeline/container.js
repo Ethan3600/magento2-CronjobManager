@@ -65,9 +65,8 @@ define([
                 i            = -1;
 
             while (++i <= totalHours) {
-                // push string formated hours to array
-                // so we can foreach over each hour to create a range
-                //hours.push(firstHour * i);
+                hours.push(firstHour.add(1, 'hour')
+                    .format(this.dateFormat));
             }
 
             return _.extend(this.range, {
