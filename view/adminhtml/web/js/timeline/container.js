@@ -138,6 +138,7 @@ define([
          */
         onDataReloaded: function () {
             resolver(this.hideLoader, this);
+            this.updateRange();
         }
     });
 });
