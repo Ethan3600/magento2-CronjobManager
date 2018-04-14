@@ -4,7 +4,8 @@ define([
     'Magento_Ui/js/lib/spinner',
     'rjsResolver',
     'moment',
-    'uiCollection'
+    'uiCollection',
+    '../lib/knockout/bindings/boostrapExt',
 ], function (_, layout, loader, resolver, moment, Collection) {
     'use strict';
 

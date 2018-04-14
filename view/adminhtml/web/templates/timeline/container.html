@@ -1,3 +1,8 @@
-<div data-bind="text: rows">
-
+<div class="cjm-timeline" data-bind="with: rows">
+    <div foreachProp="$data">
+        <!-- ko if: $index() != 0 -->
+            <pre data-bind="text: ko.toJSON($data, null, 2)" />
+            <!--text args="job_code" /--> 
+        <!-- /ko -->
+    </div>
 </div>
