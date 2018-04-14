@@ -24,7 +24,14 @@ define([
                 '${ $.provider }:reload': 'onBeforeReload',
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
-            range: {}
+            range: {},
+            scale: 15,
+            width: 0,
+            tracks: {
+                rows: true,
+                range: true,
+                width: true
+            }
         },
 
         /**
@@ -43,13 +50,20 @@ define([
          * @returns {Listing} Chainable.
          */
         initObservable: function () {
-            this._super()
-                .track({
-                    rows: [],
-                    range: {}
-                });
-
+            this._super();
             return this;
+        },
+
+        updateTimelineWidth: function() {
+            var range = this.rows[0].range;
+
+            var first = moment.unix(range.first); 
+            first = first.startOf('hour');
+
+            var last = moment.unix(range.last);
+            last = last.add(1, 'hour').startOf('hour');
+
+            this.width = last.diff(first) / this.scale;
         },
         
         /**
@@ -140,6 +154,7 @@ define([
         onDataReloaded: function () {
             resolver(this.hideLoader, this);
             this.updateRange();
+            this.updateTimelineWidth();
         }
     });
 });

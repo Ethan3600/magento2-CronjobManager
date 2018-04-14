@@ -1,4 +1,15 @@
 <div class="cjm-timeline" data-bind="with: rows">
+    <div class="wrapper">
+        <div class="main-content">
+            <div class="timeline-container">
+                <div class="timeline-container__panel" data-bind="style: { width: $parent.width }">
+
+                </div>
+            </div>
+        </div>
+        <div id="left-content">
+        </div>
+    </div>
     <div foreachProp="$data">
         <!-- ko if: $index() != 0 -->
             <pre data-bind="text: ko.toJSON($data, null, 2)" />
