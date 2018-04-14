@@ -38,6 +38,10 @@ class TimelineDataProvider extends AbstractDataProvider
             return $this->loadedData;
         }
 
+        if($this->collection->getSize() < 1) {
+            return [];
+        }
+
         $firstHour = null;
         $lastHour = null;
 

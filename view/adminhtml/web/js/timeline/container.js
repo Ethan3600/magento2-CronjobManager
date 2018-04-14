@@ -152,6 +152,9 @@ define([
          * Handler of the data providers' 'reloaded' event.
          */
         onDataReloaded: function () {
+            if (this.rows.length < 1 || this.rows.length == undefined) {
+                return;
+            }
             resolver(this.hideLoader, this);
             this.updateRange();
             this.updateTimelineWidth();
