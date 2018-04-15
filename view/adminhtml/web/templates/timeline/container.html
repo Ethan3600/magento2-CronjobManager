@@ -1,5 +1,18 @@
 <div class="cronjobmanager" >
     <div class="wrapper">
+        <div id="left-content">
+            <div class="row hours">
+                <div class="timeframe">
+                    <span data-bind="text: range.timeframe"/>
+                </div>
+            </div>
+            <div foreachProp="rows">
+                <!-- ko if: $index() != 0 -->
+                    <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
+                    <text args="$data.key" /> 
+                <!-- /ko -->
+            </div>
+        </div>
         <div class="main-content">
             <div class="timeline-container">
                 <div class="timeline-container__panel" data-bind="attr: { width: width }">
@@ -16,7 +29,7 @@
                         <div class="row">
                             <!-- ko if: $index() != 0 -->
                                 <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
-                                    <pre data-bind="text: ko.toJSON($data, null, 2)" />
+                                    <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
                                 </div>
                             <!-- /ko -->
                         </div>
@@ -24,13 +37,5 @@
                 </div>
             </div>
         </div>
-        <div id="left-content">
-        </div>
-    </div>
-    <div foreachProp="rows">
-        <!-- ko if: $index() != 0 -->
-            <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
-            <!--text args="job_code" /--> 
-        <!-- /ko -->
     </div>
 </div>

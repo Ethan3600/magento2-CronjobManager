@@ -11,6 +11,7 @@ define([
 
     return Collection.extend({
         defaults: {
+            timeframeFormat: 'YYYY-MM-DD HH:mm:ss',
         	dateFormat: 'HH:mm',
             ignoreTmpls: {
                 templates: false,
@@ -54,6 +55,10 @@ define([
             return this;
         },
 
+        /**
+         * Calculates the width of the timeline
+         * and binds it with the trackable width property
+         */
         updateTimelineWidth: function() {
             var range = this.rows[0].range;
 
@@ -73,12 +78,12 @@ define([
          * @returns {Object} Range instance.
          */
         updateRange: function () {
-            var firstHour    = this._getFirstHour(),
-                lastHour     = this._getLastHour(),
+            var firstHour    = this.getFirstHour(),
+                lastHour     = this.getLastHour(),
                 totalHours   = lastHour.diff(firstHour, 'hours'),
                 hours        = [],
                 i            = -1,
-                increment    = this._getFirstHour();
+                increment    = this.getFirstHour();
 
             while (++i <= totalHours) {
                 hours.push(increment.add(1, 'hour')
@@ -89,8 +94,23 @@ define([
                 hours:       hours,
                 totalHours:  totalHours,
                 firstHour:   firstHour,
-                lastHour:    lastHour 
+                lastHour:    lastHour,
+                timeframe:   this.getTimeframe(firstHour, lastHour)
             });
+        },
+
+        /**
+         * Gets timeframe header from range
+         *
+         * @param {Moment} firstHour
+         * @param {Moment} lastHour
+         * @returns {String}
+         */
+        getTimeframe: function (firstHour, lastHour) {
+            var first = firstHour.format(this.timeframeFormat),
+                last  = lastHour.format(this.timeframeFormat);
+
+            return first + " - " + last; 
         },
 
         /**
@@ -109,7 +129,7 @@ define([
          * @private
          * @returns {Moment}
          */
-        _getFirstHour: function () {
+        getFirstHour: function () {
             var firstHour = this.rows[0].range.first;
             var first = this.createDate(firstHour); 
             return first.startOf('hour');
@@ -122,7 +142,7 @@ define([
          * @private
          * @returns {Moment}
          */
-        _getLastHour: function () {
+        getLastHour: function () {
             var lastHour = this.rows[0].range.last;
             var last = this.createDate(lastHour); 
             return last.add(1, 'hour').startOf('hour');
