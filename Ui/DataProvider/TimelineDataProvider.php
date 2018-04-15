@@ -45,7 +45,7 @@ class TimelineDataProvider extends AbstractDataProvider
         $firstHour = null;
         $lastHour = null;
 
-        $this->collection->addOrder('job_code');
+        $this->collection->addOrder('job_code', 'ASC');
         foreach ($this->collection->getItems() as $item) {
             $this->loadedData[$item->getJobCode()][] = $item->getData();
             
