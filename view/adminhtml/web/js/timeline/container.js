@@ -11,7 +11,7 @@ define([
 
     return Collection.extend({
         defaults: {
-        	dateFormat: 'YYYY-MM-DD HH:mm:ss',
+        	dateFormat: 'HH:mm',
             ignoreTmpls: {
                 templates: false,
                 childDefaults: true
@@ -77,18 +77,19 @@ define([
                 lastHour     = this._getLastHour(),
                 totalHours   = lastHour.diff(firstHour, 'hours'),
                 hours        = [],
-                i            = -1;
+                i            = -1,
+                increment    = this._getFirstHour();
 
             while (++i <= totalHours) {
-                hours.push(firstHour.add(1, 'hour')
+                hours.push(increment.add(1, 'hour')
                     .format(this.dateFormat));
             }
 
-            return _.extend(this.range, {
+            this.range = _.extend(this.range, {
                 hours:       hours,
                 totalHours:  totalHours,
                 firstHour:   firstHour,
-                lastHour:    moment(_.last(hours)),
+                lastHour:    lastHour 
             });
         },
 
