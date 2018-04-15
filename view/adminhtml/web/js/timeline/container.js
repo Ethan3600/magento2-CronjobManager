@@ -153,7 +153,8 @@ define([
          * Handler of the data providers' 'reloaded' event.
          */
         onDataReloaded: function () {
-            if (this.rows.length < 1 || this.rows.length == undefined) {
+            if (Object.keys(this.rows).length < 1 
+                || this.rows == undefined) {
                 return;
             }
             resolver(this.hideLoader, this);
