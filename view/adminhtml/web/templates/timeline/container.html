@@ -1,18 +1,35 @@
-<div class="cjm-timeline" data-bind="with: rows">
+<div class="cronjobmanager" >
     <div class="wrapper">
         <div class="main-content">
             <div class="timeline-container">
-                <div class="timeline-container__panel" data-bind="style: { width: $parent.width }">
-
+                <div class="timeline-container__panel" data-bind="attr: { width: width }">
+                    <div class="row hours">
+                        <div class="cjm-timeline">
+                            <div data-bind="foreach: range.hours">
+                                <div class="hour">
+                                    <span data-bind="text: $data" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div foreachProp="rows">
+                        <div class="row">
+                            <!-- ko if: $index() != 0 -->
+                                <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
+                                    <pre data-bind="text: ko.toJSON($data, null, 2)" />
+                                </div>
+                            <!-- /ko -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div id="left-content">
         </div>
     </div>
-    <div foreachProp="$data">
+    <div foreachProp="rows">
         <!-- ko if: $index() != 0 -->
-            <pre data-bind="text: ko.toJSON($data, null, 2)" />
+            <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
             <!--text args="job_code" /--> 
         <!-- /ko -->
     </div>
