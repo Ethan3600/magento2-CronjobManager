@@ -11,12 +11,8 @@ define([
 
     return Collection.extend({
         defaults: {
-            timeframeFormat: 'YYYY-MM-DD HH:mm:ss',
+            timeframeFormat: 'MM/DD HH:mm',
         	dateFormat: 'HH:mm',
-            ignoreTmpls: {
-                templates: false,
-                childDefaults: true
-            },
             template: 'cronjobManager/timeline/container',
             imports: {
                 rows: '${$.parentName}_data_source:data'
@@ -68,7 +64,7 @@ define([
             var last = moment.unix(range.last);
             last = last.add(1, 'hour').startOf('hour');
 
-            this.width = last.diff(first) / this.scale;
+            this.width = last.diff(first) / this.scale / 1000;
         },
         
         /**
@@ -82,7 +78,7 @@ define([
                 lastHour     = this.getLastHour(),
                 totalHours   = lastHour.diff(firstHour, 'hours'),
                 hours        = [],
-                i            = -1,
+                i            = 0,
                 increment    = this.getFirstHour();
 
             while (++i <= totalHours) {
