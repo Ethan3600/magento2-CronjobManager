@@ -1,0 +1,103 @@
+//
+// Variables
+// ____________________________
+
+@row--height: 40px;
+@row--boarder: 1px solid #DADFE0;
+
+@hours--height: auto;
+
+@hour--width: 240px;
+@hour--span--margin-left: 5px;
+
+@wrapper--background-color: #f1f1f1;
+@wrapper--border: 1px solid @wrapper__border-color;
+@wrapper--margin-bottom: 2rem;
+@wrapper__border-color: #999999;
+
+@left-content__row--background-color: #fff;
+
+.cronjobmanager {
+    // overriding body line height
+    line-height: 0.36px;
+
+    .row {
+        border-bottom: @row--boarder;
+        padding: 0;
+        margin: 0;
+        height: @row--height;
+    }
+
+    .wrapper {
+        position: relative;
+        margin-bottom: @wrapper--margin-bottom;
+        float: left;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        border: @wrapper--border;
+        background-color: @wrapper--background-color;
+    }
+
+    .hours {
+        height: @hours--height;
+    }
+
+    .hour {
+        width: @hour--width;
+        float: left;
+
+        span {
+            margin-left: @hour--span--margin-left;
+        }
+    }
+
+    .job-code {
+        padding: 20px 10px;
+    }
+
+    .timeline-date {
+        padding: 0.9rem 0rem;
+    }
+
+    .left-content {
+        float: left;
+        border-right: @wrapper--border;
+
+        .timeline-unit {
+            width: 100%;
+            border-right: none;
+        }
+
+        .row {
+            background-color: @left-content__row--background-color;
+        }
+    }
+
+    .timeline-container {
+        overflow: auto;
+
+        &__panel {
+            position: relative;
+
+            .timeline-date {
+                border-right: @wrapper--border;
+            }
+        }
+
+        .timeline-date__container {
+
+            &::before {
+                background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
+                bottom: 0;
+                content: '';
+                margin-left: -1px;
+                position: absolute;
+                top: 3.3rem;
+                width: 1px;
+                z-index: 0;
+            }
+        }
+    }
+}
+
