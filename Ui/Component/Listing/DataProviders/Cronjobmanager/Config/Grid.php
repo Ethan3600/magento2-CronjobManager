@@ -3,6 +3,7 @@
 namespace EthanYehuda\CronjobManager\Ui\Component\Listing\DataProviders\Cronjobmanager\Config;
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class Grid extends AbstractDataProvider
@@ -52,17 +53,24 @@ class Grid extends AbstractDataProvider
 	 * @var Array
 	 */
 	private $currentFilter;
+
+    /**
+     * @var JobConfig
+     */
+    private $helper;
 	
     public function __construct(
         $name,
         $primaryFieldName,
         $requestFieldName,
     	ManagerFactory $manager,
+        JobConfig $helper,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->manager = $manager->create();
+        $this->helper = $helper;
     }
     
     public function getData()
@@ -145,6 +153,7 @@ class Grid extends AbstractDataProvider
     	
     	foreach ($jobs as $group => $crons) {
     		foreach ($crons as $code => $job) {
+                $job = $this->helper->sanitizeJobConfig($job);
     			$this->records['totalRecords']++;
     			$instance = $job['instance'];
     			$method = $job['method'];

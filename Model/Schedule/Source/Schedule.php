@@ -28,6 +28,10 @@ class Schedule implements \Magento\Framework\Data\OptionSourceInterface
 
         $options = [];
         foreach ($cronJobs as $cron) {
+            if (empty($cron['name'])) {
+                continue;
+            }
+
             $option = [
                 'value' => $cron['name'],
                 'label' => $cron['name']
