@@ -51,6 +51,15 @@ define([
             return this;
         },
 
+        getOffset: function (job) {
+            return (moment(job.scheduled_at).diff(this.getFirstHour(), 'seconds')) 
+                / this.scale + 'px';
+        },
+
+        getCronWidth: function (job) {
+            return '1px';
+        },
+
         /**
          * Calculates the width of the timeline
          * and binds it with the trackable width property

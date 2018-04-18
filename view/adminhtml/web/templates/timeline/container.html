@@ -35,7 +35,15 @@
                             <div class="row">
                                 <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
                                     <div data-bind="foreach: $data.value">
-                                        <div class="cron-job"></div>
+                                        <div data-bind="
+                                        attr: { 
+                                            class: 'cron-job ' + $data.status,
+                                            id: $data.schedule_id,
+                                        },
+                                        style: {
+                                            width: $parentContext.$parent.getCronWidth(),
+                                            left: $parentContext.$parent.getOffset($data)
+                                        }"></div>
                                     </div>
                                     <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
                                 </div>
