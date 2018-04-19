@@ -48,7 +48,7 @@ class Flush extends \Magento\Backend\App\Action
     {
         try {
             $this->cronJobManager->flushCrons();
-        } catch (\Magento\Framework\Exception\CronException $e) {
+        } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/manage/index/');
             return;

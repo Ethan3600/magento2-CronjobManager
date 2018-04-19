@@ -94,9 +94,10 @@ class Processor
         $callback = [$model, $jobConfig['method']];
         if (!is_callable($callback)) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception(
-                sprintf('Invalid callback: %s::%s can\'t be called', $jobConfig['instance'], $jobConfig['method'])
-            );
+            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called', 
+                $jobConfig['instance'],
+                $jobConfig['method']
+            ));
         }
         $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()))->save();
 
@@ -106,7 +107,7 @@ class Processor
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
             $this->logger->error(sprintf(
-                'Cron Job %s has an error: %s. Statistics: %s',
+                'Cron Job %s has an error: %s.',
                 $jobCode,
                 $e->getMessage()
             ));

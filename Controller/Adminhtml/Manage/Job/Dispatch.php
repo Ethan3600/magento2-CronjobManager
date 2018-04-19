@@ -50,7 +50,7 @@ class Dispatch extends \Magento\Backend\App\Action
         $jobCode = $this->getRequest()->getParam('job_code');
         try {
             $this->cronJobManager->dispatchCron($jobId, $jobCode);
-        } catch (\Magento\Framework\Exception\CronException $e) {
+        } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/manage/index/');
             return;
