@@ -89,7 +89,7 @@ class TimelineDataProvider extends AbstractDataProvider
         if (empty($firstHour)) {
             $firstHour = $item->getScheduledAt();
         }
-        return $firstHour ;
+        return $firstHour;
     }
 
     private function getLastHour($item)

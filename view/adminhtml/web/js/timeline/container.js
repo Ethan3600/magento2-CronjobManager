@@ -52,8 +52,13 @@ define([
         },
 
         getOffset: function (job) {
-            return (moment(job.scheduled_at).diff(this.getFirstHour(), 'seconds')) 
+            var startTime = job.executed_at || job.scheduled_at,
+            offset = (moment(startTime).diff(this.getFirstHour(), 'seconds')) 
                 / this.scale + 'px';
+            if (offset < 0) {
+                offset = 0;
+            }
+            return offset;
         },
 
         getCronWidth: function (job) {
@@ -73,7 +78,7 @@ define([
             var last = moment.unix(range.last);
             last = last.add(1, 'hour').startOf('hour');
 
-            this.width = last.diff(first) / this.scale / 1000;
+            this.width = last.diff(first, 'seconds') / this.scale;
         },
         
         /**
@@ -88,7 +93,7 @@ define([
                 totalHours   = lastHour.diff(firstHour, 'hours'),
                 hours        = [],
                 i            = 0,
-                increment    = this.getFirstHour();
+                increment    = this.getFirstHour().subtract({hours: 1});
 
             while (++i <= totalHours) {
                 hours.push(increment.add(1, 'hour')
