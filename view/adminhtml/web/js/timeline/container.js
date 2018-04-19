@@ -53,12 +53,13 @@ define([
 
         getOffset: function (job) {
             var startTime = job.executed_at || job.scheduled_at,
-            offset = (moment(startTime).diff(this.getFirstHour(), 'seconds')) 
-                / this.scale + 'px';
+            offset = (moment.utc(startTime).local()
+                .diff(this.getFirstHour(), 'seconds')) 
+                / this.scale;
             if (offset < 0) {
                 offset = 0;
             }
-            return offset;
+            return offset + 'px';
         },
 
         getCronWidth: function (job) {
