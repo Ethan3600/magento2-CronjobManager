@@ -50,7 +50,7 @@ class Create extends \Magento\Backend\App\Action
         $scheduledAt = $this->getRequest()->getParam('scheduled_at');
         try {
             $this->cronJobManager->createCronJob($jobCode, $scheduledAt);
-        } catch (\Magento\Framework\Exception\CronException $e) {
+        } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/manage/create/');
             return;
