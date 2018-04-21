@@ -1,0 +1,22 @@
+<div tooltip="
+    trigger: '[data-tooltip-trigger=' + $data.schedule_id + ']',
+    action: 'click',
+    delay: 0,
+    position: 'right',
+    closeButton: true,
+    parentScope: '[data-tooltip-search-scope=search-scope-' + $data.schedule_id + ']'
+">
+    <div>
+        <div class="data-tooltip-title" >
+            Hello
+        </div>
+ 
+        <div class="data-tooltip-content">
+            <dl class="staging-events-summary">
+                <dt>
+                    <translate args="'Schedule Id'"/>:
+                </dt>
+            </dl>
+        </div>
+    </div>
+</div>

@@ -14,6 +14,7 @@ define([
             timeframeFormat: 'MM/DD HH:mm',
         	dateFormat: 'HH:mm',
             template: 'cronjobManager/timeline/container',
+            detailsTmpl: 'cronjobManager/timeline/details',
             imports: {
                 rows: '${$.parentName}_data_source:data'
             },
@@ -63,7 +64,7 @@ define([
         },
 
         getCronWidth: function (job) {
-            return '1px';
+            return '3px';
         },
 
         /**

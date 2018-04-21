@@ -39,11 +39,15 @@
                                         attr: { 
                                             class: 'cron-job ' + $data.status,
                                             id: $data.schedule_id,
+                                            'data-tooltip-trigger': 'update-' + $data.schedule_id,
+                                            'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id
                                         },
                                         style: {
                                             width: $parentContext.$parent.getCronWidth(),
                                             left: $parentContext.$parent.getOffset($data)
-                                        }"></div>
+                                        }">
+                                            <div class="timeline-event-details" render="$parentContext.$parent.detailsTmpl"/> 
+                                        </div>
                                     </div>
                                     <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
                                 </div>
