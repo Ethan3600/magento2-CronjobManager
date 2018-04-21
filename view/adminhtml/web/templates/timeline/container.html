@@ -35,18 +35,19 @@
                             <div class="row">
                                 <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
                                     <div data-bind="foreach: $data.value">
-                                        <div data-bind="
-                                        attr: { 
-                                            class: 'cron-job ' + $data.status,
-                                            id: $data.schedule_id,
-                                            'data-tooltip-trigger': 'update-' + $data.schedule_id,
-                                            'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id
-                                        },
-                                        style: {
-                                            width: $parentContext.$parent.getCronWidth(),
-                                            left: $parentContext.$parent.getOffset($data)
-                                        }">
-                                            <div class="timeline-event-details" render="$parentContext.$parent.detailsTmpl"/> 
+                                        <div data-bind="attr: { 'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id }">
+                                            <div data-bind="
+                                            attr: { 
+                                                class: 'cron-job ' + $data.status,
+                                                id: $data.schedule_id,
+                                                'data-tooltip-trigger': 'update-' + $data.schedule_id,
+                                            },
+                                            style: {
+                                                width: $parentContext.$parent.getCronWidth(),
+                                                left: $parentContext.$parent.getOffset($data)
+                                            }">
+                                                <div render="$parentContext.$parent.detailsTmpl"/> 
+                                            </div>
                                         </div>
                                     </div>
                                     <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->

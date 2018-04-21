@@ -161,6 +161,16 @@ define([
         },
 
         /**
+         * format time entry
+         */
+        formatTime: function (dateStr) {
+            if (dateStr == null) {
+                return false;
+            }
+            return moment.utc(dateStr).local().format('MM/DD HH:mm:ss');
+        },
+
+        /**
          * Hides loader.
          */
         hideLoader: function () {

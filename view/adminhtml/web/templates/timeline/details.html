@@ -1,22 +1,56 @@
-<div tooltip="
-    trigger: '[data-tooltip-trigger=' + $data.schedule_id + ']',
+<div tooltip=" trigger: '[data-tooltip-trigger=update-' + $data.schedule_id + ']',
     action: 'click',
     delay: 0,
     position: 'right',
+    step: 25,
+    track: false,
+    strict: false,
     closeButton: true,
-    parentScope: '[data-tooltip-search-scope=search-scope-' + $data.schedule_id + ']'
-">
+    parentScope: '[data-tooltip-search-scope=search-scope-' + $data.schedule_id + ']'">
     <div>
-        <div class="data-tooltip-title" >
-            Hello
+        <div class="data-tooltip-title">
+            <text args="job_code"/>
         </div>
- 
         <div class="data-tooltip-content">
             <dl class="staging-events-summary">
-                <dt>
+            	<dt>
                     <translate args="'Schedule Id'"/>:
                 </dt>
+                <dd>
+                    <text args="schedule_id"/>
+                </dd>
+                <dt>
+                    <translate args="'Status'"/>:
+                </dt>
+                <dd>
+                    <text args="status"/>
+                </dd>
+                <dt>
+                    <translate args="'Created at'"/>:
+                </dt>
+                <dd>
+                    <time text="$parentContext.$parent.formatTime(created_at)"/>
+                </dd>
+                <dt>
+                    <translate args="'Scheduled at'"/>:
+                </dt>
+                <dd>
+                    <time text="$parentContext.$parent.formatTime(scheduled_at) || 'N/A'"/>
+                </dd>
+                <dt>
+                    <translate args="'Executed at'"/>:
+                </dt>
+                <dd>
+                    <time text="$parentContext.$parent.formatTime(executed_at) || 'N/A'"/>
+                </dd>
+                <dt>
+                    <translate args="'Finished at'"/>:
+                </dt>
+                <dd>
+                    <time text="$parentContext.$parent.formatTime(finished_at) || 'N/A'"/>
+                </dd>
             </dl>
         </div>
     </div>
 </div>
+
