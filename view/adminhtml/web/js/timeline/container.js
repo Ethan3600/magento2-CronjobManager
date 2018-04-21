@@ -79,7 +79,7 @@ define([
             var last = moment.unix(range.last);
             last = last.add(1, 'hour').startOf('hour');
 
-            this.width = last.diff(first, 'seconds') / this.scale;
+            this.width = (last.diff(first, 'seconds') + 3600) / this.scale;
         },
         
         /**
@@ -90,7 +90,7 @@ define([
          */
         updateRange: function () {
             var firstHour    = this.getFirstHour(),
-                lastHour     = this.getLastHour(),
+                lastHour     = this.getLastHour().add({hours: 1}),
                 totalHours   = lastHour.diff(firstHour, 'hours'),
                 hours        = [],
                 i            = 0,
