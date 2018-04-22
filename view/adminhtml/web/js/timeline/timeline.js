@@ -25,7 +25,7 @@ define([
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
             range: {},
-            scale: 10,
+            scale: 12.5,
             width: 0,
             now: 0,
             tracks: {
@@ -262,7 +262,7 @@ define([
                 $('html').css('cursor', 'move');
                 var $el = $(el);
                 scrollVertical && $(window).scrollTop(($(window).scrollTop() + (clickY - e.pageY)));
-                scrollHorizontal && $el.scrollLeft(($el.scrollLeft() + (clickX - e.pageX)) / 2);
+                scrollHorizontal && $el.scrollLeft(($el.scrollLeft() + (clickX - e.pageX)));
             } 
 
             $('.timeline-container').on({
