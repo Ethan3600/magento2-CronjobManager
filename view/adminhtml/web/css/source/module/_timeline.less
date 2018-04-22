@@ -17,6 +17,13 @@
 
 @left-content__row--background-color: #fff;
 
+// Status colors
+@status--success: #1CA84C;
+@status--pending: #A4A8A3;
+@status--missed: #F75300;
+@status--running: #09A7E6;
+@status--error: #D71200;
+
 .cronjobmanager {
     // overriding body line height
     line-height: 0.36px;
@@ -122,8 +129,24 @@
     .cron-job {
         position: absolute;
         margin-top: 5px;
-        background-color: red; // for testing
+        background-color: @status--pending; 
         height: 30px;
+
+        &.success {
+            background-color: @status--success;
+        }
+
+        &.missed {
+            background-color: @status--missed;
+        }
+
+        &.running {
+            background-color: @status--running;
+        }
+
+        &.error {
+            background-color: @status--error;
+        }
     }
 }
 
