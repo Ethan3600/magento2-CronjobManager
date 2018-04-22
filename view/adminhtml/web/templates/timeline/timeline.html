@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="main-content">
-            <div class="timeline-container">
+            <div class="timeline-container" afterRender="afterTimelineRender">
                 <div class="timeline-container__panel" data-bind="style: { width: width + 'px' }">
                     <div class="timeline-container__now" data-bind="style: { left: now + 'px' }"></div>
                     <div class="row hours">
@@ -51,7 +51,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- pre data-bind="text: ko.toJSON($data, null, 2)" / -->
                                 </div>
                             </div>
                         <!-- /ko -->

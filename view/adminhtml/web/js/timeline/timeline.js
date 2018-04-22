@@ -1,5 +1,6 @@
 define([
     'underscore',
+    'jquery',
     'uiLayout',
     'Magento_Ui/js/lib/spinner',
     'rjsResolver',
@@ -7,7 +8,7 @@ define([
     'moment',
     'uiCollection',
     '../lib/knockout/bindings/boostrapExt',
-], function (_, layout, loader, resolver, registry, moment, Collection) {
+], function (_, $, layout, loader, resolver, registry, moment, Collection) {
     'use strict';
 
     return Collection.extend({
@@ -41,7 +42,7 @@ define([
          * @returns {Listing} Chainable.
          */
         initialize: function () {
-            this._super()
+            this._super();
             return this;
         },
 
@@ -245,6 +246,39 @@ define([
         reloadHandler: function () {
             registry.get(this.provider).reload({
                 refresh: true
+            });
+        },
+
+        afterTimelineRender: function () {
+            var clicked = false, 
+                scrollVertical = true,
+                scrollHorizontal = true,
+                cursor = null,
+                clickY,
+                clickX;
+
+           function updateScrollPos(e, el) {
+                $('html').css('cursor', 'move');
+                var $el = $(el);
+                scrollVertical && $(window).scrollTop(($(window).scrollTop() + (clickY - e.pageY)));
+                scrollHorizontal && $el.scrollLeft(($el.scrollLeft() + (clickX - e.pageX)) / 2);
+            } 
+
+            $('.timeline-container').on({
+                'mousemove': function(e) {
+                    clicked && updateScrollPos(e, this);
+                },
+
+                'mousedown': function(e) {
+                    clicked = true;
+                    clickY = e.pageY;
+                    clickX = e.pageX;
+                },
+
+                'mouseup': function() {
+                    clicked = false;
+                    $('html').css('cursor', 'auto');
+                }
             });
         }
     });
