@@ -14,6 +14,7 @@
             <item name="class" xsi:type="string">back</item>
             <item name="url" xsi:type="string">*/manage/</item>
          </item>
+         <item name="reload" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\Reload</item>
       </item>
     </argument>
     <dataSource name="cronjobmanager_timeline_data_source">

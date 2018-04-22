@@ -3,10 +3,11 @@ define([
     'uiLayout',
     'Magento_Ui/js/lib/spinner',
     'rjsResolver',
+    'uiRegistry',
     'moment',
     'uiCollection',
     '../lib/knockout/bindings/boostrapExt',
-], function (_, layout, loader, resolver, moment, Collection) {
+], function (_, layout, loader, resolver, registry, moment, Collection) {
     'use strict';
 
     return Collection.extend({
@@ -235,6 +236,16 @@ define([
             this.updateRange();
             this.updateTimelineWidth();
             this.setNow();
+        },
+
+        reloader: function () {
+            resolver(this.reloadHandler, this);
+        },
+
+        reloadHandler: function () {
+            registry.get(this.provider).reload({
+                refresh: true
+            });
         }
     });
 });
