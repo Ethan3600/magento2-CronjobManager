@@ -25,10 +25,12 @@ define([
             range: {},
             scale: 15,
             width: 0,
+            now: 0,
             tracks: {
                 rows: true,
                 range: true,
-                width: true
+                width: true,
+                now: true
             }
         },
 
@@ -52,6 +54,13 @@ define([
             return this;
         },
 
+        /**
+         * Generates offset in pixels relative to the beggining of
+         * the timeline
+         *
+         * @param {Object} job - cron record
+         * @return {String}
+         */
         getOffset: function (job) {
             var startTime = job.executed_at || job.scheduled_at,
             offset = (moment.utc(startTime).local()
@@ -161,6 +170,15 @@ define([
         },
 
         /**
+         * Returns offset relative to the time now
+         * 
+         * @returns {String}
+         */
+        setNow: function () {
+            this.now = (moment().diff(this.getFirstHour(), 'seconds')) / this.scale;
+        },
+
+        /**
          * format time entry
          */
         formatTime: function (dateStr) {
@@ -202,6 +220,7 @@ define([
             resolver(this.hideLoader, this);
             this.updateRange();
             this.updateTimelineWidth();
+            this.setNow();
         }
     });
 });

@@ -85,6 +85,25 @@
             }
         }
 
+        &__now {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background-color: red;
+
+            &::before {
+                position: absolute;
+                top: 0;
+                right: -10px;
+                height: 0;
+                width: 0px;
+                border: 10px solid transparent;
+                border-top-color: transparent;
+                border-top-color: red;
+                content: "";
+            }
+        }
+
         .timeline-date__container {
 
             &::before {
