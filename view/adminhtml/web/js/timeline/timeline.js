@@ -13,7 +13,7 @@ define([
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
         	dateFormat: 'HH:mm',
-            template: 'cronjobManager/timeline/container',
+            template: 'cronjobManager/timeline/timeline',
             detailsTmpl: 'cronjobManager/timeline/details',
             imports: {
                 rows: '${$.parentName}_data_source:data'
@@ -63,9 +63,9 @@ define([
          */
         getOffset: function (job) {
             var startTime = job.executed_at || job.scheduled_at,
-            offset = (moment.utc(startTime).local()
-                .diff(this.getFirstHour(), 'seconds')) 
-                / this.scale;
+                offset = (moment.utc(startTime).local()
+                    .diff(this.getFirstHour(), 'seconds')) 
+                    / this.scale;
             if (offset < 0) {
                 offset = 0;
             }
@@ -73,7 +73,21 @@ define([
         },
 
         getCronWidth: function (job) {
-            return '3px';
+            var minWidth = 3,
+                start = moment.utc(job.executed_at).local(),
+                end = moment.utc(job.finished_at).local(),
+                duration = 0;
+
+            if (job.finished_at == null && job.status == 'running') {
+                duration = moment().diff(start, 'seconds') / this.scale;
+            }
+
+            if (end.isValid()) {
+               duration = end.diff(start, 'seconds') / this.scale;
+            }
+            duration = Math.round(duration);
+            duration = duration > minWidth ? duration : minWidth;
+            return duration;
         },
 
         /**

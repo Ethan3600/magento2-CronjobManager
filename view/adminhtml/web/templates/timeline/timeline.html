@@ -44,7 +44,7 @@
                                                 'data-tooltip-trigger': 'update-' + $data.schedule_id,
                                             },
                                             style: {
-                                                width: $parentContext.$parent.getCronWidth(),
+                                                width: $parentContext.$parent.getCronWidth($data) + 'px',
                                                 left: $parentContext.$parent.getOffset($data)
                                             }">
                                                 <div render="$parentContext.$parent.detailsTmpl"/> 

@@ -36,7 +36,7 @@
     <container name="timeline_container" >
     	<argument name="data" xsi:type="array">
 	        <item name="config" xsi:type="array">
-	            <item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/container</item>
+	            <item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/timeline</item>
 	        </item>
 	    </argument>
     </container>
