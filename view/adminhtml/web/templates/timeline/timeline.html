@@ -24,7 +24,8 @@
                         <div class="cjm-timeline">
                             <div data-bind="foreach: range.hours">
                                 <div class="timeline-date__container">
-                                    <div class="timeline-date hour">
+                                    <div class="timeline-date hour" 
+                                        data-bind="style: { width: 'calc(100% /' + $parent.range.totalHours + ')' }">
                                         <span data-bind="text: $data" />
                                     </div>
                                 </div>

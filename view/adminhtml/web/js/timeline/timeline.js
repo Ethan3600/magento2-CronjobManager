@@ -25,14 +25,15 @@ define([
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
             range: {},
-            scale: 15,
+            scale: 10,
             width: 0,
             now: 0,
             tracks: {
                 rows: true,
                 range: true,
                 width: true,
-                now: true
+                now: true,
+                scale: true
             }
         },
 
