@@ -1,0 +1,156 @@
+//
+// Variables
+// ____________________________
+
+@row--height: 40px;
+@row--boarder: 1px solid #DADFE0;
+
+@hours--height: auto;
+
+@hour--span--margin-left: 5px;
+
+@wrapper--background-color: #f1f1f1;
+@wrapper--border: 1px solid @wrapper__border-color;
+@wrapper--margin-bottom: 2rem;
+@wrapper__border-color: #999999;
+
+@left-content__row--background-color: #fff;
+
+// Status colors
+@status--success: #1CA84C;
+@status--pending: #A4A8A3;
+@status--missed: #F75300;
+@status--running: #09A7E6;
+@status--error: #D71200;
+
+.cronjobmanager {
+    // overriding body line height
+    line-height: 0.36px;
+
+    .row {
+        border-bottom: @row--boarder;
+        padding: 0;
+        margin: 0;
+        height: @row--height;
+    }
+
+    .wrapper {
+        position: relative;
+        margin-bottom: @wrapper--margin-bottom;
+        float: left;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        width: 100%;
+        border: @wrapper--border;
+        background-color: @wrapper--background-color;
+    }
+
+    .hours {
+        height: @hours--height;
+    }
+
+    .hour {
+        float: left;
+
+        span {
+            margin-left: @hour--span--margin-left;
+        }
+    }
+
+    .job-code {
+        padding: 20px 10px;
+    }
+
+    .timeline-date {
+        padding: 0.9rem 0rem;
+    }
+
+    .left-content {
+        float: left;
+        border-right: @wrapper--border;
+
+        .timeline-unit {
+            width: 100%;
+            border-right: none;
+        }
+
+        .row {
+            background-color: @left-content__row--background-color;
+        }
+    }
+
+    .timeline-container {
+        overflow: auto;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        &__panel {
+            position: relative;
+
+            .timeline-date {
+                border-right: @wrapper--border;
+            }
+        }
+
+        &__now {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background-color: red;
+
+            &::before {
+                position: absolute;
+                top: 0;
+                right: -10px;
+                height: 0;
+                width: 0px;
+                border: 10px solid transparent;
+                border-top-color: transparent;
+                border-top-color: red;
+                content: "";
+            }
+        }
+
+        .timeline-date__container {
+
+            &::before {
+                background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
+                bottom: 0;
+                content: '';
+                margin-left: -1px;
+                position: absolute;
+                top: 3.3rem;
+                width: 1px;
+                z-index: 0;
+            }
+        }
+    }
+
+    .cron-job {
+        position: absolute;
+        margin-top: 5px;
+        background-color: @status--pending; 
+        height: 30px;
+
+        &.success {
+            background-color: @status--success;
+        }
+
+        &.missed {
+            background-color: @status--missed;
+        }
+
+        &.running {
+            background-color: @status--running;
+        }
+
+        &.error {
+            background-color: @status--error;
+        }
+    }
+}
+
