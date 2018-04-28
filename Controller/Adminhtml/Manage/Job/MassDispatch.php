@@ -45,15 +45,14 @@ class MassDispatch extends Action
             $this->_redirect('*/manage/index');
             return;
         }
-        try {
-            foreach ($params as $jobId) {
+        foreach ($params as $jobId) {
+            try {
                 $manager->dispatchSchedule($jobId);
+            } catch (\Exception $e) {
+                $this->getMessageManager()->addErrorMessage($e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/manage/index/');
-            return;
         }
+       
         $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedules");
         $this->_redirect("*/manage/index/");
     }

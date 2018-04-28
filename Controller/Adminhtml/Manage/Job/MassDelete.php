@@ -45,15 +45,14 @@ class MassDelete extends Action
             $this->_redirect('*/manage/index');
             return;
         }
-        try {
-            foreach ($params as $jobId) {
+        foreach ($params as $jobId) {
+            try {
                 $manager->deleteCronJob($jobId);
+            } catch (\Exception $e) {
+                $this->getMessageManager()->addErrorMessage($e->getMessage());
             }
-        } catch (\Exception $e) {
-            $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/manage/index/');
-            return;
         }
+        
         $this->getMessageManager()->addSuccessMessage("Successfully Deleted Schedules");
         $this->_redirect("*/manage/index/");
     }
