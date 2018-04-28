@@ -47,14 +47,14 @@ class MassDispatch extends Action
         }
         try {
             foreach ($params as $jobId) {
-                $manager->dispatchCron($jobId);
+                $manager->dispatchSchedule($jobId);
             }
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/manage/index/');
             return;
         }
-        $this->getMessageManager()->addSuccessMessage("Successfully Deleted Schedules");
+        $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedules");
         $this->_redirect("*/manage/index/");
     }
 }

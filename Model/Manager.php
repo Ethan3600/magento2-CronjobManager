@@ -100,6 +100,14 @@ class Manager
         }
     }
 
+    /**
+     * Dispatches cron schedule
+     * 
+     * @param int $jobId
+     * @param string $jobCode
+     * @param \Magento\Cron\Model\Schedule $schedule
+     * @deprecated
+     */
     public function dispatchCron($jobId = null, $jobCode, $schedule = null)
     {
         $groups = $this->config->getJobs();
@@ -121,6 +129,26 @@ class Manager
             $groupId
         );
 
+        $schedule->getResource()->save($schedule);
+    }
+    
+    /**
+     * Dispatches cron schedule
+     *
+     * @param int $jobId
+     * @param \Magento\Cron\Model\Schedule $schedule
+     */
+    public function dispatchSchedule($jobId, $schedule = null)
+    {
+        $groups = $this->config->getJobs();
+        if (is_null($schedule)) {
+            $schedule = $this->loadSchedule($jobId);
+        }
+        $jobCode = $schedule->getJobCode();
+        $groupId = $this->getGroupId($jobCode, $groups);
+        $jobConfig = $groups[$groupId][$jobCode];
+
+        $this->processor->runScheduledJob($jobConfig, $schedule);
         $schedule->getResource()->save($schedule);
     }
 

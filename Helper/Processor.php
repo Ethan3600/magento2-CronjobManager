@@ -67,6 +67,18 @@ class Processor
         $this->logger = $logger;
     }
 
+    /**
+     * Runs a scheduled job
+     * 
+     * @param string $scheduledTime
+     * @param string $currentTime
+     * @param string $jobConfig
+     * @param \Magento\Cron\Model\Schedule $schedule
+     * @param int $groupId
+     * @throws \Exception
+     * @throws Ambigous <\Exception, \RuntimeException>
+     * @deprecated
+     */
     public function runJob($scheduledTime, $currentTime, $jobConfig, $schedule, $groupId)
     {
         $jobCode = $schedule->getJobCode();
@@ -98,6 +110,68 @@ class Processor
                 $jobCode,
                 $e->getMessage()
             ));
+            if (!$e instanceof \Exception) {
+                $e = new \RuntimeException(
+                    'Error when running a cron job',
+                    0,
+                    $e
+                );
+            }
+            throw $e;
+        }
+        
+        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(strftime(
+            '%Y-%m-%d %H:%M:%S',
+            $this->dateTime->gmtTimestamp()
+        ));
+        $this->logger->info(sprintf(
+            'Cron Job %s is successfully finished',
+            $jobCode
+        ));
+    }
+    
+    /**
+     * Runs a scheduled job
+     *
+     * @param string $scheduledTime
+     * @param string $currentTime
+     * @param string $jobConfig
+     * @param \Magento\Cron\Model\Schedule $schedule
+     * @param int $groupId
+     * @throws \Exception
+     * @throws Ambigous <\Exception, \RuntimeException>
+     */
+    public function runScheduledJob($jobConfig, $schedule)
+    {
+        $jobCode = $schedule->getJobCode();
+        
+        if (!isset($jobConfig['instance'], $jobConfig['method'])) {
+            $schedule->setStatus(Schedule::STATUS_ERROR);
+            throw new \Exception('No callbacks found');
+        }
+        
+        // dynamically create cron instances
+        $model = $this->cronInstanceFactory->create($jobConfig['instance']);
+        $callback = [$model, $jobConfig['method']];
+        if (!is_callable($callback)) {
+            $schedule->setStatus(Schedule::STATUS_ERROR);
+            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
+                $jobConfig['instance'],
+                $jobConfig['method']
+                ));
+        }
+        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()))->save();
+        
+        try {
+            $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
+            call_user_func_array($callback, [$schedule]);
+        } catch (\Throwable $e) {
+            $schedule->setStatus(Schedule::STATUS_ERROR);
+            $this->logger->error(sprintf(
+                'Cron Job %s has an error: %s.',
+                $jobCode,
+                $e->getMessage()
+                ));
             if (!$e instanceof \Exception) {
                 $e = new \RuntimeException(
                     'Error when running a cron job',
