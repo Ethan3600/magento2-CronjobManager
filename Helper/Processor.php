@@ -70,20 +70,7 @@ class Processor
     public function runJob($scheduledTime, $currentTime, $jobConfig, $schedule, $groupId)
     {
         $jobCode = $schedule->getJobCode();
-        $scheduleLifetime = $this->getCronGroupConfigurationValue(
-                $groupId,
-                ProcessCronQueueObserver::XML_PATH_SCHEDULE_LIFETIME
-            );
         
-        $scheduleLifetime = $scheduleLifetime * ProcessCronQueueObserver::SECONDS_IN_MINUTE;
-        if ($scheduledTime < $currentTime - $scheduleLifetime) {
-            $schedule->setStatus(Schedule::STATUS_MISSED);
-            throw new \Exception(sprintf(
-                    'Cron Job %s is missed at %s',
-                    $jobCode, 
-                    $schedule->getScheduledAt()
-                ));
-        }
         if (!isset($jobConfig['instance'], $jobConfig['method'])) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
             throw new \Exception('No callbacks found');
@@ -170,11 +157,9 @@ class Processor
             $count += $connection->delete(
                 $scheduleResource->getMainTable(),
                 [
-                    'status = ?' => Schedule::STATUS_PENDING,
-                    'job_code in (?)' => array_keys($jobs),
                     'created_at < ?' => $connection->formatDate($currentTime - $time)
                 ]
-                );
+            );
         }
         if ($count) {
             $this->logger->info(sprintf('%d cron jobs were cleaned', $count));
