@@ -1,13 +1,16 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
+namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage\Job;
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
 
-class MassScheduleNow extends \Magento\Backend\App\Action
-{   
+class MassDelete extends Action
+{
     const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
-
+    
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -19,15 +22,15 @@ class MassScheduleNow extends \Magento\Backend\App\Action
     private $managerFactory;
     
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context,
-        ManagerFactory $managerFactory
-        ) {
-            parent::__construct($context);
-            $this->resultPageFactory = $resultPageFactory;
-            $this->managerFactory = $managerFactory;
+        ManagerFactory $managerFactory,
+        PageFactory $resultPageFactory,
+        Context $context
+    ) {
+        parent::__construct($context);
+        $this->managerFactory = $managerFactory;
+        $this->resultPageFactory = $resultPageFactory;
     }
-    
+
     /**
      * Save cronjob
      *
@@ -39,19 +42,19 @@ class MassScheduleNow extends \Magento\Backend\App\Action
         $params = $this->getRequest()->getParam('selected');
         if (!isset($params)) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
-            $this->_redirect('*/config/index');
+            $this->_redirect('*/manage/index');
             return;
         }
         try {
-            foreach ($params as $jobCode) {
-                $manager->scheduleNow($jobCode);
+            foreach ($params as $jobId) {
+                $manager->deleteCronJob($jobId);
             }
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/config/index/');
+            $this->_redirect('*/manage/index/');
             return;
         }
-        $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedule Now Action");
-        $this->_redirect("*/config/index/");
+        $this->getMessageManager()->addSuccessMessage("Successfully Deleted Schedules");
+        $this->_redirect("*/manage/index/");
     }
 }
