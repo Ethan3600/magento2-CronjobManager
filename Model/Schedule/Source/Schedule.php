@@ -3,7 +3,7 @@
 namespace EthanYehuda\CronjobManager\Model\Schedule\Source;
 
 use Magento\Cron\Model\Config;
-use Magento\Framework\Data\OptionSourceInterface
+use Magento\Framework\Data\OptionSourceInterface;
 
 class Schedule implements OptionSourceInterface
 {

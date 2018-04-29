@@ -13,14 +13,14 @@ class GenericButton
      *
      * @var \Magento\Framework\UrlInterface
      */
-    private $urlBuilder;
+    protected $urlBuilder;
 
     /**
      * Registry
      *
      * @var \Magento\Framework\Registry
      */
-    private $registry;
+    protected $registry;
 
     /**
      * Constructor

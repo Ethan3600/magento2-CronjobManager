@@ -101,6 +101,7 @@
             width: 1px;
             height: 100%;
             background-color: red;
+            z-index: 0;
 
             &::before {
                 position: absolute;
@@ -135,6 +136,7 @@
         margin-top: 5px;
         background-color: @status--pending; 
         height: 30px;
+        z-index: 1;
 
         &.success {
             background-color: @status--success;

@@ -54,13 +54,13 @@ class RestoreSystemDefault extends Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        $jobCode = $params['job_code'] ? $params['job_code'] : null;
+        $jobCode = isset($params['job_code']) ? $params['job_code'] : null;
         if (!$jobCode) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/edit/');
             return;
         }
-        $group = $params['group'] ? $params['group'] : null;
+        $group = isset($params['group']) ? $params['group'] : null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->restoreSystemDefault($path);
