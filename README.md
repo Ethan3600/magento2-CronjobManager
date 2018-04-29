@@ -32,7 +32,7 @@ In your Magento2 root directory, you may install this package via composer:
 
 ## Support
 
-CM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
+CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
 --- | :---: | :---: | :---: | :---:
 1.x | :x: | :x: | :white_check_mark: | :question:
 
@@ -47,6 +47,7 @@ Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some tes
 ### Title
 
 <img width="60%" align="left" src="https://user-images.githubusercontent.com/6549623/39410783-98b957fa-4bcb-11e8-9290-71c6597ef828.png"/>
+
 Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
 
 ### Title
