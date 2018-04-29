@@ -11,10 +11,14 @@
 <p align="center"><i>Control Your Cron<i/></p>
 
 <p align="center">
-  
-[![Latest Stable Version](https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/v/stable)](https://packagist.org/packages/ethanyehuda/magento2-cronjobmanager)
-
-[![Total Downloads](https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads)](https://packagist.org/packages/ethanyehuda/magento2-cronjobmanager)
+  <a href="https://packagist.org/packages/ethanyehuda/magento2-cronjobmanager">
+    <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/v/stable"
+         alt="Latest Stable Version">
+  </a>
+  <a href="https://packagist.org/packages/ethanyehuda/magento2-cronjobmanager/stats">
+    <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
+         alt="Total Downloads">
+  </a>
 </p>
 
 ## Installation
@@ -37,20 +41,25 @@ CM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
 
 ### Title
 
-<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410796-d3ec4e72-4bcb-11e8-85ef-325e8a580df2.png"/><div style="float: left; boarder-right: solid 1px grey;" width="40%">Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
-</div>
+<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410796-d3ec4e72-4bcb-11e8-85ef-325e8a580df2.png"/>
+Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
 
 ### Title
 
-<img width="60%" align="left" src="https://user-images.githubusercontent.com/6549623/39410783-98b957fa-4bcb-11e8-9290-71c6597ef828.png"/><div style="float: right" width="40%">
+<img width="60%" align="left" src="https://user-images.githubusercontent.com/6549623/39410783-98b957fa-4bcb-11e8-9290-71c6597ef828.png"/>
 Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
-</div>
 
 ### Title
 
-<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/><div style="float: left" width="40%">
+<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/>
 Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
-</div>
+
+## Issue Tracking / Upcoming Features
+
+For issues, please use the [issue tracker](https://github.com/Ethan3600/magento2-CronjobManager/issues)
+Issues keep this project alive and strong!
+
+We're planning on pumping out a ton of new features, which you can follow on our [project page](https://github.com/Ethan3600/magento2-CronjobManager/projects/1). 
 
 ## Maintainers
 
