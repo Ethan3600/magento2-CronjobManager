@@ -2,8 +2,9 @@
 namespace EthanYehuda\CronjobManager\Ui\Component\Listing\Column;
 
 use Magento\Framework\Exception\NotFoundException;
+use Magento\Ui\Component\Listing\Columns\Column;
 
-class ConfigActions extends \Magento\Ui\Component\Listing\Columns\Column
+class ConfigActions extends Column
 {
     const JOB_CODE = 'job_code';
     

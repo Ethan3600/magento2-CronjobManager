@@ -20,14 +20,14 @@ class CronActions extends Column
     /**
      * @var UrlInterface
      */
-    protected $urlBuilder;
+    private $urlBuilder;
 
     /**
      * Escaper.
      *
      * @var Escaper
      */
-    protected $escaper;
+    private $escaper;
 
     /**
      * CronActions constructor.
@@ -99,7 +99,7 @@ class CronActions extends Column
                             'confirm' => [
                                 'job_code' => __('Dispatch %1', $jobCode),
                                 'message' => __(
-                                    'Are you sure you want to <b>dispatch %1</b>? This may cause performace issues with Magento while it\'s running.',
+                                    'Are you sure you want to <b>dispatch %1</b>? This may be time consuming and resource intensive.',
                                     $jobCode
                                 ),
                             ],

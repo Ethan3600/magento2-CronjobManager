@@ -26,6 +26,9 @@ define([
             },
             range: {},
             scale: 12.5,
+            minScale: 7,
+            maxScale: 15,
+            step: 2,
             width: 0,
             now: 0,
             tracks: {
@@ -44,6 +47,7 @@ define([
          */
         initialize: function () {
             this._super();
+            this.initTrackable();
             return this;
         },
 
@@ -55,6 +59,14 @@ define([
         initObservable: function () {
             this._super();
             return this;
+        },
+
+        initTrackable: function () {
+            var self = this;
+            this.on('scale', function() {
+                self.updateTimelineWidth();
+                self.setNow();
+            });
         },
 
         /**
@@ -97,7 +109,7 @@ define([
          * Calculates the width of the timeline
          * and binds it with the trackable width property
          */
-        updateTimelineWidth: function() {
+        updateTimelineWidth: function () {
             var range = this.rows[0].range;
 
             var first = moment.unix(range.first); 
@@ -112,8 +124,6 @@ define([
         /**
          * Updates data of a range object,
          * e.g. total hours, first hour and last hour, etc.
-         *
-         * @returns {Object} Range instance.
          */
         updateRange: function () {
             var firstHour    = this.getFirstHour(),
@@ -197,6 +207,8 @@ define([
 
         /**
          * format time entry
+         *
+         * @returns {String}
          */
         formatTime: function (dateStr) {
             if (dateStr == null) {
@@ -250,6 +262,9 @@ define([
             });
         },
 
+        /**
+         * Handles dragging functionality on the timeline window
+         */
         afterTimelineRender: function () {
             var clicked = false, 
                 scrollVertical = true,

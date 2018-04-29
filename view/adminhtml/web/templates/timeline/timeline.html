@@ -1,6 +1,18 @@
 <div class="cronjobmanager" >
+    <div class="timeline-scale">
+        <div class="data-slider"
+            range="
+                value: ko.getObservable($data, 'scale'),
+                min: minScale,
+                max: maxScale,
+                step: step
+            ">
+            <span class="data-slider-from">in</span>
+            <span class="data-slider-to">out</span>
+        </div>
+    </div>
     <div class="wrapper">
-        <div class="left-content">
+       <div class="left-content">
             <div class="timeline-unit row hours">
                 <div class="timeframe timeline-date">
                     <span data-bind="text: range.timeframe"/>
@@ -60,6 +72,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="timeline-scale">
+        <div class="data-slider"
+            range="
+                value: ko.getObservable($data, 'scale'),
+                min: minScale,
+                max: maxScale,
+                step: step
+            ">
+            <span class="data-slider-from">in</span>
+            <span class="data-slider-to">out</span>
         </div>
     </div>
 </div>

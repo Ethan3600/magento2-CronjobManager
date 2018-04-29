@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 define([
     'ko',
     'Magento_Ui/js/lib/view/utils/async',

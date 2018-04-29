@@ -75,8 +75,6 @@ class TimelineDataProvider extends AbstractDataProvider
 
     private  function getRange($firstHour, $lastHour)
     {
-        $firstHour = strtotime($firstHour);
-        $lastHour = strtotime($lastHour);
         return [
             'first' => $firstHour,
             'last' => $lastHour
@@ -85,16 +83,31 @@ class TimelineDataProvider extends AbstractDataProvider
 
     private function getFirstHour($item)
     {
-        $firstHour = $item->getExecutedAt();
+        $firstHour = $item->getScheduledAt();
         if (empty($firstHour)) {
-            $firstHour = $item->getScheduledAt();
+            $firstHour = $item->getExecutedAt();
         }
-        return $firstHour;
+        if (empty($firstHour)) {
+            $firstHour = $item->getFinishedAt();
+        }
+        if (empty($firstHour)) {
+            $firstHour = $item->getCreatedAt();
+        }
+        return strtotime($firstHour);
     }
 
     private function getLastHour($item)
     {
         $lastHour = $item->getFinishedAt();
-        return $lastHour;
+        if (empty($lastHour)) {
+            $lastHour = $item->getExecutedAt();
+        }
+        if (empty($lastHour)) {
+            $lastHour = $item->getScheduledAt();
+        }
+        if (empty($lastHour)) {
+            $lastHour = $item->getCreatedAt();
+        }
+        return strtotime($lastHour);
     }
 }

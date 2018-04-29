@@ -5,10 +5,13 @@ namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
 use Magento\Framework\App\CacheInterface;
 
-class MassRestoreSystemDefault extends \Magento\Backend\App\Action
+class MassRestoreSystemDefault extends Action
 {
+    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
     
     /**
@@ -42,15 +45,6 @@ class MassRestoreSystemDefault extends \Magento\Backend\App\Action
         $this->resultPageFactory = $resultPageFactory;
         $this->helper = $helper;
         $this->cache = $cache;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see \Magento\Backend\App\AbstractAction::_isAllowed()
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
     }
     
     /**

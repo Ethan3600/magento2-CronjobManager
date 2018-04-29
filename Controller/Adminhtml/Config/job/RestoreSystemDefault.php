@@ -4,9 +4,14 @@ namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
 use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Framework\App\CacheInterface;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
 
-class RestoreSystemDefault extends \Magento\Backend\App\Action
+class RestoreSystemDefault extends Action
 {
+    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
     
     /**
@@ -30,8 +35,8 @@ class RestoreSystemDefault extends \Magento\Backend\App\Action
     private $helper;
 
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context,
+        PageFactory $resultPageFactory,
+        Context $context,
         CacheInterface $cache,
         JobConfig $helper
     ) {
@@ -42,15 +47,6 @@ class RestoreSystemDefault extends \Magento\Backend\App\Action
     }
 
     /**
-     * {@inheritDoc}
-     * @see \Magento\Backend\App\AbstractAction::_isAllowed()
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
-    }
-
-    /**
      * Save cronjob
      *
      * @return Void
@@ -58,13 +54,13 @@ class RestoreSystemDefault extends \Magento\Backend\App\Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        $jobCode = $params['job_code'] ? $params['job_code'] : null;
+        $jobCode = isset($params['job_code']) ? $params['job_code'] : null;
         if (!$jobCode) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/edit/');
             return;
         }
-        $group = $params['group'] ? $params['group'] : null;
+        $group = isset($params['group']) ? $params['group'] : null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->restoreSystemDefault($path);
