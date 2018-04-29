@@ -94,6 +94,7 @@ The Cron Job Manager is an arsenal of tools that administrators can use to manip
 ## Issue Tracking / Upcoming Features
 
 For issues, please use the [issue tracker](https://github.com/Ethan3600/magento2-CronjobManager/issues)
+
 Issues keep this project alive and strong, so let us know if you find anything!
 
 We're planning on pumping out a ton of new features, which you can follow on our [project page](https://github.com/Ethan3600/magento2-CronjobManager/projects/1).
