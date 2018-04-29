@@ -2,7 +2,7 @@
   <br>
   <img src="https://raw.githubusercontent.com/Ethan3600/randomStuff/master/Images/logo1.png" alt="Cron Job Manager" width="400">
   <br>
-  EthanYehuda_CronjobManager
+  EthanYehuda_CronJobManager
   <br>
 </h1>
 
@@ -37,30 +37,78 @@ CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3
 1.x | :x: | :x: | :white_check_mark: | :question:
 
 
-## Usage
+## Features
 
-### Title
+### Full Control Over All Scheduled Cron Jobs
 
-<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410796-d3ec4e72-4bcb-11e8-85ef-325e8a580df2.png"/>
-Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
 
-### Title
+Take command of all processes running on your Magento 2 instance. You will be able to manage all scheduled cron jobs, which means you have complete control over what tasks fire behind the scenes. An administrator will have the ability of scheduling, removing, editing, analyzing, and running any, and all cron jobs in the cron_scheule table.
 
-<img width="60%" align="left" src="https://user-images.githubusercontent.com/6549623/39410783-98b957fa-4bcb-11e8-9290-71c6597ef828.png"/>
+<img src="https://user-images.githubusercontent.com/6549623/39410796-d3ec4e72-4bcb-11e8-85ef-325e8a580df2.png"/>
 
-Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
+### Informative Timeline
 
-### Title
+With the **Timeline** feature, you can see all scheduled tasks registered by Magento's scheduler queue, and quickly analyize important details pertaining to all your tasks. The timeline feature comes with dynamic scaling, live reloading, and tooltips to help you better interface with the scheduler.
 
-<img width="60%" align="right" src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/>
-Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi Some test text alskdfjasldfjk asdlkfja sdflkjas dfalskdj awekgjaowivaoi
+<img src="https://user-images.githubusercontent.com/6549623/39410783-98b957fa-4bcb-11e8-9290-71c6597ef828.png"/>
+
+
+### Control Over Task Configurations
+
+The configuration panel boasts a list of features including:
+
+* Cron expression editing
+
+   Grants access to changing the frequency of any cron job in Magento
+
+   This also allows you to **disable** cron jobs by removing the expression
+
+* System default configuration restore
+
+   Revert back to the system's default configuration
+
+* Schedule Now
+
+   Gives the ability to schedule any task immediately and in the background. Unlike the dispatch feature on the dashboard, which runs the cron on the forefront, scheduling a task from the configuration panel will allow the system to call in asynchronously
+
+* Cron Runner
+
+   Forces Magento to run the scheduler queue on command
+
+<img src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/>
+
+### Command Line Tools
+
+Use the command line tools to run any cron job and view all tasks in the system:
+
+For example: `php bin/magento cronmanager:showjobs`
+
+<img src="https://user-images.githubusercontent.com/6549623/39410837-41f1b060-4bcc-11e8-8b98-7d7253662d5c.png"/>
+
+
+### And Much More...
+
+The Cron Job Manager is an arsenal of tools that administrators can use to manipulate Magento's scheduler features. It's perfect for debugging obscure issues with custom or native processes (cron jobs) that run on Magento's scheduler queue. There are many use cases where administrators need to keep track of tasks and force them to behave in a specific way. The Cron Job Manager can do it all!
+
+<img src="https://user-images.githubusercontent.com/6549623/39410850-78ca374c-4bcc-11e8-9405-88917a72b5be.png"/>
 
 ## Issue Tracking / Upcoming Features
 
 For issues, please use the [issue tracker](https://github.com/Ethan3600/magento2-CronjobManager/issues)
-Issues keep this project alive and strong!
+Issues keep this project alive and strong, so let us know if you find anything!
 
-We're planning on pumping out a ton of new features, which you can follow on our [project page](https://github.com/Ethan3600/magento2-CronjobManager/projects/1). 
+We're planning on pumping out a ton of new features, which you can follow on our [project page](https://github.com/Ethan3600/magento2-CronjobManager/projects/1).
+
+### Development / Contribution
+
+If you want to contribute please follow the below instructions:
+
+1. Create an issue and describe your idea
+2. [Fork it](https://github.com/Ethan3600/magento2-CronjobManager/fork)
+3. Create your feature branch (`git checkout -b my-new-feature`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Publish the branch (`git push origin my-new-feature`)
+6. Submit a new Pull Request for review
 
 ## Maintainers
 
