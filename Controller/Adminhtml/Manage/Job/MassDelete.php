@@ -11,6 +11,8 @@ use Magento\Ui\Component\MassAction\Filter;
 
 class MassDelete extends Action
 {
+    const MAX_QUERY_SIZE = 10;
+    
     const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     
     /**
@@ -63,7 +65,7 @@ class MassDelete extends Action
             return;
         }
         
-        if ($size > 10) {
+        if ($size > self::MAX_QUERY_SIZE) {
             $deleteQuery = $collection->getSelect()->deleteFromSelect('main_table');
             $collection->getConnection()->query($deleteQuery);
         } else {

@@ -2,8 +2,14 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage;
 
-class Index extends \Magento\Backend\App\Action
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+
+class Index extends Action
 {
+    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -14,20 +20,11 @@ class Index extends \Magento\Backend\App\Action
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context
+        PageFactory $resultPageFactory,
+        Context $context
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see \Magento\Backend\App\AbstractAction::_isAllowed()
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
     }
 
     /**

@@ -3,8 +3,11 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
 
-class MassScheduleNow extends \Magento\Backend\App\Action
+class MassScheduleNow extends Action
 {   
     const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
@@ -19,13 +22,13 @@ class MassScheduleNow extends \Magento\Backend\App\Action
     private $managerFactory;
     
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context,
+        PageFactory $resultPageFactory,
+        Context $context,
         ManagerFactory $managerFactory
-        ) {
-            parent::__construct($context);
-            $this->resultPageFactory = $resultPageFactory;
-            $this->managerFactory = $managerFactory;
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+        $this->managerFactory = $managerFactory;
     }
     
     /**

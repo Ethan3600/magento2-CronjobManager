@@ -4,6 +4,7 @@
 namespace EthanYehuda\CronjobManager\Helper;
 
 use EthanYehuda\CronjobManager\Model\Cron\InstanceFactory as CronInstanceFactory;
+use Psr\Log\LoggerInterface;
 use Magento\Cron\Observer\ProcessCronQueueObserver;
 use Magento\Cron\Model\Schedule;
 use Magento\Cron\Model\ScheduleFactory;
@@ -12,7 +13,6 @@ use Magento\Cron\Model\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Psr\Log\LoggerInterface;
 
 class Processor
 {

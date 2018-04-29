@@ -3,21 +3,27 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
 use Magento\Cron\Observer\ProcessCronQueueObserver;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Framework\Event\ObserverFactory;
 
-class Run extends \Magento\Backend\App\Action
+class Run extends Action
 {
+    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactory
      */
-    protected $resultPageFactory;
+    private $resultPageFactory;
     
     /**
      * @var ProcessCronQueueObserver
      */
-    protected $cronQueue;
+    private $cronQueue;
     
     /**
-     * @var \Magento\Framework\Event\Observer
+     * @var Observer
      */
     private $observer;
     
@@ -28,24 +34,15 @@ class Run extends \Magento\Backend\App\Action
      * @param Manager $cronJobManager
      */
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Event\ObserverFactory $observerFactory,
+        PageFactory $resultPageFactory,
+        Context $context,
+        ObserverFactory $observerFactory,
         ProcessCronQueueObserver $cronQueue
     ) {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
         $this->cronQueue= $cronQueue;
         $this->observer = $observerFactory->create('Magento\Framework\Event\Observer');
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see \Magento\Backend\App\AbstractAction::_isAllowed()
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
     }
     
     /**

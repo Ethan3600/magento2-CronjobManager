@@ -3,9 +3,15 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Backend\App\Action\Context;
+use Magento\Backend\App\Action;
+use Magento\Framework\Registry;
 
-class Edit extends \Magento\Backend\App\Action
+class Edit extends Action
 {
+    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -21,22 +27,13 @@ class Edit extends \Magento\Backend\App\Action
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\Registry $coreRegistry
-        ) {
-            parent::__construct($context);
-            $this->resultPageFactory = $resultPageFactory;
-            $this->coreRegistry = $coreRegistry;
-    }
-    
-    /**
-     * {@inheritDoc}
-     * @see \Magento\Backend\App\AbstractAction::_isAllowed()
-     */
-    protected function _isAllowed()
-    {
-        return $this->_authorization->isAllowed('EthanYehuda_CronjobManager::cronjobmanager');
+        PageFactory $resultPageFactory,
+        Context $context,
+        Registry $coreRegistry
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+        $this->coreRegistry = $coreRegistry;
     }
     
     /**
