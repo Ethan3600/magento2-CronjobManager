@@ -2,12 +2,11 @@
 
 namespace EthanYehuda\CronjobManager\Console\Command;
 
+use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-
-use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;

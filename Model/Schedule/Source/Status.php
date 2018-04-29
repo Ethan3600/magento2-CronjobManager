@@ -2,9 +2,10 @@
 
 namespace EthanYehuda\CronjobManager\Model\Schedule\Source;
 
-use \Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\Schedule;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class Status implements \Magento\Framework\Data\OptionSourceInterface
+class Status implements OptionSourceInterface
 {
     /**
      * Return array of options as value-label pairs

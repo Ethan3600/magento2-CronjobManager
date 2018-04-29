@@ -3,13 +3,14 @@
 namespace EthanYehuda\CronjobManager\Model\Schedule\Source;
 
 use Magento\Cron\Model\Config;
+use Magento\Framework\Data\OptionSourceInterface;
 
-class Schedule implements \Magento\Framework\Data\OptionSourceInterface
+class Schedule implements OptionSourceInterface
 {
     /**
      * @var Config
      */
-    protected $cronConfig;
+    private $cronConfig;
 
     public function __construct(
         Config $config

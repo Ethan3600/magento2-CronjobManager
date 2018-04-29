@@ -3,6 +3,8 @@
 namespace EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit;
 
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
+use Magento\Backend\Block\Widget\Context;
+use Magento\Framework\Registry;
 
 class GenericButton
 {
@@ -27,8 +29,8 @@ class GenericButton
      * @param \Magento\Framework\Registry $registry
      */
     public function __construct(
-        \Magento\Backend\Block\Widget\Context $context,
-        \Magento\Framework\Registry $registry
+        Context $context,
+        Registry$registry
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
         $this->registry = $registry;
