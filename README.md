@@ -5,7 +5,7 @@
   <br>
 </h1>
 
-<h4 align="center">A Management and Scheduling tool for Magento 2 Cron Jobs</h4>
+<h4 align="center">A Cron Job Management and Scheduling tool for Magento 2</h4>
 
 <p align="center"><i>Control Your Cron</i></p>
 
