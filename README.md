@@ -1,5 +1,4 @@
 <h1 align="center">
-  <br>
   <img src="https://raw.githubusercontent.com/Ethan3600/randomStuff/master/Images/logo1.png" alt="Cron Job Manager" width="400">
   <br>
   EthanYehuda_CronJobManager
@@ -104,9 +103,9 @@ We're planning on pumping out a ton of new features, which you can follow on our
 If you want to contribute please follow the below instructions:
 
 1. Create an issue and describe your idea
-2. [Fork it](https://github.com/Ethan3600/magento2-CronjobManager/fork)
+2. [Fork this repository](https://github.com/Ethan3600/magento2-CronjobManager/fork)
 3. Create your feature branch (`git checkout -b my-new-feature`)
-4. Commit your changes (`git commit -am 'Add some feature'`)
+4. Commit your changes
 5. Publish the branch (`git push origin my-new-feature`)
 6. Submit a new Pull Request for review
 
