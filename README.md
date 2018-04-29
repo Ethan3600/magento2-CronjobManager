@@ -8,7 +8,7 @@
 
 <h4 align="center">A Management and Scheduling tool for Magento 2 Cron Jobs</h4>
 
-<p align="center"><i>Control Your Cron<i/></p>
+<p align="center"><i>Control Your Cron</i></p>
 
 <p align="center">
   <a href="https://packagist.org/packages/ethanyehuda/magento2-cronjobmanager">
