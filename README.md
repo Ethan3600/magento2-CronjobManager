@@ -68,7 +68,7 @@ The configuration panel boasts a list of features including:
 
 * Schedule Now
 
-   Gives the ability to schedule any task immediately and in the background. Unlike the dispatch feature on the dashboard, which runs the cron on the forefront, scheduling a task from the configuration panel will allow the system to call in asynchronously
+   Gives the ability to schedule any task immediately and in the background. Unlike the dispatch feature on the dashboard, which runs the cron on the forefront, scheduling a task from the configuration panel will allow the system to call it asynchronously
 
 * Cron Runner
 
