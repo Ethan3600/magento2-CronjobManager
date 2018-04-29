@@ -56,17 +56,23 @@ class MassDelete extends Action
     {
         $manager = $this->managerFactory->create();
         $collection = $this->filter->getCollection($this->collectionFactory->create());
-        if ($collection->getSize() < 1) {
+        $size = $collection->getSize();
+        if ($size < 1) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/manage/index');
             return;
         }
         
-        foreach ($collection->getItems() as $schedule) {
-            try {
-                $manager->deleteCronJob($schedule->getId(), $schedule);
-            } catch (\Exception $e) {
-                $this->getMessageManager()->addErrorMessage($e->getMessage());
+        if ($size > 10) {
+            $deleteQuery = $collection->getSelect()->deleteFromSelect('main_table');
+            $collection->getConnection()->query($deleteQuery);
+        } else {
+            foreach ($collection->getItems() as $schedule) {
+                try {
+                    $manager->deleteCronJob($schedule->getId(), $schedule);
+                } catch (\Exception $e) {
+                    $this->getMessageManager()->addErrorMessage($e->getMessage());
+                }
             }
         }
         
