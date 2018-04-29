@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 define([
     'underscore',
     'moment',
