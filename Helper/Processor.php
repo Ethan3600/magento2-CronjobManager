@@ -160,7 +160,8 @@ class Processor
                 $jobConfig['method']
                 ));
         }
-        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()))->save();
+        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
+        $schedule->getResource()->save($schedule);
         
         try {
             $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
