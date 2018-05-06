@@ -93,16 +93,19 @@ define([
 
         getCronWidth: function (job) {
             var minWidth = 3,
-                start = moment.utc(job.executed_at).local(),
-                end = moment.utc(job.finished_at).local(),
+                timezoneOffset = new Date().getTimezoneOffset() * 60,
+                startTime = job.executed_at || job.scheduled_at || job.created_at,
+                start = new Date(startTime).getTime() / 1000,
+                end = new Date(job.finished_at).getTime() / 1000,
+                now = (new Date().getTime() / 1000) + timezoneOffset,
                 duration = 0;
 
-            if (job.finished_at == null && job.status == 'running') {
-                duration = moment().diff(start, 'seconds') / this.scale;
+            if (job.finished_at == null && job.status == 'running' && start != 0) {
+                duration = (now - start) / this.scale;
             }
 
-            if (end.isValid()) {
-               duration = end.diff(start, 'seconds') / this.scale;
+            if (moment(end).isValid() && job.executed_at != null) {
+               duration = (end - start) / this.scale;
             }
             duration = Math.round(duration);
             duration = duration > minWidth ? duration : minWidth;
