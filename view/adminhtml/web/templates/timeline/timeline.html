@@ -48,7 +48,7 @@
                         <div class="row">
                             <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
                                 <fastForEach args="data: $data.value">
-                                    <div data-bind="attr: { 'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id }">
+                                    <div>
                                         <div data-bind="
                                         attr: { 
                                             class: 'cron-job ' + $data.status,
@@ -58,8 +58,59 @@
                                         style: {
                                             width: $parentContext.$parent.getCronWidth($data) + 'px',
                                             left: $parentContext.$parent.getOffset($data)
-                                        }">
-                                            <div render="$parentContext.$parent.detailsTmpl"/> 
+                                        }"/>
+                                        <div tooltip=" trigger: '[data-tooltip-trigger=update-' + schedule_id + ']',
+                                            action: 'hover',
+                                            delay: 0,
+                                            position: 'right',
+                                            step: 5,
+                                            strict: true,
+                                            closeButton: false">
+                                            <div>
+                                                <div class="data-tooltip-title">
+                                                    <text args="job_code"/>
+                                                </div>
+                                                <div class="data-tooltip-content">
+                                                    <dl class="staging-events-summary">
+                                                        <dt>
+                                                            <translate args="'Schedule Id'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <text args="schedule_id"/>
+                                                        </dd>
+                                                        <dt>
+                                                            <translate args="'Status'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <text args="status"/>
+                                                        </dd>
+                                                        <dt>
+                                                            <translate args="'Created at'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <time text="$parentContext.$parent.formatTime(created_at)"/>
+                                                        </dd>
+                                                        <dt>
+                                                            <translate args="'Scheduled at'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <time text="$parentContext.$parent.formatTime(scheduled_at) || 'N/A'"/>
+                                                        </dd>
+                                                        <dt>
+                                                            <translate args="'Executed at'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <time text="$parentContext.$parent.formatTime(executed_at) || 'N/A'"/>
+                                                        </dd>
+                                                        <dt>
+                                                            <translate args="'Finished at'"/>:
+                                                        </dt>
+                                                        <dd>
+                                                            <time text="$parentContext.$parent.formatTime(finished_at) || 'N/A'"/>
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </fastForEach>
