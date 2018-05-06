@@ -1,14 +1,14 @@
 define([
     'underscore',
     'jquery',
+    'ko',
     'uiLayout',
     'Magento_Ui/js/lib/spinner',
     'rjsResolver',
     'uiRegistry',
     'moment',
     'uiCollection',
-    '../lib/knockout/bindings/boostrapExt',
-], function (_, $, layout, loader, resolver, registry, moment, Collection) {
+], function (_, $, ko, layout, loader, resolver, registry, moment, Collection) {
     'use strict';
 
     return Collection.extend({
@@ -31,6 +31,7 @@ define([
             step: 2,
             width: 0,
             now: 0,
+            transformedRows: [],
             tracks: {
                 rows: true,
                 range: true,
@@ -57,7 +58,10 @@ define([
          * @returns {Listing} Chainable.
          */
         initObservable: function () {
-            this._super();
+            this._super()
+                // fastForEach only takes observables
+                // we must NOT use ES5 get/set accessor descriptors
+                .observe('transformedRows');
             return this;
         },
 
@@ -250,6 +254,7 @@ define([
             this.updateRange();
             this.updateTimelineWidth();
             this.setNow();
+            this.transformObject(this.rows);
         },
 
         reloader: function () {
@@ -260,6 +265,17 @@ define([
             registry.get(this.provider).reload({
                 refresh: true
             });
+        },
+
+        transformObject: function (obj) {
+            var properties = [];
+            ko.utils.objectForEach(obj, function (key, value) {
+                properties.push({ key: key, value: value });
+            });
+            // we don't need the range key, which is stored
+            // in the first element
+            properties.shift();
+            this.transformedRows(properties);
         },
 
         /**

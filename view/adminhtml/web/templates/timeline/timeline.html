@@ -18,15 +18,13 @@
                     <span data-bind="text: range.timeframe"/>
                 </div>
             </div>
-            <div foreachProp="rows">
-                <!-- ko if: $index() != 0 -->
+            <fastForEach args="data: transformedRows">
                 <div class="row">
                     <div class="job-code">
                         <text args="$data.key" />
                     </div>
                 </div>
-                <!-- /ko -->
-            </div>
+            </fastForEach>
         </div>
         <div class="main-content">
             <div class="timeline-container" afterRender="afterTimelineRender">
@@ -46,30 +44,28 @@
                             </div>
                         </div>
                     </div>
-                    <div foreachProp="rows">
-                        <!-- ko if: $index() != 0 -->
-                            <div class="row">
-                                <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
-                                    <div data-bind="foreach: $data.value">
-                                        <div data-bind="attr: { 'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id }">
-                                            <div data-bind="
-                                            attr: { 
-                                                class: 'cron-job ' + $data.status,
-                                                id: $data.schedule_id,
-                                                'data-tooltip-trigger': 'update-' + $data.schedule_id,
-                                            },
-                                            style: {
-                                                width: $parentContext.$parent.getCronWidth($data) + 'px',
-                                                left: $parentContext.$parent.getOffset($data)
-                                            }">
-                                                <div render="$parentContext.$parent.detailsTmpl"/> 
-                                            </div>
+                    <fastForEach args="data: transformedRows">
+                        <div class="row">
+                            <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
+                                <fastForEach args="data: $data.value">
+                                    <div data-bind="attr: { 'data-tooltip-search-scope': 'search-scope-' + $data.schedule_id }">
+                                        <div data-bind="
+                                        attr: { 
+                                            class: 'cron-job ' + $data.status,
+                                            id: $data.schedule_id,
+                                            'data-tooltip-trigger': 'update-' + $data.schedule_id,
+                                        },
+                                        style: {
+                                            width: $parentContext.$parent.getCronWidth($data) + 'px',
+                                            left: $parentContext.$parent.getOffset($data)
+                                        }">
+                                            <div render="$parentContext.$parent.detailsTmpl"/> 
                                         </div>
                                     </div>
-                                </div>
+                                </fastForEach>
                             </div>
-                        <!-- /ko -->
-                    </div>
+                        </div>
+                    </fastForEach>
                 </div>
             </div>
         </div>
