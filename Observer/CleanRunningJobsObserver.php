@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Observer;
 
+use EthanYehuda\CronjobManager\Helper\Config;
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Event\Observer;
@@ -15,23 +16,33 @@ class CleanRunningJobsObserver implements ObserverInterface
     /** @var \Magento\Cron\Model\ResourceModel\Schedule */
     private $resourceModel;
 
+    /** @var \Magento\Framework\App\Config\ScopeConfigInterface */
+    private $scopeConfig;
+
     public function __construct(
         CollectionFactory $collectionFactory,
-        \Magento\Cron\Model\ResourceModel\Schedule $resourceModel
+        \Magento\Cron\Model\ResourceModel\Schedule $resourceModel,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->resourceModel = $resourceModel;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
-     * Find all jobs in status "running" (according to db), and check if the process is alive.
-     * If not, set status to error, with the message "Process went away"
+     * If this feature is active, Find all jobs in status "running" (according to db),
+     * and check if the process is alive. If not, set status to error, with the message
+     * "Process went away"
      *
      * @param \Magento\Framework\Event\Observer $observer
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
     public function execute(Observer $observer)
     {
+        if (!$this->scopeConfig->getValue(Config::PATH_CLEAN_RUNNING)) {
+            return;
+        }
+
         /** @var \Magento\Cron\Model\ResourceModel\Schedule\Collection $collection */
         $collection = $this->collectionFactory->create();
 
