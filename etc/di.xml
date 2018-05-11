@@ -22,6 +22,6 @@
         </arguments>
     </type>
     <type name="Magento\Cron\Model\Schedule">
-        <plugin name="ethanyehuda_cronjobmanager_set_pid" type="\EthanYehuda\CronjobManager\Plugin\Cron\Model\SchedulePlugin" />
+        <plugin name="ethanyehuda_cronjobmanager_set_pid" type="EthanYehuda\CronjobManager\Plugin\Cron\Model\SchedulePlugin" />
     </type>
 </config>

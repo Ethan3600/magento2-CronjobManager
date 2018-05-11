@@ -2,13 +2,16 @@
 
 namespace EthanYehuda\CronjobManager\Plugin\Cron\Model;
 
+use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
+
 class SchedulePlugin
 {
     /** @var \Magento\Cron\Model\ResourceModel\Schedule */
     private $resourceModel;
 
     public function __construct(
-        \Magento\Cron\Model\ResourceModel\Schedule $resourceModel
+        ScheduleResource $resourceModel
     ) {
         $this->resourceModel = $resourceModel;
     }
@@ -23,10 +26,10 @@ class SchedulePlugin
      * @return boolean
      * @throws \Magento\Framework\Exception\AlreadyExistsException
      */
-    public function afterTryLockJob(\Magento\Cron\Model\Schedule $subject, $return)
+    public function afterTryLockJob(Schedule $subject, $return)
     {
         if ($return) {
-            $subject->setData("pid", \getmypid());
+            $subject->setData("pid", getmypid());
             $this->resourceModel->save($subject); // Save A.S.A.P, in case the process is killed
         }
 

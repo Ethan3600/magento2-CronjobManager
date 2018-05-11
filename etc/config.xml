@@ -3,9 +3,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <system>
-            <cron_manager>
+            <cron_job_manager>
                 <clean_running_schedule>1</clean_running_schedule>
-            </cron_manager>
+            </cron_job_manager>
         </system>
     </default>
 </config>

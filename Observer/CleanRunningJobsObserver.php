@@ -3,8 +3,10 @@
 namespace EthanYehuda\CronjobManager\Observer;
 
 use EthanYehuda\CronjobManager\Helper\Config;
-use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
+use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -21,8 +23,8 @@ class CleanRunningJobsObserver implements ObserverInterface
 
     public function __construct(
         CollectionFactory $collectionFactory,
-        \Magento\Cron\Model\ResourceModel\Schedule $resourceModel,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+        ScheduleResource $resourceModel,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->collectionFactory = $collectionFactory;
         $this->resourceModel = $resourceModel;
@@ -63,8 +65,7 @@ class CleanRunningJobsObserver implements ObserverInterface
 
             $schedule
                 ->setStatus(Schedule::STATUS_ERROR)
-                ->setMessages(join("\n", $messages))
-            ;
+                ->setMessages(join("\n", $messages));
 
             $this->resourceModel->save($schedule);
         }
@@ -76,12 +77,9 @@ class CleanRunningJobsObserver implements ObserverInterface
      */
     private function isPidAlive($pid)
     {
-        if (file_exists("/proc/" . \intval($pid))) {
+        if (file_exists("/proc/" . intval($pid))) {
             return true;
         }
-
-        // todo: add support for other os than linux?
-        // https://stackoverflow.com/questions/9874331/how-to-check-whether-specified-pid-is-currently-running-without-invoking-ps-from
 
         return false;
     }
