@@ -121,4 +121,4 @@ See also our [contributers](https://github.com/Ethan3600/magento2-CronjobManager
 
 ## License
 
-[The Open Software License 3.0 (OSL-3.0)](https://opensource.org/licenses/OSL-3.0)
+[The Open Software License 3.0 (OSL-3.0)](https://opensource.org/licenses/OSL-3.0)!
