@@ -47,7 +47,7 @@
                     <fastForEach args="data: transformedRows">
                         <div class="row">
                             <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
-                                <fastForEach args="data: $data.value">
+                                <virtualForEach args="data: $data.value">
                                     <div>
                                         <div data-bind="
                                         attr: { 

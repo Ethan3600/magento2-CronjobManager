@@ -8,7 +8,7 @@ define([
     'uiRegistry',
     'moment',
     'uiCollection',
-    '../lib/knockout/bindings/boostrapExt',
+    '../lib/knockout/bindings/bootstrapExt',
 ], function (_, $, ko, layout, loader, resolver, registry, moment, Collection) {
     'use strict';
 
