@@ -79,15 +79,20 @@ define([
          * the timeline
          *
          * @param {Object} job - cron record
+         * @param {boolean} asInt
          * @return {String}
          */
-        getOffset: function (job) {
+        getOffset: function (job, asInt) {
             var startTime = job.executed_at || job.scheduled_at,
                 offset = (moment.utc(startTime).local()
                     .diff(this.getFirstHour(), 'seconds')) 
                     / this.scale;
             if (offset < 0) {
                 offset = 0;
+            }
+
+            if (asInt == true) {
+                return offset;
             }
             return offset + 'px';
         },
