@@ -9,33 +9,38 @@ define([
 ], function (ko, $, renderer) {
     'use strict';
 
+    /**
+     * Simulates Ko's observable functionality for 
+     * properties of the DOM
+     */
     var simulatedObservable = (function() {
-
-    var timer = null;
-    var items = [];
-
-    var check = function() {
-        items = items.filter(function(item) {
-            return !!item.elem.parents('html').length;
-        });
-        if (items.length === 0) {
-            clearInterval(timer);
-            timer = null;
-            return;
-        }
-        items.forEach(function(item) {
-            item.obs(item.getter());
-        });
-    };
-
-    return function(elem, getter) {
-        var obs = ko.observable(getter());
-        items.push({ obs: obs, getter: getter, elem: $(elem) });
-        if (timer === null) {
-            timer = setInterval(check, 100);
-        }
-        return obs;
-    };
+     
+        var timer = null;
+        var items = [];
+     
+        var check = function() {
+            items = items.filter(function(item) {
+                return !!item.elem.parents('html').length;
+            });
+            if (items.length === 0) {
+                clearInterval(timer);
+                timer = null;
+                return;
+            }
+            items.forEach(function(item) {
+                item.obs(item.getter());
+            });
+        };
+     
+        return function(elem, getter) {
+            var obs = ko.observable(getter());
+            items.push({ obs: obs, getter: getter, elem: $(elem) });
+            if (timer === null) {
+                timer = setInterval(check, 100);
+            }
+            return obs;
+        };
+    })();
 
     ko.bindingHandlers.virtualForEach = {
 
@@ -43,6 +48,7 @@ define([
          * Binding init callback.
          */
         init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var element = element.parentNode;
             var clone = $(element).clone();
             $(element).empty();
 
@@ -50,59 +56,61 @@ define([
             if (config.data == null) {
                 return;
             }
-            var rowHeight = 40;
 
-            ko.computed(function() {
-                $(element).css({
-                    height: config.data.length * rowHeight
-                });
-            });
+            // lets make our data into an observable array
+            config.data = ko.observableArray(config.data);
 
+            var $timelineCont = $('.timeline-container');
+            var tcOffset = $timelineCont.offset();
+
+            // x-offset of target element
             var offset = simulatedObservable(element, function() {
-                return $(element).offset().top;
+                return $(element).offset().left;
             });
 
-            var windowHeight = simulatedObservable(element, function() {
-                return window.innerHeight;
+            // window top relative to scrollbar
+            var windowPosition = simulatedObservable(element, function() {
+                return $(window).scrollTop();
             });
 
+            // record of all materialized rows
             var created = {};
 
+            /**
+             * Responsible for materializing any cron jobs that
+             * are currently visible
+             */
             var refresh = function() {
                 var o = offset();
-                var data = config.data;
-                var top = Math.max(0, Math.floor(-o / rowHeight) - 10);
-                var bottom = Math.min(data.length, Math.ceil((-o + windowHeight()) / rowHeight));
+                var topBoundry = windowPosition();
+                var bottomBoundry = windowPosition() + $(window).height();
+                var leftBoundry = tcOffset.left;   
+                var rightBoundry = $timelineCont.width() + leftBoundry;
 
-                for (var row = top; row < bottom; row++) {
-                    if (!created[row]) {
-                        var rowDiv = $('<div></div>');
-                        rowDiv.css({
-                            position: 'absolute',
-                            height: config.rowHeight,
-                            left: 0,
-                            right: 0,
-                            top: row * config.rowHeight
-                        });
-                        rowDiv.append(clone.clone().children());
-                        ko.applyBindingsToDescendants(context.createChildContext(data[row]), rowDiv[0]);
-                        created[row] = rowDiv;
-                        $(element).append(rowDiv);
+                ko.utils.arrayForEach(config.data(), function(cron) {
+                    if (!created[cron.schedule_id]) {
+                        var cronElement = clone.clone().children();
+                        ko.applyBindingsToDescendants(
+                            bindingContext.createChildContext(cron),
+                            cronElement[0]
+                        );
+                        created[cron.schedule_id] = cronElement;
+                        $(element).append(cronElement);
                     }
-                }
+                });
 
                 Object.keys(created).forEach(function(rowNum) {
                     if (rowNum < top || rowNum >= bottom) {
-                        created[rowNum].remove();
-                        delete created[rowNum];
+                        // created[rowNum].remove();
+                        // delete created[rowNum];
                     }
                 });
             };
 
-            config.rows.subscribe(function() {
+            config.data.subscribe(function() {
                 Object.keys(created).forEach(function(rowNum) {
-                    created[rowNum].remove();
-                    delete created[rowNum];
+                    // created[rowNum].remove();
+                    // delete created[rowNum];
                 });
                 refresh();
             });
