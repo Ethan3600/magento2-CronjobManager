@@ -99,8 +99,9 @@ define([
                     }
                 });
 
-                Object.keys(created).forEach(function(rowNum) {
-                    if (rowNum < top || rowNum >= bottom) {
+                Object.keys(created).forEach(function(id) {
+                    // can't grab element offset.. 
+                    if (id < top || id >= bottom) {
                         // created[rowNum].remove();
                         // delete created[rowNum];
                     }
