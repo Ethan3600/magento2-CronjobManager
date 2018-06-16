@@ -9,6 +9,33 @@ define([
 ], function (ko, $, renderer) {
     'use strict';
 
+
+    /**
+     * Get's the offset relative to the window for a cron
+     *
+     * @param {Object} viewModel
+     * @param {Object} cron
+     * @param {Object} tcOffset - timeline container offset results
+     * @param {Observable} i - iterations in the virtualForEach
+     * @return {Object} cronOffset - top and left 
+     */
+    var preCalculateOffset = function(viewModel, cron, tcOffset, i) {
+        var cronOffset = {};
+
+        /////////////////Vertial Offset/////////////////
+        var rowHoursOffset = 31;
+        var rowHeight = 40;
+
+        // iterations * rowHeight
+        var rowHeightOffset = i * rowHeight;
+        cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset; 
+        ///////////////Horizontal Offset////////////////
+        var timeOffset = viewModel.getOffset(cron, true);
+        cronOffset.left = timeOffset + tcOffset.left;
+
+        return cronOffset;
+    }
+
     /**
      * Simulates Ko's observable functionality for 
      * properties of the DOM
@@ -48,6 +75,7 @@ define([
          * Binding init callback.
          */
         init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var timelineViewModel = bindingContext.$parent;
             var element = element.parentNode;
             var clone = $(element).clone();
             $(element).empty();
@@ -81,9 +109,10 @@ define([
              * are currently visible
              */
             var refresh = function() {
+                var index = bindingContext.$data.index;
                 var o = offset();
                 var topBoundry = windowPosition();
-                var bottomBoundry = windowPosition() + $(window).height();
+                var bottomBoundry = windowPosition() + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
                 var rightBoundry = $timelineCont.width() + leftBoundry;
 
@@ -94,30 +123,45 @@ define([
                             bindingContext.createChildContext(cron),
                             cronElement[0]
                         );
-                        created[cron.schedule_id] = cronElement;
+                        created[cron.schedule_id] = {
+                            el: cronElement,
+                            cron: cron
+                        };
                         $(element).append(cronElement);
                     }
                 });
 
                 Object.keys(created).forEach(function(id) {
-                    // can't grab element offset.. 
-                    if (id < top || id >= bottom) {
-                        // created[rowNum].remove();
-                        // delete created[rowNum];
+                    // var cronOffset = !!created[id].el.offset().top ? created[id].el.offset()
+                    //     : preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, i);
+                    var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
+                    if (!isInBounds(cronOffset)) {
+                        created[id].el.remove();
+                        delete created[id];
                     }
                 });
+
+                function isInBounds(cronOffset) {
+                    var cTop = cronOffset.top;
+                    var cLeft = cronOffset.left;
+
+                    if (cTop > topBoundry && cTop <= bottomBoundry) {
+                        if (cLeft > leftBoundry && cLeft <= rightBoundry) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
             };
 
             config.data.subscribe(function() {
-                Object.keys(created).forEach(function(rowNum) {
-                    // created[rowNum].remove();
-                    // delete created[rowNum];
+                Object.keys(created).forEach(function(id) {
+                    created[id].el.remove();
+                    delete created[id];
                 });
                 refresh();
             });
-
-            ko.computed(refresh);
-
+            ko.computed(refresh).extend({ rateLimit: 250 });
             return { controlsDescendantBindings: true };
         }
     };

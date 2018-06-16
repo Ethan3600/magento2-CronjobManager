@@ -278,8 +278,10 @@ define([
 
         transformObject: function (obj) {
             var properties = [];
+            var index = 0;
             ko.utils.objectForEach(obj, function (key, value) {
-                properties.push({ key: key, value: value });
+                properties.push({ index: index, key: key, value: value });
+                index++;
             });
             // we don't need the range key, which is stored
             // in the first element

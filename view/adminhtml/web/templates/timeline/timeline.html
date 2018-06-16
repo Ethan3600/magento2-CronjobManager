@@ -50,15 +50,15 @@
                                 <virtualForEach args="data: $data.value">
                                     <div>
                                         <div data-bind="
-                                        attr: { 
-                                            class: 'cron-job ' + $data.status,
-                                            id: $data.schedule_id,
-                                            'data-tooltip-trigger': 'update-' + $data.schedule_id,
-                                        },
-                                        style: {
-                                            width: $parentContext.$parent.getCronWidth($data) + 'px',
-                                            left: $parentContext.$parent.getOffset($data)
-                                        }"/>
+                                            attr: { 
+                                                class: 'cron-job ' + $data.status,
+                                                id: $data.schedule_id,
+                                                'data-tooltip-trigger': 'update-' + $data.schedule_id,
+                                            },
+                                            style: {
+                                                width: $parentContext.$parent.getCronWidth($data) + 'px',
+                                                left: $parentContext.$parent.getOffset($data)
+                                            }"/>
                                         <div tooltip=" trigger: '[data-tooltip-trigger=update-' + schedule_id + ']',
                                             action: 'hover',
                                             delay: 0,
