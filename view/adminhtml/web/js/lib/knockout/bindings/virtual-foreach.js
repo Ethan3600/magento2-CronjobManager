@@ -9,7 +9,6 @@ define([
 ], function (ko, $, renderer) {
     'use strict';
 
-
     /**
      * Get's the offset relative to the window for a cron
      *
@@ -25,13 +24,11 @@ define([
         /////////////////Vertial Offset/////////////////
         var rowHoursOffset = 31;
         var rowHeight = 40;
-
-        // iterations * rowHeight
         var rowHeightOffset = i * rowHeight;
         cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset; 
         ///////////////Horizontal Offset////////////////
         var timeOffset = viewModel.getOffset(cron, true);
-        cronOffset.left = timeOffset + tcOffset.left;
+        cronOffset.left = timeOffset + $('.timeline-container__panel').offset().left;
 
         return cronOffset;
     }
@@ -93,7 +90,7 @@ define([
 
             // x-offset of target element
             var offset = simulatedObservable(element, function() {
-                return $(element).offset().left;
+                return $('.timeline-container__panel').offset().left;
             });
 
             // window top relative to scrollbar
@@ -110,6 +107,7 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
+                // allows us to track horizontal scrolling
                 var o = offset();
                 var topBoundry = windowPosition();
                 var bottomBoundry = windowPosition() + $(window).height() + 40;
@@ -118,22 +116,23 @@ define([
 
                 ko.utils.arrayForEach(config.data(), function(cron) {
                     if (!created[cron.schedule_id]) {
-                        var cronElement = clone.clone().children();
-                        ko.applyBindingsToDescendants(
-                            bindingContext.createChildContext(cron),
-                            cronElement[0]
-                        );
-                        created[cron.schedule_id] = {
-                            el: cronElement,
-                            cron: cron
-                        };
-                        $(element).append(cronElement);
+                        var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index);
+                        if (isInBounds(cronOffset)) {
+                            var cronElement = clone.clone().children();
+                            ko.applyBindingsToDescendants(
+                                bindingContext.createChildContext(cron),
+                                cronElement[0]
+                            );
+                            created[cron.schedule_id] = {
+                                el: cronElement,
+                                cron: cron
+                            };
+                            $(element).append(cronElement);
+                        }
                     }
                 });
 
                 Object.keys(created).forEach(function(id) {
-                    // var cronOffset = !!created[id].el.offset().top ? created[id].el.offset()
-                    //     : preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, i);
                     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
                     if (!isInBounds(cronOffset)) {
                         created[id].el.remove();
@@ -161,6 +160,7 @@ define([
                 });
                 refresh();
             });
+
             ko.computed(refresh).extend({ rateLimit: 250 });
             return { controlsDescendantBindings: true };
         }

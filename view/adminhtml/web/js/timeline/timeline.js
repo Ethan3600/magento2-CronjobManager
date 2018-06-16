@@ -26,10 +26,10 @@ define([
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
             range: {},
-            scale: 12.5,
-            minScale: 7,
+            scale: 6,
+            minScale: 3,
             maxScale: 15,
-            step: 2,
+            step: 1,
             width: 0,
             now: 0,
             transformedRows: [],
@@ -264,6 +264,10 @@ define([
             this.updateTimelineWidth();
             this.setNow();
             this.transformObject(this.rows);
+
+            $('.timeline-container').animate({
+                scrollLeft: (this.now / 1.25)
+            }, 500);
         },
 
         reloader: function () {
