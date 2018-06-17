@@ -60,7 +60,7 @@ define([
             var obs = ko.observable(getter());
             items.push({ obs: obs, getter: getter, elem: $(elem) });
             if (timer === null) {
-                timer = setInterval(check, 100);
+                timer = setInterval(check, 250);
             }
             return obs;
         };
@@ -161,7 +161,7 @@ define([
                 refresh();
             });
 
-            ko.computed(refresh).extend({ rateLimit: 250 });
+            ko.computed(refresh).extend({ rateLimit: 500 });
             return { controlsDescendantBindings: true };
         }
     };

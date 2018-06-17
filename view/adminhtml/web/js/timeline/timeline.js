@@ -26,7 +26,7 @@ define([
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
             range: {},
-            scale: 6,
+            scale: 8,
             minScale: 3,
             maxScale: 15,
             step: 1,
@@ -266,7 +266,7 @@ define([
             this.transformObject(this.rows);
 
             $('.timeline-container').animate({
-                scrollLeft: (this.now / 1.25)
+                scrollLeft: (this.now - ($('.timeline-container').width() / 3))
             }, 500);
         },
 
