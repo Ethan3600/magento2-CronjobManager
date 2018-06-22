@@ -57,7 +57,7 @@
                                             },
                                             style: {
                                                 width: $parentContext.$parent.getCronWidth($data) + 'px',
-                                                left: $parentContext.$parent.getOffset($data)
+                                                transform: 'translateX(' + $parentContext.$parent.getOffset($data) + ')'
                                             }"/>
                                         <div tooltip=" trigger: '[data-tooltip-trigger=update-' + schedule_id + ']',
                                             action: 'hover',
