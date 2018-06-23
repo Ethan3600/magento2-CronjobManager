@@ -114,7 +114,12 @@ define([
                 var leftBoundry = tcOffset.left;   
                 var rightBoundry = $timelineCont.width() + leftBoundry;
 
-                ko.utils.arrayForEach(config.data(), function(cron) {
+                // flag to check if entire row is in bounds
+                var isVerticallyInBounds = true;
+
+                var crons = config.data();
+                for (var i = 0; i < crons.length; i++) {
+                    var cron = crons[i];
                     if (!created[cron.schedule_id]) {
                         var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index);
                         if (isInBounds(cronOffset)) {
@@ -129,8 +134,11 @@ define([
                             };
                             $(element).append(cronElement);
                         }
+                        if (!isVerticallyInBounds) {
+                            break;
+                        }
                     }
-                });
+                };
 
                 Object.keys(created).forEach(function(id) {
                     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
@@ -148,7 +156,9 @@ define([
                         if (cLeft > leftBoundry && cLeft <= rightBoundry) {
                             return true;
                         }
+                        return false;
                     }
+                    isVerticallyInBounds = false;
                     return false;
                 }
             };
