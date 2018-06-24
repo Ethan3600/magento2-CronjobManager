@@ -32,12 +32,14 @@ define([
             step: 1,
             width: 0,
             now: 0,
+            total: 0,
             transformedRows: [],
             tracks: {
                 rows: true,
                 range: true,
                 width: true,
                 now: true,
+                total: true,
                 scale: true
             }
         },
@@ -260,6 +262,7 @@ define([
                 return;
             }
             resolver(this.hideLoader, this);
+            this.total = this.rows[0].total;
             this.updateRange();
             this.updateTimelineWidth();
             this.setNow();

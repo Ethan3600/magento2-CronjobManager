@@ -38,7 +38,8 @@ class TimelineDataProvider extends AbstractDataProvider
             return $this->loadedData;
         }
 
-        if($this->collection->getSize() < 1) {
+        $collectionSize = $this->collection->getSize();
+        if($collectionSize < 1) {
             return [];
         }
 
@@ -58,6 +59,7 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         array_unshift($this->loadedData, [
+            'total' => $collectionSize, 
             'range' => $this->getRange($firstHour, $lastHour)
         ]);
 
