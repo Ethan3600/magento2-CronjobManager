@@ -65,7 +65,7 @@ define([
             // record of all materialized rows
             var created = {};
             var animationRef;
-            var prevIndex = 0;
+            var prevIndex = -1;
 
             /**
              * Responsible for materializing any cron jobs that
@@ -73,8 +73,8 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
-                if (animationRef != null && prevIndex != null && prevIndex > index) {
-                    prevIndex = 0;
+                if (animationRef != null && prevIndex > index) {
+                    prevIndex = -1;
                     cancelAnimationFrame(animationRef);
                     return;
                 }
@@ -110,13 +110,14 @@ define([
                     }
                 };
 
-                Object.keys(created).forEach(function(id) {
-                    var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
-                    if (!isInBounds(cronOffset)) {
-                        created[id].el.remove();
-                        delete created[id];
-                    }
-                });
+                // Deletes all crons that are out of bounds
+                // Object.keys(created).forEach(function(id) {
+                //     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
+                //     if (!isInBounds(cronOffset)) {
+                //         created[id].el.remove();
+                //         delete created[id];
+                //     }
+                // });
 
                 function isInBounds(cronOffset) {
                     var cTop = cronOffset.top;
@@ -131,6 +132,7 @@ define([
                     isVerticallyInBounds = false;
                     return false;
                 }
+                animationRef = null;
             };
 
             config.data.subscribe(function() {
@@ -138,7 +140,7 @@ define([
                     created[id].el.remove();
                     delete created[id];
                 });
-                raf(refresh);
+                animationRef = raf(refresh);
             });
 
             var windowTimer = null;
@@ -147,8 +149,10 @@ define([
                     clearTimeout(windowTimer);
                 }
                 windowTimer = setTimeout(function() {
-                    animationRef = raf(refresh); 
-                }, 2000);
+                    if (animationRef == null) { 
+                        animationRef = raf(refresh); 
+                    }
+                }, 1000);
             });
 
             var panelTimer = null;
@@ -157,12 +161,14 @@ define([
                     clearTimeout(panelTimer);
                 }
                 panelTimer = setTimeout(function() {
-                    animationRef = raf(refresh); 
-                }, 2000);
+                    if (animationRef == null) { 
+                        animationRef = raf(refresh); 
+                    }
+                }, 1000);
  
             });
 
-            raf(refresh); 
+            raf(refresh);
             return { controlsDescendantBindings: true };
         }
     };
