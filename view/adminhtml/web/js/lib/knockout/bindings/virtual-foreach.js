@@ -40,39 +40,6 @@ define([
         return cronOffset;
     }
 
-    /**
-     * Simulates Ko's observable functionality for 
-     * properties of the DOM
-     */
-    var simulatedObservable = (function() {
-     
-        var timer = null;
-        var items = [];
-     
-        var check = function() {
-            items = items.filter(function(item) {
-                return !!item.elem.parents('html').length;
-            });
-            if (items.length === 0) {
-                clearInterval(timer);
-                timer = null;
-                return;
-            }
-            items.forEach(function(item) {
-                item.obs(item.getter());
-            });
-        };
-     
-        return function(elem, getter) {
-            var obs = ko.observable(getter());
-            items.push({ obs: obs, getter: getter, elem: $(elem) });
-            if (timer === null) {
-                timer = setInterval(check, 250);
-            }
-            return obs;
-        };
-    })();
-
     ko.bindingHandlers.virtualForEach = {
 
         /**
@@ -95,16 +62,6 @@ define([
             var $timelineCont = $('.timeline-container');
             var tcOffset = $timelineCont.offset();
 
-            // x-offset of target element
-            var offset = simulatedObservable(element, function() {
-                return $('.timeline-container__panel').offset().left;
-            });
-
-            // window top relative to scrollbar
-            var windowPosition = simulatedObservable(element, function() {
-                return $(window).scrollTop();
-            });
-
             // record of all materialized rows
             var created = {};
             var animationRef;
@@ -122,7 +79,7 @@ define([
                     return;
                 }
                 prevIndex++;
-                var topBoundry = windowPosition();
+                var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
                 var rightBoundry = $timelineCont.width() + leftBoundry;
@@ -185,13 +142,28 @@ define([
                 raf(refresh);
             });
 
-            var animateTimeline = function() {
-                // init ko computed dependencies
-                var o = offset();
-                var winPos = windowPosition();
-                raf(refresh);
-            }
-            ko.computed(animateTimeline).extend({ rateLimit: 2000 });
+            var windowTimer = null;
+            $(window).on('scroll', function() {
+                if (windowTimer !== null) {
+                    clearTimeout(windowTimer);
+                }
+                windowTimer = setTimeout(function() {
+                    raf(refresh); 
+                }, 2000);
+            });
+
+            var panelTimer = null;
+            $('.timeline-container__panel').on('scroll mouseup', function() {
+                if (panelTimer !== null) {
+                    clearTimeout(panelTimer);
+                }
+                panelTimer = setTimeout(function() {
+                    raf(refresh); 
+                }, 2000);
+ 
+            });
+
+            raf(refresh); 
             return { controlsDescendantBindings: true };
         }
     };
