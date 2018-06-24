@@ -131,7 +131,6 @@ define([
                     isVerticallyInBounds = false;
                     return false;
                 }
-                animationRef = raf(refresh);
             };
 
             config.data.subscribe(function() {
@@ -148,7 +147,7 @@ define([
                     clearTimeout(windowTimer);
                 }
                 windowTimer = setTimeout(function() {
-                    raf(refresh); 
+                    animationRef = raf(refresh); 
                 }, 2000);
             });
 
@@ -158,7 +157,7 @@ define([
                     clearTimeout(panelTimer);
                 }
                 panelTimer = setTimeout(function() {
-                    raf(refresh); 
+                    animationRef = raf(refresh); 
                 }, 2000);
  
             });
