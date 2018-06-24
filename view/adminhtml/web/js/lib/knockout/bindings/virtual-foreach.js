@@ -5,9 +5,16 @@
 define([
     'ko',
     'jquery',
-    'Magento_Ui/js/lib/knockout/template/renderer'
-], function (ko, $, renderer) {
+    'Magento_Ui/js/lib/knockout/template/renderer',
+    'Magento_Ui/js/lib/view/utils/raf'
+], function (ko, $, renderer, raf) {
     'use strict';
+
+    window.cancelAnimationFrame = window.cancelAnimationFrame
+        || window.mozCancelAnimationFrame
+        || function(requestID) {
+            clearTimeout(requestID);
+        };
 
     /**
      * Get's the offset relative to the window for a cron
@@ -15,7 +22,7 @@ define([
      * @param {Object} viewModel
      * @param {Object} cron
      * @param {Object} tcOffset - timeline container offset results
-     * @param {Observable} i - iterations in the virtualForEach
+     * @param {int} i - iterations in the virtualForEach
      * @return {Object} cronOffset - top and left 
      */
     var preCalculateOffset = function(viewModel, cron, tcOffset, i) {
@@ -100,6 +107,8 @@ define([
 
             // record of all materialized rows
             var created = {};
+            var animationRef;
+            var prevIndex = 0;
 
             /**
              * Responsible for materializing any cron jobs that
@@ -107,10 +116,14 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
-                // allows us to track horizontal scrolling
-                var o = offset();
+                if (animationRef != null && prevIndex != null && prevIndex > index) {
+                    prevIndex = 0;
+                    cancelAnimationFrame(animationRef);
+                    return;
+                }
+                prevIndex++;
                 var topBoundry = windowPosition();
-                var bottomBoundry = windowPosition() + $(window).height() + 40;
+                var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
                 var rightBoundry = $timelineCont.width() + leftBoundry;
 
@@ -161,6 +174,7 @@ define([
                     isVerticallyInBounds = false;
                     return false;
                 }
+                animationRef = raf(refresh);
             };
 
             config.data.subscribe(function() {
@@ -168,10 +182,16 @@ define([
                     created[id].el.remove();
                     delete created[id];
                 });
-                refresh();
+                raf(refresh);
             });
 
-            ko.computed(refresh).extend({ rateLimit: 500 });
+            var animateTimeline = function() {
+                // init ko computed dependencies
+                var o = offset();
+                var winPos = windowPosition();
+                raf(refresh);
+            }
+            ko.computed(animateTimeline).extend({ rateLimit: 2000 });
             return { controlsDescendantBindings: true };
         }
     };
