@@ -87,7 +87,7 @@ define([
         getOffset: function (job, asInt) {
             var startTime = job.executed_at || job.scheduled_at;
             var firstHour = this.getFirstHour(false);
-            var offset = this.diff(startTime)(firstHour) / this.scale;
+            var offset = this.diff(startTime, firstHour) / this.scale;
             if (offset < 0) {
                 offset = 0;
             }
@@ -223,18 +223,11 @@ define([
             this.now = (moment().diff(this.getFirstHour(), 'seconds')) / this.scale;
         },
 
-        diff: function(startTime) {
+        diff: function(startTime, endTime) {
             var timezoneOffset = new Date().getTimezoneOffset() * 60;
-            // startTime is in unix timestamp originally, but is converted
-            // to local time upon Date instantiation
-            // Let's change it back to UTC time
             startTime = (new Date(startTime).getTime() / 1000) - timezoneOffset;
-            return function(endTime) {
-                endTime = (new Date(endTime).getTime() / 1000);
-                return (function() {
-                    return (startTime - endTime);
-                })();
-            }
+            endTime = (new Date(endTime).getTime() / 1000);
+            return (startTime - endTime);
         },
 
         /**
