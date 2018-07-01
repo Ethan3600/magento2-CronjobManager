@@ -23,9 +23,10 @@ define([
      * @param {Object} cron
      * @param {Object} tcOffset - timeline container offset results
      * @param {int} i - iterations in the virtualForEach
+     * @param {Object} - $timelinePanel
      * @return {Object} cronOffset - top and left 
      */
-    var preCalculateOffset = function(viewModel, cron, tcOffset, i) {
+    var preCalculateOffset = function(viewModel, cron, tcOffset, i, $timelinePanel) {
         var cronOffset = {};
 
         /////////////////Vertial Offset/////////////////
@@ -35,7 +36,7 @@ define([
         cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset; 
         ///////////////Horizontal Offset////////////////
         var timeOffset = viewModel.getOffset(cron, true);
-        cronOffset.left = timeOffset + $('.timeline-container__panel').offset().left;
+        cronOffset.left = timeOffset + $timelinePanel.offset().left;
 
         return cronOffset;
     }
@@ -60,6 +61,7 @@ define([
             config.data = ko.observableArray(config.data);
 
             var $timelineCont = $('.timeline-container');
+            var $timelinePanel = $('.timeline-container__panel');
             var tcOffset = $timelineCont.offset();
 
             // record of all materialized rows
@@ -91,7 +93,7 @@ define([
                 for (var i = 0; i < crons.length; i++) {
                     var cron = crons[i];
                     if (!created[cron.schedule_id]) {
-                        var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index);
+                        var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index, $timelinePanel);
                         if (isInBounds(cronOffset)) {
                             var cronElement = clone.clone().children();
                             ko.applyBindingsToDescendants(
@@ -112,7 +114,7 @@ define([
 
                 // Deletes all crons that are out of bounds
                 // Object.keys(created).forEach(function(id) {
-                //     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index);
+                //     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index, $timelinePanel);
                 //     if (!isInBounds(cronOffset)) {
                 //         created[id].el.remove();
                 //         delete created[id];
