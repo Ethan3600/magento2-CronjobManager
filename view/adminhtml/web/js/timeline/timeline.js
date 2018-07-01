@@ -15,7 +15,7 @@ define([
     return Collection.extend({
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
-        	dateFormat: 'HH:mm',
+        	dateFormat: 'MM/DD HH:mm',
             template: 'cronjobManager/timeline/timeline',
             detailsTmpl: 'cronjobManager/timeline/details',
             imports: {
