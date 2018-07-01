@@ -104,8 +104,6 @@ define([
 
             // record of all materialized rows
             var created = {};
-            var animationRef;
-            var prevIndex = -1;
 
             /**
              * Responsible for materializing any cron jobs that
@@ -113,12 +111,6 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
-                if (animationRef != null && prevIndex > index) {
-                    prevIndex = -1;
-                    cancelAnimationFrame(animationRef);
-                    return;
-                }
-                prevIndex++;
                 var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
@@ -172,7 +164,6 @@ define([
                     isVerticallyInBounds = false;
                     return false;
                 }
-                animationRef = null;
             };
 
             config.data.subscribe(function() {
@@ -180,7 +171,7 @@ define([
                     created[id].el.remove();
                     delete created[id];
                 });
-                animationRef = raf(refresh);
+                raf(refresh);
             });
 
             var windowTimer = null;
@@ -189,9 +180,7 @@ define([
                     clearTimeout(windowTimer);
                 }
                 windowTimer = setTimeout(function() {
-                    if (animationRef == null) { 
-                        animationRef = raf(refresh); 
-                    }
+                    raf(refresh); 
                 }, 1000);
             });
 
@@ -201,13 +190,11 @@ define([
                     clearTimeout(panelTimer);
                 }
                 panelTimer = setTimeout(function() {
-                    if (animationRef == null) { 
-                        animationRef = raf(refresh); 
-                    }
+                    raf(refresh); 
                 }, 1000);
             });
 
-            // animationRef = raf(refresh);
+            // raf(refresh);
             return { controlsDescendantBindings: true };
         }
     };
