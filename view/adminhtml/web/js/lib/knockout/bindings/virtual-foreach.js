@@ -16,6 +16,39 @@ define([
             clearTimeout(requestID);
         };
 
+   /**
+     * Simulates Ko's observable functionality for 
+     * properties of the DOM
+     */
+    var simulatedObservable = (function() {
+     
+        var timer = null;
+        var items = [];
+     
+        var check = function() {
+            items = items.filter(function(item) {
+                return !!item.elem.parents('html').length;
+            });
+            if (items.length === 0) {
+                clearInterval(timer);
+                timer = null;
+                return;
+            }
+            items.forEach(function(item) {
+                item.obs(item.getter());
+            });
+        };
+     
+        return function(elem, getter) {
+            var obs = ko.observable(getter());
+            items.push({ obs: obs, getter: getter, elem: $(elem) });
+            if (timer === null) {
+                timer = setInterval(check, 250);
+            }
+            return obs;
+        };
+    })(); 
+
     /**
      * Get's the offset relative to the window for a cron
      *
@@ -23,10 +56,10 @@ define([
      * @param {Object} cron
      * @param {Object} tcOffset - timeline container offset results
      * @param {int} i - iterations in the virtualForEach
-     * @param {Object} - $timelinePanel
+     * @param {Object} - panelOffset
      * @return {Object} cronOffset - top and left 
      */
-    var preCalculateOffset = function(viewModel, cron, tcOffset, i, $timelinePanel) {
+    var preCalculateOffset = function(viewModel, cron, tcOffset, i, panelOffset) {
         var cronOffset = {};
 
         /////////////////Vertial Offset/////////////////
@@ -36,7 +69,7 @@ define([
         cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset; 
         ///////////////Horizontal Offset////////////////
         var timeOffset = viewModel.getOffset(cron, true);
-        cronOffset.left = timeOffset + $timelinePanel.offset().left;
+        cronOffset.left = timeOffset + panelOffset();
 
         return cronOffset;
     }
@@ -63,6 +96,11 @@ define([
             var $timelineCont = $('.timeline-container');
             var $timelinePanel = $('.timeline-container__panel');
             var tcOffset = $timelineCont.offset();
+
+            // timeline panel offset
+            var panelOffset = simulatedObservable($timelinePanel, function() {
+                return $timelinePanel.offset().left;
+            });
 
             // record of all materialized rows
             var created = {};
@@ -93,7 +131,7 @@ define([
                 for (var i = 0; i < crons.length; i++) {
                     var cron = crons[i];
                     if (!created[cron.schedule_id]) {
-                        var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index, $timelinePanel);
+                        var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index, panelOffset);
                         if (isInBounds(cronOffset)) {
                             var cronElement = clone.clone().children();
                             ko.applyBindingsToDescendants(
@@ -113,13 +151,13 @@ define([
                 };
 
                 // Deletes all crons that are out of bounds
-                // Object.keys(created).forEach(function(id) {
-                //     var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index, $timelinePanel);
-                //     if (!isInBounds(cronOffset)) {
-                //         created[id].el.remove();
-                //         delete created[id];
-                //     }
-                // });
+                Object.keys(created).forEach(function(id) {
+                    var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index, panelOffset);
+                    if (!isInBounds(cronOffset)) {
+                        created[id].el.remove();
+                        delete created[id];
+                    }
+                });
 
                 function isInBounds(cronOffset) {
                     var cTop = cronOffset.top;
@@ -167,10 +205,9 @@ define([
                         animationRef = raf(refresh); 
                     }
                 }, 1000);
- 
             });
 
-            raf(refresh);
+            // animationRef = raf(refresh);
             return { controlsDescendantBindings: true };
         }
     };
