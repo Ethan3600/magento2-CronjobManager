@@ -103,7 +103,8 @@ define([
             });
 
             // record of all materialized rows
-            var created = {};
+            window.created = {};
+            window.animationLock = null;
 
             /**
              * Responsible for materializing any cron jobs that
@@ -122,7 +123,7 @@ define([
                 var crons = config.data();
                 for (var i = 0; i < crons.length; i++) {
                     var cron = crons[i];
-                    if (!created[cron.schedule_id]) {
+                    if (!window.created[cron.schedule_id]) {
                         var cronOffset = preCalculateOffset(timelineViewModel, cron, tcOffset, index, panelOffset);
                         if (isInBounds(cronOffset)) {
                             var cronElement = clone.clone().children();
@@ -130,9 +131,10 @@ define([
                                 bindingContext.createChildContext(cron),
                                 cronElement[0]
                             );
-                            created[cron.schedule_id] = {
+                            window.created[cron.schedule_id] = {
                                 el: cronElement,
-                                cron: cron
+                                cron: cron,
+                                index: index
                             };
                             $(element).append(cronElement);
                         }
@@ -142,14 +144,27 @@ define([
                     }
                 };
 
-                // Deletes all crons that are out of bounds
-                Object.keys(created).forEach(function(id) {
-                    var cronOffset = preCalculateOffset(timelineViewModel, created[id].cron, tcOffset, index, panelOffset);
-                    if (!isInBounds(cronOffset)) {
-                        created[id].el.remove();
-                        delete created[id];
-                    }
-                });
+                function deMaterialize(created) {
+                    // Deletes all crons that are out of bounds
+                    Object.keys(created).forEach(function(id) {
+                        var cronOffset = preCalculateOffset(
+                            timelineViewModel,
+                            created[id].cron,
+                            tcOffset,
+                            created[id].index,
+                            panelOffset
+                        );
+                        if (!isInBounds(cronOffset)) {
+                            created[id].el.remove();
+                            delete created[id];
+                        }
+                    });
+                    window.animationLock = null;
+                }
+
+                if (window.animationLock == null) {
+                    window.animationLock = raf(deMaterialize.bind(this, window.created));
+                }
 
                 function isInBounds(cronOffset) {
                     var cTop = cronOffset.top;
@@ -167,9 +182,9 @@ define([
             };
 
             config.data.subscribe(function() {
-                Object.keys(created).forEach(function(id) {
-                    created[id].el.remove();
-                    delete created[id];
+                Object.keys(window.created).forEach(function(id) {
+                    window.created[id].el.remove();
+                    delete window.created[id];
                 });
                 raf(refresh);
             });
@@ -185,7 +200,7 @@ define([
             });
 
             var panelTimer = null;
-            $('.timeline-container__panel').on('scroll mouseup', function() {
+            $timelinePanel.on('scroll mouseup', function() {
                 if (panelTimer !== null) {
                     clearTimeout(panelTimer);
                 }
@@ -194,7 +209,6 @@ define([
                 }, 1000);
             });
 
-            // raf(refresh);
             return { controlsDescendantBindings: true };
         }
     };
