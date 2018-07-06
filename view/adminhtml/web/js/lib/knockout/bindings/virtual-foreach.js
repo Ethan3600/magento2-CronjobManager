@@ -184,7 +184,8 @@ define([
                     });
                     Object.keys(window.created).forEach(function(id) {
                         if (window.created[id].remove) {
-                            window.created[id].el.remove();
+                            var node = window.created[id].el[0];
+                            node.parentNode.removeChild(node);
                             delete window.created[id];
                         }
                     });
