@@ -16,6 +16,8 @@ define([
             clearTimeout(requestID);
         };
 
+    window.virtualRegistry = [];
+
    /**
      * Simulates Ko's observable functionality for 
      * properties of the DOM
@@ -81,6 +83,7 @@ define([
          */
         init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var timelineViewModel = bindingContext.$parent;
+            var totalTasks = timelineViewModel.transformedRows().length - 1;
             var element = element.parentNode;
             var clone = $(element).clone();
             $(element).empty();
@@ -104,7 +107,7 @@ define([
 
             // record of all materialized rows
             window.created = {};
-            window.animationLock = null;
+            var fragment = document.createDocumentFragment();
 
             /**
              * Responsible for materializing any cron jobs that
@@ -136,7 +139,7 @@ define([
                                 cron: cron,
                                 index: index
                             };
-                            $(element).append(cronElement);
+                            fragment.appendChild(cronElement[0]);
                         }
                         if (!isVerticallyInBounds) {
                             break;
@@ -144,26 +147,47 @@ define([
                     }
                 };
 
-                function deMaterialize(created) {
+                window.virtualRegistry[index] = {
+                    el: element,
+                    frag: fragment
+                };
+
+                if (index == totalTasks) {
+                    raf(function() {
+                        materialize();
+                        deMaterialize();
+                    });
+                }
+
+                function materialize() {
+                    for (var i = 0; i < window.virtualRegistry.length; i++) {
+                        var row = window.virtualRegistry[i];
+                        if (row != null) {
+                            row.el.appendChild(row.frag);
+                        }
+                    }
+                }
+
+                function deMaterialize() {
                     // Deletes all crons that are out of bounds
-                    Object.keys(created).forEach(function(id) {
+                    Object.keys(window.created).forEach(function(id) {
                         var cronOffset = preCalculateOffset(
                             timelineViewModel,
-                            created[id].cron,
+                            window.created[id].cron,
                             tcOffset,
-                            created[id].index,
+                            window.created[id].index,
                             panelOffset
                         );
                         if (!isInBounds(cronOffset)) {
-                            created[id].el.remove();
-                            delete created[id];
+                            window.created[id].remove = true;
                         }
                     });
-                    window.animationLock = null;
-                }
-
-                if (window.animationLock == null) {
-                    window.animationLock = raf(deMaterialize.bind(this, window.created));
+                    Object.keys(window.created).forEach(function(id) {
+                        if (window.created[id].remove) {
+                            window.created[id].el.remove();
+                            delete window.created[id];
+                        }
+                    });
                 }
 
                 function isInBounds(cronOffset) {
