@@ -166,6 +166,7 @@ define([
                             row.el.appendChild(row.frag);
                         }
                     }
+                    window.virtualRegistry = [];
                 }
 
                 function deMaterialize() {
