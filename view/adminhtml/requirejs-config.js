@@ -3,8 +3,8 @@ var config = {
         'cronjobManager/template': 'EthanYehuda_CronjobManager/templates'
     },
     shim: {
-        'EthanYehuda/js/timeline/timeline': {
-            'deps': ['EthanYehuda/js/lib/knockout/bindings/virtual-foreach']
+        'EthanYehuda_CronjobManager/js/timeline/timeline': {
+            'deps': ['EthanYehuda_CronjobManager/js/lib/knockout/bindings/virtual-foreach']
         }
     }
 };
