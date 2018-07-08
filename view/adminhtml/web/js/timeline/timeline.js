@@ -283,6 +283,10 @@ define([
         },
 
         reloader: function () {
+            // Unregister all virtual foreach events
+            // so we don't overlap materializations
+            $(window).off()
+            $('.timeline-container__panel').off()
             resolver(this.reloadHandler, this);
         },
 
