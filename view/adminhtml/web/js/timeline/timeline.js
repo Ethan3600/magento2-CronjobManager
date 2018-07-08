@@ -253,7 +253,7 @@ define([
          * Shows loader.
          */
         showLoader: function () {
-            loader.get(this.name).show();
+            loader.get('timeline_container.timeline_panel').show();
         },
 
         /**
@@ -271,7 +271,6 @@ define([
                 || this.rows == undefined) {
                 return;
             }
-            resolver(this.hideLoader, this);
             this.total = this.rows[0].total;
             this.updateRange();
             this.updateTimelineWidth();
@@ -310,6 +309,7 @@ define([
          * Handles dragging functionality on the timeline window
          */
         afterTimelineRender: function () {
+            resolver(this.hideLoader, this);
             var clicked = false, 
                 scrollVertical = true,
                 scrollHorizontal = true,

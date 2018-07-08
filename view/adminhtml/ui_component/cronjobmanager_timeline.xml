@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd" class="EthanYehuda\CronjobManager\Component\Timeline">
 	<argument name="data" xsi:type="array">
+        <item name="spinner" xsi:type="string">timeline_container</item>
 		<item name="js_config" xsi:type="array">
 			<item name="provider" xsi:type="string">cronjobmanager_timeline.cronjobmanager_timeline_data_source</item>
 			<item name="deps" xsi:type="string">cronjobmanager_timeline.cronjobmanager_timeline_data_source</item>
 		</item>
-		<item name="spinner" xsi:type="string">timeline_container</item>
 		<item name="template" xsi:type="string">templates/container</item>
 		<item name="buttons" xsi:type="array">
 			<item name="back" xsi:type="array">
@@ -36,6 +36,7 @@
 	</dataSource>
 	<container name="timeline_container">
 		<argument name="data" xsi:type="array">
+            <item name="spinner" xsi:type="string">timeline_panel</item>
 			<item name="config" xsi:type="array">
 				<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/timeline/timeline</item>
 			</item>

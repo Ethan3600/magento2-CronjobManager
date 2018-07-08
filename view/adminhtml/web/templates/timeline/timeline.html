@@ -13,6 +13,12 @@
         </div>
     </div>
     <div class="wrapper">
+       <div data-role="spinner" data-component="timeline_container.timeline_panel" 
+           class="admin__data-grid-loading-mask">
+            <div class="spinner">
+                <span/><span/><span/><span/><span/><span/><span/><span/>
+            </div>
+       </div>
        <div class="left-content">
             <div class="timeline-unit row hours">
                 <div class="timeframe timeline-date">
@@ -112,7 +118,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </fastForEach>
+                                </virtualForEach>
                             </div>
                         </div>
                     </fastForEach>

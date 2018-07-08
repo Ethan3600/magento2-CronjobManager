@@ -6,8 +6,9 @@ define([
     'ko',
     'jquery',
     'Magento_Ui/js/lib/knockout/template/renderer',
+    'Magento_Ui/js/lib/spinner',
     'Magento_Ui/js/lib/view/utils/raf'
-], function (ko, $, renderer, raf) {
+], function (ko, $, renderer, loader, raf) {
     'use strict';
 
     window.cancelAnimationFrame = window.cancelAnimationFrame
@@ -96,10 +97,10 @@ define([
             // lets make our data into an observable array
             config.data = ko.observableArray(config.data);
 
+            var index = bindingContext.$data.index;
             var $timelineCont = $('.timeline-container');
             var $timelinePanel = $('.timeline-container__panel');
             var tcOffset = $timelineCont.offset();
-
             // timeline panel offset
             var panelOffset = simulatedObservable($timelinePanel, function() {
                 return $timelinePanel.offset().left;
@@ -115,6 +116,9 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
+                if (index === 1) {
+                    loader.get('timeline_container.timeline_panel').show();
+                }
                 var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
@@ -152,10 +156,11 @@ define([
                     frag: fragment
                 };
 
-                if (index == totalTasks) {
+                if (index === totalTasks) {
                     raf(function() {
                         materialize();
                         deMaterialize();
+                        loader.get('timeline_container.timeline_panel').hide();
                     });
                 }
 
@@ -235,6 +240,16 @@ define([
                 }, 1000);
             });
 
+            $timelineCont.on('timeline.ready', function() {
+                $(window).trigger('scroll');
+                loader.get('timeline_container.timeline_panel').hide();
+            });
+
+            if (index === totalTasks) {
+                // trigger's materialization after 
+                // the last virtualForEach has run
+                $timelineCont.trigger('timeline.ready');
+            }
             return { controlsDescendantBindings: true };
         }
     };
