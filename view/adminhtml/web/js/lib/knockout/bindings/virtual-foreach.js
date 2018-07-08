@@ -212,14 +212,6 @@ define([
                 }
             };
 
-            config.data.subscribe(function() {
-                Object.keys(window.created).forEach(function(id) {
-                    window.created[id].el.remove();
-                    delete window.created[id];
-                });
-                raf(refresh);
-            });
-
             var windowTimer = null;
             $(window).on('scroll', function() {
                 if (windowTimer !== null) {
@@ -227,11 +219,11 @@ define([
                 }
                 windowTimer = setTimeout(function() {
                     raf(refresh); 
-                }, 1000);
+                }, 150);
             });
 
             var panelTimer = null;
-            $timelinePanel.on('scroll mouseup', function() {
+            $timelinePanel.on('scroll', function() {
                 if (panelTimer !== null) {
                     clearTimeout(panelTimer);
                 }
