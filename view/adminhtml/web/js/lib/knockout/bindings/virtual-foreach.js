@@ -110,9 +110,6 @@ define([
              */
             var refresh = function() {
                 var index = bindingContext.$data.index;
-                if (index === 1) {
-                    loader.get('timeline_container.timeline_panel').show();
-                }
                 var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
