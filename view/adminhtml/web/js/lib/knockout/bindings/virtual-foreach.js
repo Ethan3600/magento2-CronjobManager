@@ -11,12 +11,6 @@ define([
 ], function (ko, $, renderer, loader, raf) {
     'use strict';
 
-    window.cancelAnimationFrame = window.cancelAnimationFrame
-        || window.mozCancelAnimationFrame
-        || function(requestID) {
-            clearTimeout(requestID);
-        };
-
     window.virtualRegistry = [];
 
    /**
