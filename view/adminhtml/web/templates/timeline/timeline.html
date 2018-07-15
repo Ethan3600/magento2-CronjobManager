@@ -1,4 +1,5 @@
 <div class="cronjobmanager" >
+    <span>Total Records: <text args="total" /></span>
     <div class="timeline-scale">
         <div class="data-slider"
             range="
@@ -12,6 +13,12 @@
         </div>
     </div>
     <div class="wrapper">
+       <div data-role="spinner" data-component="timeline_container.timeline_panel" 
+           class="admin__data-grid-loading-mask">
+            <div class="spinner">
+                <span/><span/><span/><span/><span/><span/><span/><span/>
+            </div>
+       </div>
        <div class="left-content">
             <div class="timeline-unit row hours">
                 <div class="timeframe timeline-date">
@@ -47,18 +54,18 @@
                     <fastForEach args="data: transformedRows">
                         <div class="row">
                             <div data-bind="attr: { class: 'cjm-timeline cjm-timeline_' + $data.key }">
-                                <fastForEach args="data: $data.value">
+                                <virtualForEach args="data: $data.value">
                                     <div>
                                         <div data-bind="
-                                        attr: { 
-                                            class: 'cron-job ' + $data.status,
-                                            id: $data.schedule_id,
-                                            'data-tooltip-trigger': 'update-' + $data.schedule_id,
-                                        },
-                                        style: {
-                                            width: $parentContext.$parent.getCronWidth($data) + 'px',
-                                            left: $parentContext.$parent.getOffset($data)
-                                        }"/>
+                                            attr: { 
+                                                class: 'cron-job ' + $data.status,
+                                                id: $data.schedule_id,
+                                                'data-tooltip-trigger': 'update-' + $data.schedule_id,
+                                            },
+                                            style: {
+                                                width: $parentContext.$parent.getCronWidth($data) + 'px',
+                                                transform: 'translateX(' + $parentContext.$parent.getOffset($data) + ')'
+                                            }"/>
                                         <div tooltip=" trigger: '[data-tooltip-trigger=update-' + schedule_id + ']',
                                             action: 'hover',
                                             delay: 0,
@@ -111,7 +118,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </fastForEach>
+                                </virtualForEach>
                             </div>
                         </div>
                     </fastForEach>
