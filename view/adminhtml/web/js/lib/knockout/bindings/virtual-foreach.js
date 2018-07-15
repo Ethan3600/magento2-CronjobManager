@@ -109,7 +109,6 @@ define([
              * are currently visible
              */
             var refresh = function() {
-                var index = bindingContext.$data.index;
                 var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
                 var leftBoundry = tcOffset.left;   
