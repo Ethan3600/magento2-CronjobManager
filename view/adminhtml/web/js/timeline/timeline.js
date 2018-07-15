@@ -8,13 +8,14 @@ define([
     'uiRegistry',
     'moment',
     'uiCollection',
+    '../lib/knockout/bindings/bootstrapExt',
 ], function (_, $, ko, layout, loader, resolver, registry, moment, Collection) {
     'use strict';
 
     return Collection.extend({
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
-        	dateFormat: 'HH:mm',
+        	dateFormat: 'MM/DD HH:mm',
             template: 'cronjobManager/timeline/timeline',
             detailsTmpl: 'cronjobManager/timeline/details',
             imports: {
@@ -25,18 +26,20 @@ define([
                 '${ $.provider }:reloaded': 'onDataReloaded'
             },
             range: {},
-            scale: 12.5,
-            minScale: 7,
+            scale: 8,
+            minScale: 3,
             maxScale: 15,
-            step: 2,
+            step: 1,
             width: 0,
             now: 0,
+            total: 0,
             transformedRows: [],
             tracks: {
                 rows: true,
                 range: true,
                 width: true,
                 now: true,
+                total: true,
                 scale: true
             }
         },
@@ -78,15 +81,19 @@ define([
          * the timeline
          *
          * @param {Object} job - cron record
+         * @param {boolean} asInt
          * @return {String}
          */
-        getOffset: function (job) {
-            var startTime = job.executed_at || job.scheduled_at,
-                offset = (moment.utc(startTime).local()
-                    .diff(this.getFirstHour(), 'seconds')) 
-                    / this.scale;
+        getOffset: function (job, asInt) {
+            var startTime = job.executed_at || job.scheduled_at;
+            var firstHour = this.getFirstHour(false);
+            var offset = this.diff(startTime, firstHour) / this.scale;
             if (offset < 0) {
                 offset = 0;
+            }
+
+            if (asInt == true) {
+                return offset;
             }
             return offset + 'px';
         },
@@ -182,12 +189,16 @@ define([
          * Returns date which is closest to the current hour
          *
          * @private
+         * @param {boolean} useMoment
          * @returns {Moment}
          */
-        getFirstHour: function () {
+        getFirstHour: function (useMoment) {
             var firstHour = this.rows[0].range.first;
-            var first = this.createDate(firstHour); 
-            return first.startOf('hour');
+            if (useMoment == null || useMoment) {
+                var first = this.createDate(firstHour); 
+                return first.startOf('hour');
+            }
+            return new Date(new Date(new Date(firstHour * 1000).setMinutes(0)).setSeconds(0));
         },
 
         /**
@@ -210,6 +221,13 @@ define([
          */
         setNow: function () {
             this.now = (moment().diff(this.getFirstHour(), 'seconds')) / this.scale;
+        },
+
+        diff: function(startTime, endTime) {
+            var timezoneOffset = new Date().getTimezoneOffset() * 60;
+            startTime = (new Date(startTime).getTime() / 1000) - timezoneOffset;
+            endTime = (new Date(endTime).getTime() / 1000);
+            return (startTime - endTime);
         },
 
         /**
@@ -235,7 +253,7 @@ define([
          * Shows loader.
          */
         showLoader: function () {
-            loader.get(this.name).show();
+            loader.get('timeline_container.timeline_panel').show();
         },
 
         /**
@@ -253,14 +271,22 @@ define([
                 || this.rows == undefined) {
                 return;
             }
-            resolver(this.hideLoader, this);
+            this.total = this.rows[0].total;
             this.updateRange();
             this.updateTimelineWidth();
             this.setNow();
             this.transformObject(this.rows);
+
+            $('.timeline-container').animate({
+                scrollLeft: (this.now - ($('.timeline-container').width() / 3))
+            }, 500);
         },
 
         reloader: function () {
+            // Unregister all virtual foreach events
+            // so we don't overlap materializations
+            $(window).off()
+            $('.timeline-container__panel').off()
             resolver(this.reloadHandler, this);
         },
 
@@ -272,8 +298,10 @@ define([
 
         transformObject: function (obj) {
             var properties = [];
+            var index = 0;
             ko.utils.objectForEach(obj, function (key, value) {
-                properties.push({ key: key, value: value });
+                properties.push({ index: index, key: key, value: value });
+                index++;
             });
             // we don't need the range key, which is stored
             // in the first element
@@ -285,6 +313,7 @@ define([
          * Handles dragging functionality on the timeline window
          */
         afterTimelineRender: function () {
+            resolver(this.hideLoader, this);
             var clicked = false, 
                 scrollVertical = true,
                 scrollHorizontal = true,

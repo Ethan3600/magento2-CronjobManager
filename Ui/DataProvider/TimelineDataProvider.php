@@ -7,6 +7,8 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
+    const MAX_PAGE_SIZE = 35000;
+
     private $loadedData;
 
     /**
@@ -38,14 +40,27 @@ class TimelineDataProvider extends AbstractDataProvider
             return $this->loadedData;
         }
 
-        if($this->collection->getSize() < 1) {
-            return [];
-        }
-
         $firstHour = null;
         $lastHour = null;
 
-        $this->collection->addOrder('job_code', 'ASC');
+        $this->collection
+            ->addOrder('scheduled_at', 'DESC')
+            ->addOrder('job_code', 'ASC')
+            ->setPageSize(self::MAX_PAGE_SIZE)
+            ->addFieldToFilter(
+                'scheduled_at', [
+                    'gt' => date(
+                        'Y-m-d H:m:s',
+                        strtotime(date('Y-m-d H:m:s') . ' -7 day')
+                    )
+                ]
+            );
+
+        $collectionSize = $this->collection->count();
+        if($collectionSize < 1) {
+            return [];
+        }
+
         foreach ($this->collection->getItems() as $item) {
             $this->loadedData[$item->getJobCode()][] = $item->getData();
             
@@ -58,6 +73,7 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         array_unshift($this->loadedData, [
+            'total' => $collectionSize, 
             'range' => $this->getRange($firstHour, $lastHour)
         ]);
 
