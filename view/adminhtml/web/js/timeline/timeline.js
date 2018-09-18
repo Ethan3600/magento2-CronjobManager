@@ -16,8 +16,8 @@ define([
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
         	dateFormat: 'MM/DD HH:mm',
-            template: 'cronjobManager/timeline/timeline',
-            detailsTmpl: 'cronjobManager/timeline/details',
+            template: 'EthanYehuda_CronjobManager/timeline/timeline',
+            detailsTmpl: 'EthanYehuda_CronjobManager/timeline/details',
             imports: {
                 rows: '${$.parentName}_data_source:data'
             },

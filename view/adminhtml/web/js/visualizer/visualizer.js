@@ -26,7 +26,7 @@ define([
                 visualizer: {
                     label: 'Visualizer',
                     value: 'visualizer',
-                    template: 'cronjobManager/visualizer/visualizer'
+                    template: 'EthanYehuda_CronjobManager/visualizer/visualizer'
                 },
                 grid: {
                     value: 'grid',
