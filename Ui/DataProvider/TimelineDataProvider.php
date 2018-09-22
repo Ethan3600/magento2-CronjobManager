@@ -4,12 +4,18 @@ namespace EthanYehuda\CronjobManager\Ui\DataProvider;
 
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Ui\DataProvider\AbstractDataProvider;
+use Magento\Framework\Message\ManagerInterface;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
     const MAX_PAGE_SIZE = 35000;
 
     private $loadedData;
+
+    /**
+     * @var \Magento\Framework\Message\ManagerInterface
+     */
+    private $messageManager;
 
     /**
      * @param string $name
@@ -24,10 +30,12 @@ class TimelineDataProvider extends AbstractDataProvider
         $primaryFieldName,
         $requestFieldName,
         CollectionFactory $collectionFactory,
+        ManagerInterface $messageManager,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
+        $this->messageManager = $messageManager;
         $this->collection = $collectionFactory->create();
     }
 
@@ -57,7 +65,10 @@ class TimelineDataProvider extends AbstractDataProvider
             );
 
         $collectionSize = $this->collection->count();
-        if($collectionSize < 1) {
+        if ($collectionSize < 1) {
+            $this->messageManager->addErrorMessage(
+                "No cron jobs are currently in the queue. Please double check crontab configurations"
+            );
             return [];
         }
 
