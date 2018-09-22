@@ -269,6 +269,7 @@ define([
         onDataReloaded: function () {
             if (Object.keys(this.rows).length < 1 
                 || this.rows == undefined) {
+                loader.get('timeline_container.timeline_panel').hide();
                 return;
             }
             this.total = this.rows[0].total;
