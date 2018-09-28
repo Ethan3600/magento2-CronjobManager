@@ -16,8 +16,8 @@ define([
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
         	dateFormat: 'MM/DD HH:mm',
-            template: 'cronjobManager/timeline/timeline',
-            detailsTmpl: 'cronjobManager/timeline/details',
+            template: 'EthanYehuda_CronjobManager/timeline/timeline',
+            detailsTmpl: 'EthanYehuda_CronjobManager/timeline/details',
             imports: {
                 rows: '${$.parentName}_data_source:data'
             },
@@ -269,6 +269,7 @@ define([
         onDataReloaded: function () {
             if (Object.keys(this.rows).length < 1 
                 || this.rows == undefined) {
+                loader.get('timeline_container.timeline_panel').hide();
                 return;
             }
             this.total = this.rows[0].total;
