@@ -63,7 +63,9 @@ class Runjob extends Command
         $dateTime = $this->dateTimeFactory->create();
 
         try {
-            $this->state->setAreaCode('adminhtml');
+            if (!$this->state->getAreaCode()) {
+                $this->state->setAreaCode('adminhtml');
+            }
 
             // lets create a new cron job and dispatch it
             $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);

@@ -48,7 +48,9 @@ class Showjobs extends Command
         $manager = $this->managerFactory->create();
 
         try {
-            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+            if (!$this->state->getAreaCode()) {
+                $this->state->setAreaCode(Area::AREA_ADMINHTML);
+            }
 
             $jobs = $manager->getCronJobs();
             $table = $this->getHelperSet()->get('table')->setHeaders($this->headers);
