@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
@@ -64,7 +65,7 @@ class Runjob extends Command
 
         try {
             if (!$this->state->getAreaCode()) {
-                $this->state->setAreaCode('adminhtml');
+                $this->state->setAreaCode(Area::AREA_ADMINHTML);
             }
 
             // lets create a new cron job and dispatch it
