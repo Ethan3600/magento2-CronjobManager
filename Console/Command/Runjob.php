@@ -35,7 +35,8 @@ class Runjob extends Command
         State $state,
         ManagerFactory $managerFactory,
         DateTimeFactory $dateTimeFactory
-    ) {
+    )
+    {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -64,10 +65,12 @@ class Runjob extends Command
         $dateTime = $this->dateTimeFactory->create();
 
         try {
-            if (!$this->state->getAreaCode()) {
-                $this->state->setAreaCode(Area::AREA_ADMINHTML);
-            }
+            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+        } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+            // Area code is already set
+        }
 
+        try {
             // lets create a new cron job and dispatch it
             $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
             $now = strftime('%Y-%m-%dT%H:%M:%S', $dateTime->gmtTimestamp());

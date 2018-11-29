@@ -30,7 +30,8 @@ class Showjobs extends Command
     public function __construct(
         State $state,
         ManagerFactory $managerFactory
-    ) {
+    )
+    {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         parent::__construct();
@@ -48,10 +49,12 @@ class Showjobs extends Command
         $manager = $this->managerFactory->create();
 
         try {
-            if (!$this->state->getAreaCode()) {
-                $this->state->setAreaCode(Area::AREA_ADMINHTML);
-            }
+            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+        } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+            // Area code is already set
+        }
 
+        try {
             $jobs = $manager->getCronJobs();
             $table = $this->getHelperSet()->get('table')->setHeaders($this->headers);
 
