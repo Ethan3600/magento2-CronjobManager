@@ -31,8 +31,7 @@ class Showjobs extends Command
     public function __construct(
         State $state,
         ManagerFactory $managerFactory
-    )
-    {
+    ) {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         parent::__construct();
