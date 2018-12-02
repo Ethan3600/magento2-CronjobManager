@@ -35,8 +35,7 @@ class Runjob extends Command
         State $state,
         ManagerFactory $managerFactory,
         DateTimeFactory $dateTimeFactory
-    )
-    {
+    ) {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         $this->dateTimeFactory = $dateTimeFactory;
