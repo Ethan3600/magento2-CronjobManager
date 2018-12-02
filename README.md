@@ -32,7 +32,7 @@ In your Magento2 root directory, you may install this package via composer:
 ## Support
 
 CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3 | Magento 2.4
---- | :---: | :---: | :---: | :---:
+--- | :---: | :---: | :---: | :---: | :---:
 1.x | :x: | :x: | :white_check_mark: | :white_check_mark: | :question:
 
 
@@ -106,6 +106,7 @@ If you want to contribute please follow the below instructions:
 1. Create an issue and describe your idea
 2. [Fork this repository](https://github.com/Ethan3600/magento2-CronjobManager/fork)
 3. Create your feature branch (`git checkout -b my-new-feature`)
+    * **NOTE**: Always branch off the `*-develop` branch (ex. 1.x-develop)
 4. Commit your changes
 5. Publish the branch (`git push origin my-new-feature`)
 6. Submit a new Pull Request for review
