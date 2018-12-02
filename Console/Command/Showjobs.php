@@ -6,6 +6,7 @@ use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\Table;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
@@ -30,7 +31,8 @@ class Showjobs extends Command
     public function __construct(
         State $state,
         ManagerFactory $managerFactory
-    ) {
+    )
+    {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         parent::__construct();
@@ -49,9 +51,14 @@ class Showjobs extends Command
 
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
+        } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+            // Area code is already set
+        }
 
+        try {
             $jobs = $manager->getCronJobs();
-            $table = $this->getHelperSet()->get('table')->setHeaders($this->headers);
+            $table = new Table($output);
+            $table->setHeaders($this->headers);
 
             foreach ($jobs as $group => $crons) {
                 foreach ($crons as $code => $job) {

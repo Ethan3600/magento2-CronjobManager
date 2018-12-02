@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
 use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
@@ -34,7 +35,8 @@ class Runjob extends Command
         State $state,
         ManagerFactory $managerFactory,
         DateTimeFactory $dateTimeFactory
-    ) {
+    )
+    {
         $this->managerFactory = $managerFactory;
         $this->state = $state;
         $this->dateTimeFactory = $dateTimeFactory;
@@ -63,8 +65,12 @@ class Runjob extends Command
         $dateTime = $this->dateTimeFactory->create();
 
         try {
-            $this->state->setAreaCode('adminhtml');
+            $this->state->setAreaCode(Area::AREA_ADMINHTML);
+        } catch (\Magento\Framework\Exception\LocalizedException $exception) {
+            // Area code is already set
+        }
 
+        try {
             // lets create a new cron job and dispatch it
             $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
             $now = strftime('%Y-%m-%dT%H:%M:%S', $dateTime->gmtTimestamp());
