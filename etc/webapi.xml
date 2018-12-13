@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!-- Schedule Repository -->
+    <route url="/V1/cronmanager/schedules/:scheduleId" method="GET">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" method="get"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/schedules" method="GET">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" method="getList"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/schedules" method="POST">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" method="save"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/schedules/:scheduleId" method="PUT">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" method="save"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/schedules/:scheduleId" method="DELETE">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface" method="deleteById"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+
+    <!-- Schedule Management -->
+    <route url="/V1/cronmanager/schedules/:scheduleId/execute" method="PUT">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" method="execute"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/schedules/flush" method="DELETE">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" method="flush"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+
+    <!-- Job Management -->
+    <route url="/V1/cronmanager/jobs" method="GET">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" method="listJobs"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/jobs/:jobCode/group" method="GET">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" method="getGroupId"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/jobs/:jobCode/scheduleNow" method="POST">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementAdapterInterface" method="scheduleNow"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+    <route url="/V1/cronmanager/jobs/:jobCode/schedule/time/:time" method="POST">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementAdapterInterface" method="schedule"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
+</routes>
