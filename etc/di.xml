@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" type="EthanYehuda\CronjobManager\Model\ScheduleManagement" />
+    <preference for="EthanYehuda\CronjobManager\Api\ScheduleManagementAdapterInterface" type="EthanYehuda\CronjobManager\Model\ScheduleManagementAdapter" />
+    <preference for="EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface" type="EthanYehuda\CronjobManager\Model\ScheduleRepository" />
+    <preference for="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" type="EthanYehuda\CronjobManager\Model\ScheduleRepositoryAdapter" />
+    <preference for="EthanYehuda\CronjobManager\Api\Data\ScheduleSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
+    <preference for="EthanYehuda\CronjobManager\Api\Data\ScheduleInterface" type="EthanYehuda\CronjobManager\Model\Data\Schedule" />
     <virtualType name="Magento\Cron\Model\ResourceModel\Schedule\Virtual\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">cron_schedule</argument>

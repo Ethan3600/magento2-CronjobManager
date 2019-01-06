@@ -1,0 +1,125 @@
+<?php
+
+namespace EthanYehuda\CronjobManager\Model\Data;
+
+use Magento\Framework\DataObject;
+
+/**
+ * @codeCoverageIgnore
+ */
+class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+{
+    const KEY_SCHEDULE_ID = 'schedule_id';
+    const KEY_JOB_CODE = 'job_code';
+    const KEY_STATUS = 'status';
+    const KEY_PID = 'pid';
+    const KEY_MESSAGES = 'messages';
+    const KEY_CREATED_AT = 'created_at';
+    const KEY_SCHEDULED_AT = 'scheduled_at';
+    const KEY_EXECUTED_AT = 'executed_at';
+    const KEY_FINISHED_AT = 'finished_at';
+
+    public function __construct(array $data = [])
+    {
+        parent::__construct($data);
+    }
+
+    public function getScheduleId(): int
+    {
+        return (int) $this->getData(self::KEY_SCHEDULE_ID);
+    }
+
+    public function getJobCode(): string
+    {
+        return $this->getData(self::KEY_JOB_CODE);
+    }
+
+    public function getStatus(): string
+    {
+        return $this->getData(self::KEY_STATUS);
+    }
+
+    public function getPid()
+    {
+        return (int) $this->getData(self::KEY_PID);
+    }
+
+    public function getMessages()
+    {
+        return $this->getData(self::KEY_MESSAGES);
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->getData(self::KEY_CREATED_AT);
+    }
+
+    public function getScheduledAt()
+    {
+        return $this->getData(self::KEY_SCHEDULED_AT);
+    }
+
+    public function getExecutedAt()
+    {
+        return $this->getData(self::KEY_EXECUTED_AT);
+    }
+
+    public function getFinishedAt()
+    {
+        return $this->getData(self::KEY_FINISHED_AT);
+    }
+
+    public function setScheduleId(int $scheduleId): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_SCHEDULE_ID, $scheduleId);
+        return $this;
+    }
+
+    public function setJobCode(string $jobCode): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_JOB_CODE, $jobCode);
+        return $this;
+    }
+
+    public function setStatus(string $status): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_STATUS, $status);
+        return $this;
+    }
+
+    public function setPid(int $pid): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_PID, $pid);
+        return $this;
+    }
+
+    public function setMessages(string $messages): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_MESSAGES, $messages);
+        return $this;
+    }
+
+    public function setCreatedAt(string $createdAt): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_CREATED_AT, $createdAt);
+        return $this;
+    }
+
+    public function setScheduledAt(string $scheduledAt): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_SCHEDULED_AT, $scheduledAt);
+        return $this;
+    }
+
+    public function setExecutedAt(string $executedAt): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_EXECUTED_AT, $executedAt);
+        return $this;
+    }
+
+    public function setFinishedAt(string $finishedAt): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_FINISHED_AT, $finishedAt);
+        return $this;
+    }
+}
