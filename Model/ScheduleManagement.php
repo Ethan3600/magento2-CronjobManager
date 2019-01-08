@@ -97,7 +97,7 @@ class ScheduleManagement implements ScheduleManagementInterface
         return $this->createSchedule($jobCode, $time);
     }
 
-    public function getGroupId(string $jobCode, $groups = null): ?string
+    public function getGroupId(string $jobCode, $groups = null): string
     {
         if (is_null($groups)) {
             $groups = $this->listJobs();
