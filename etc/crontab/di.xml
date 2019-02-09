@@ -3,4 +3,7 @@
     <type name="Magento\Cron\Observer\ProcessCronQueueObserver">
         <plugin name="ethanyehuda_cronjobmanager_clean_running_jobs" type="EthanYehuda\CronjobManager\Plugin\Cron\Observer\ProcessCronQueueObserverPlugin" />
     </type>
+    <type name="Magento\Cron\Model\ResourceModel\Schedule">
+        <plugin name="ethanyehuda_cronjobmanager_save_pid" type="EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin" />
+    </type>
 </config>
