@@ -2,5 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
     <event name="process_cron_queue_before">
         <observer name="ethanyehuda_cronjobmanager_clean_running_jobs" instance="EthanYehuda\CronjobManager\Observer\CleanRunningJobsObserver" />
+        <observer name="ethanyehuda_cronjobmanager_process_kill_requests" instance="EthanYehuda\CronjobManager\Observer\ProcessKillRequestsObserver" />
     </event>
 </config>

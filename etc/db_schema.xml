@@ -3,5 +3,6 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="cron_schedule">
         <column xsi:type="int" name="pid" padding="10" unsigned="true" nullable="true" comment="Process Id"/>
+        <column xsi:type="timestamp" name="kill_request" on_update="false" nullable="true" comment="Kill Request"/>
     </table>
 </schema>
