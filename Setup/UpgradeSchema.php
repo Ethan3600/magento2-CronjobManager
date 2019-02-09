@@ -17,6 +17,16 @@ class UpgradeSchema implements UpgradeSchemaInterface
     private $context;
 
     /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
+    private $magentoMetaData;
+
+    public function __construct(\Magento\Framework\App\ProductMetadataInterface $magentoMetaData)
+    {
+        $this->magentoMetaData = $magentoMetaData;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function upgrade(
@@ -40,6 +50,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
      */
     public function addPidToSchedule()
     {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            /*
+             * For Magento 2.3+, db_schema.xml is used instead
+             */
+            return;
+        }
         $this->setup->getConnection()->addColumn(
             $this->setup->getTable("cron_schedule"),
             "pid",
