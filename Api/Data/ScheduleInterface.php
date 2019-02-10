@@ -2,8 +2,20 @@
 
 namespace EthanYehuda\CronjobManager\Api\Data;
 
+use Magento\Cron\Model\Schedule;
+
 interface ScheduleInterface
 {
+    public const STATUS_PENDING = Schedule::STATUS_PENDING;
+
+    public const STATUS_RUNNING = Schedule::STATUS_RUNNING;
+
+    public const STATUS_SUCCESS = Schedule::STATUS_SUCCESS;
+
+    public const STATUS_MISSED  = Schedule::STATUS_MISSED;
+
+    public const STATUS_ERROR   = Schedule::STATUS_ERROR;
+
     /**
      * @return int
      */

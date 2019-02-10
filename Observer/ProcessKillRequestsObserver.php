@@ -10,7 +10,6 @@ class ProcessKillRequestsObserver implements ObserverInterface
 {
     public function execute(Observer $observer)
     {
-        // TODO: extract logic from CleanRunningJobsObserver to service
         // TODO: based on that, write service to process kill requests
         // TODO: call new service from ProcessKillRequestsObserver
     }

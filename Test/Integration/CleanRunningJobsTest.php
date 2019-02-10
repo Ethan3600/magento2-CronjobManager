@@ -12,7 +12,7 @@ use Magento\Framework\Event;
 /**
  * @magentoAppArea crontab
  */
-class CleanDeadJobsTest extends TestCase
+class CleanRunningJobsTest extends TestCase
 {
     /**
      * @var ObjectManager

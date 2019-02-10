@@ -142,4 +142,5 @@ class ScheduleManagement implements ScheduleManagementInterface
         $this->scheduleRepository->save($schedule);
         return true;
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Api;
 
+use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -31,4 +32,12 @@ interface ScheduleRepositoryAdapterInterface
      * @throws CouldNotSaveException
      */
     public function save(\EthanYehuda\CronjobManager\Api\Data\ScheduleInterface $schedule, $scheduleId = null): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
+
+    /**
+     * Return all jobs with given status
+     *
+     * @param string $status
+     * @return ScheduleInterface[]
+     */
+    public function getByStatus($status);
 }
