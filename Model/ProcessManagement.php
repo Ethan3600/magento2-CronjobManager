@@ -5,12 +5,27 @@ namespace EthanYehuda\CronjobManager\Model;
 
 class ProcessManagement
 {
+    private const SIGKILL = 9;
+
     public function isPidAlive(int $pid): bool
     {
-        if (file_exists("/proc/" . intval($pid))) {
-            return true;
-        }
+        return \file_exists('/proc/' . $pid);
+    }
 
-        return false;
+    public function killPid($pid): bool
+    {
+        if (!$this->isPidAlive($pid)) {
+            return false;
+        }
+        //TODO first try to send SIGINT, wait up to X seconds, then send SIGKILL if process still running
+        $killed = \posix_kill($pid, self::SIGKILL);
+        if ($killed && !$this->isPidAlive($pid)) {
+            \sleep(5);
+            if ($this->isPidAlive($pid)) {
+                return false;
+            }
+        }
+        return $killed;
+
     }
 }

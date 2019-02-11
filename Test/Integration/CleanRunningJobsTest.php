@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
+use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\ObjectManager\ObjectManager;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -10,25 +12,33 @@ use PHPUnit\Framework\TestCase;
 use Magento\Framework\Event;
 
 /**
+ * @magentoAppIsolation enabled
  * @magentoAppArea crontab
  */
 class CleanRunningJobsTest extends TestCase
 {
+    private const NOW = '2019-02-09 18:33:00';
     /**
      * @var ObjectManager
      */
     private $objectManager;
-
     /**
      * @var Event\ManagerInterface
      */
     private $eventManager;
+    /**
+     * @var FakeClock
+     */
+    private $clock;
 
     private const DEAD_PID = 99999999;
 
     protected function setUp()
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
+        $this->clock = $this->objectManager->get(Clock::class);
+        $this->clock->setTimestamp(strtotime(self::NOW));
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
     }
 
@@ -37,7 +47,7 @@ class CleanRunningJobsTest extends TestCase
         $this->givenRunningScheduleWithInactiveProcess($schedule);
         $this->whenEventIsDispatched('process_cron_queue_before');
         $this->thenScheduleHasStatus($schedule, Schedule::STATUS_ERROR);
-        $this->andScheduleHasMessage($schedule, 'Process went away');
+        $this->andScheduleHasMessage($schedule, 'Process went away at ' . self::NOW);
     }
 
     public function testActiveRunningJobsAreNotCleaned()

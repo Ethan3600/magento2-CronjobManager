@@ -5,31 +5,27 @@ namespace EthanYehuda\CronjobManager\Model;
 
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
-use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
-use Magento\Cron\Model\Schedule;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
-/**
- * Update jobs with dead processes from running to error
- */
-class CleanRunningJobs
+class ProcessKillRequests
 {
     /**
      * @var ProcessManagement
      */
     private $processManagement;
+
     /**
      * @var ScheduleRepositoryAdapterInterface
      */
     private $scheduleRepository;
     /**
-     * @var Clock
-     */
-    private $clock;
-    /**
      * @var DateTime
      */
     private $dateTime;
+    /**
+     * @var Clock
+     */
+    private $clock;
 
     public function __construct(
         ScheduleRepositoryAdapterInterface $scheduleRepository,
@@ -43,30 +39,27 @@ class CleanRunningJobs
         $this->clock = $clock;
     }
 
-    /**
-     * Find all jobs in status "running" (according to db),
-     * and check if the process is alive. If not, set status to error, with the message
-     * "Process went away"
-     */
     public function execute()
     {
         $runningJobs = $this->scheduleRepository->getByStatus(ScheduleInterface::STATUS_RUNNING);
-
         foreach ($runningJobs as $schedule) {
-            if ($this->processManagement->isPidAlive($schedule->getPid())) {
-                continue;
+            if ($schedule->getKillRequest() && $schedule->getKillRequest() <= \time() && $schedule->getPid()) {
+                $this->killScheduleProcess($schedule);
             }
+        }
+    }
 
+    private function killScheduleProcess(ScheduleInterface $schedule): void
+    {
+        if ($this->processManagement->killPid($schedule->getPid())) {
             $messages = [];
             if ($schedule->getMessages()) {
                 $messages[] = $schedule->getMessages();
             }
-
-            $messages[] = 'Process went away at ' . $this->dateTime->gmtDate(null, $this->clock->now());
-
+            $messages[] = 'Process was killed at ' . $this->dateTime->gmtDate(null, $this->clock->now());
             $schedule
-                ->setStatus(Schedule::STATUS_ERROR)
-                ->setMessages(implode("\n", $messages));
+                ->setMessages(\implode("\n", $messages))
+                ->setStatus(ScheduleInterface::STATUS_KILLED);
 
             $this->scheduleRepository->save($schedule);
         }

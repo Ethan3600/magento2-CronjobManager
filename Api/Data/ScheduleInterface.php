@@ -16,6 +16,8 @@ interface ScheduleInterface
 
     public const STATUS_ERROR   = Schedule::STATUS_ERROR;
 
+    public const STATUS_KILLED  = 'killed';
+
     /**
      * @return int
      */
@@ -60,6 +62,11 @@ interface ScheduleInterface
      * @return string|null
      */
     public function getFinishedAt();
+
+    /**
+     * @return string|null
+     */
+    public function getKillRequest();
 
     /**
      * @param int $scheduleId
@@ -114,4 +121,10 @@ interface ScheduleInterface
      * @return ScheduleInterface
      */
     public function setFinishedAt(string $finishedAt): self;
+
+    /**
+     * @param string $killRequest
+     * @return ScheduleInterface
+     */
+    public function setKillRequest(string $killRequest): self;
 }
