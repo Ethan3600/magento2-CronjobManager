@@ -2,10 +2,10 @@
 
 namespace EthanYehuda\CronjobManager\Model;
 
+use EthanYehuda\CronjobManager\Api\ScheduleManagementInterfaceFactory;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
-use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 
 class Cron
 {
@@ -15,38 +15,27 @@ class Cron
     private $state;
 
     /**
-     * @var ManagerFactory
+     * @var ScheduleManagementInterfaceFactory
      */
-    private $managerFactory;
-
-    /**
-     * @var DateTimeFactory
-     */
-    private $dateTimeFactory;
+    private $scheduleManagementFactory;
 
     public function __construct(
         State $state,
-        ManagerFactory $managerFactory,
-        DateTimeFactory $dateTimeFactory
+        ScheduleManagementInterfaceFactory $scheduleManagementFactory
     ) {
         $this->state = $state;
-        $this->managerFactory = $managerFactory;
-        $this->dateTimeFactory = $dateTimeFactory;
+        $this->scheduleManagementFactory = $scheduleManagementFactory;
     }
 
     public function runCron($jobCode)
     {
         $this->state->setAreaCode(Area::AREA_CRONTAB);
 
-        $manager = $this->managerFactory->create();
-        $dateTime = $this->dateTimeFactory->create();
-
+        $scheduleManager = $this->scheduleManagementFactory->create();
         try {
             // lets create a new cron job and dispatch it
-            $now = strftime('%Y-%m-%dT%H:%M:%S', $dateTime->gmtTimestamp());
-
-            $schedule = $manager->createCronJob($jobCode, $now);
-            $manager->dispatchCron(null, $jobCode, $schedule);
+            $schedule = $scheduleManager->scheduleNow($jobCode);
+            $scheduleManager->execute($schedule->getId());
             return [Cli::RETURN_SUCCESS, "$jobCode successfully ran"];
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             return [Cli::RETURN_FAILURE, $e->getMessage()];
