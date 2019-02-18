@@ -44,6 +44,9 @@ class Runjob extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /**
+         * @todo Find a way to avoid using `ObjectManager`
+         */
         $omParams = $_SERVER;
         $omParams[StoreManager::PARAM_RUN_CODE] = Store::ADMIN_CODE;
         $omParams[Store::CUSTOM_ENTRY_POINT_PARAM] = true;
