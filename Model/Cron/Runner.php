@@ -1,13 +1,13 @@
 <?php
 
-namespace EthanYehuda\CronjobManager\Model;
+namespace EthanYehuda\CronjobManager\Model\Cron;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterfaceFactory;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Console\Cli;
 
-class Cron
+class Runner
 {
     /**
      * @var State

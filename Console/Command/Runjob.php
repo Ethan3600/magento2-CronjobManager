@@ -50,7 +50,7 @@ class Runjob extends Command
         $objectManager = $this->objectManagerFactory->create($omParams);
 
         $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
-        $cron = $objectManager->create(\EthanYehuda\CronjobManager\Model\Cron::class);
+        $cron = $objectManager->create(\EthanYehuda\CronjobManager\Model\Cron\Runner::class);
         list($resultCode, $resultMessage) = $cron->runCron($jobCode);
         $output->writeln($resultMessage);
         return $resultCode;
