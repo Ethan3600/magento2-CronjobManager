@@ -62,7 +62,7 @@ class CleanRunningJobs
                 $messages[] = $schedule->getMessages();
             }
 
-            $messages[] = 'Process went away at ' . $this->dateTime->gmtDate(null, $this->clock->now());
+            $messages[] = __('Process went away at %1', $this->dateTime->gmtDate(null, $this->clock->now()));
 
             $schedule
                 ->setStatus(Schedule::STATUS_ERROR)
