@@ -6,17 +6,17 @@ use Magento\Cron\Model\Schedule;
 
 interface ScheduleInterface
 {
-    public const STATUS_PENDING = Schedule::STATUS_PENDING;
+    const STATUS_PENDING = Schedule::STATUS_PENDING;
 
-    public const STATUS_RUNNING = Schedule::STATUS_RUNNING;
+    const STATUS_RUNNING = Schedule::STATUS_RUNNING;
 
-    public const STATUS_SUCCESS = Schedule::STATUS_SUCCESS;
+    const STATUS_SUCCESS = Schedule::STATUS_SUCCESS;
 
-    public const STATUS_MISSED  = Schedule::STATUS_MISSED;
+    const STATUS_MISSED  = Schedule::STATUS_MISSED;
 
-    public const STATUS_ERROR   = Schedule::STATUS_ERROR;
+    const STATUS_ERROR   = Schedule::STATUS_ERROR;
 
-    public const STATUS_KILLED  = 'killed';
+    const STATUS_KILLED  = 'killed';
 
     /**
      * @return int

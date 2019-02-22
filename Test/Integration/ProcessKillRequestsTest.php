@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProcessKillRequestsTest extends TestCase
 {
-    private const NOW = '2019-02-09 18:33:00';
+    const NOW = '2019-02-09 18:33:00';
     /**
      * @var int
      */

@@ -17,7 +17,7 @@ use Magento\Framework\Event;
  */
 class CleanRunningJobsTest extends TestCase
 {
-    private const NOW = '2019-02-09 18:33:00';
+    const NOW = '2019-02-09 18:33:00';
     /**
      * @var ObjectManager
      */
@@ -31,7 +31,7 @@ class CleanRunningJobsTest extends TestCase
      */
     private $clock;
 
-    private const DEAD_PID = 99999999;
+    const DEAD_PID = 99999999;
 
     protected function setUp()
     {
