@@ -13,9 +13,10 @@ class CronActions extends Column
     /**
      * Url path
      */
-    const URL_PATH_EDIT = 'cronjobmanager/manage/edit';
-    const URL_PATH_DELETE = 'cronjobmanager/manage_job/delete';
+    const URL_PATH_EDIT     = 'cronjobmanager/manage/edit';
+    const URL_PATH_DELETE   = 'cronjobmanager/manage_job/delete';
     const URL_PATH_DISPATCH = 'cronjobmanager/manage_job/dispatch';
+    const URL_PATH_KILL     = 'cronjobmanager/manage_job/kill';
 
     /**
      * @var UrlInterface
@@ -104,6 +105,22 @@ class CronActions extends Column
                                 ),
                             ],
                         ],
+                        'kill' => [
+                            'href' => $this->urlBuilder->getUrl(
+                                static::URL_PATH_KILL,
+                                [
+                                    'id' => $item['schedule_id'],
+                                    'job_code' => $item['job_code'],
+                                ]
+                            ),
+                            'label' => __('Kill'),
+                            'confirm' => [
+                                'job_code' => __('Kill'),
+                                'message' => __(
+                                    'Are you sure you want to <b>kill the process</b>?'
+                                ),
+                            ],
+                        ]
                     ];
                 }
             }

@@ -17,6 +17,16 @@ class UpgradeSchema implements UpgradeSchemaInterface
     private $context;
 
     /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
+    private $magentoMetaData;
+
+    public function __construct(\Magento\Framework\App\ProductMetadataInterface $magentoMetaData)
+    {
+        $this->magentoMetaData = $magentoMetaData;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function upgrade(
@@ -32,6 +42,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addPidToSchedule();
         }
 
+        if (version_compare($context->getVersion(), '1.6.4') < 0) {
+            $this->addKillRequestToSchedule();
+        }
+
         $this->setup->endSetup();
     }
 
@@ -40,6 +54,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
      */
     public function addPidToSchedule()
     {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            /*
+             * For Magento 2.3+, db_schema.xml is used instead
+             */
+            return;
+        }
         $this->setup->getConnection()->addColumn(
             $this->setup->getTable("cron_schedule"),
             "pid",
@@ -49,6 +69,30 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 "nullable" => true,
                 "default" => null,
                 "after" => "status",
+            ]
+        );
+    }
+
+    /**
+     * Add column to cron_schedule to send kill requests
+     */
+    public function addKillRequestToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            /*
+             * For Magento 2.3+, db_schema.xml is used instead
+             */
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable("cron_schedule"),
+            "kill_request",
+            [
+                "type" => Table::TYPE_TIMESTAMP,
+                "comment" => "Timestamp of kill request",
+                "nullable" => true,
+                "default" => null,
+                "after" => "pid",
                 "unsigned" => true
             ]
         );

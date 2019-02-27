@@ -213,6 +213,16 @@
 				</item>
 			</argument>
 		</column>
+		<column name="pid">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="filter" xsi:type="string">text</item><!-- TODO number -->
+					<item name="sortable" xsi:type="boolean">true</item>
+					<item name="label" xsi:type="string" translate="true">PID</item>
+					<item name="draggable" xsi:type="boolean">false</item>
+				</item>
+			</argument>
+		</column>
 		<actionsColumn name="actions" class="EthanYehuda\CronjobManager\Ui\Component\Listing\Column\CronActions">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">

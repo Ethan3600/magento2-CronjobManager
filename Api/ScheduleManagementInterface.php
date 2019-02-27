@@ -54,4 +54,11 @@ interface ScheduleManagementInterface
      * @return bool
      */
     public function flush(): bool;
+
+    /**
+     * @param int $jobId
+     * @return bool
+     */
+    public function kill(int $jobId, int $timestamp): bool;
+
 }
