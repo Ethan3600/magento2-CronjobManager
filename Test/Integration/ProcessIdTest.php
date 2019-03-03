@@ -34,6 +34,7 @@ class ProcessIdTest extends TestCase
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_PENDING);
+        $schedule->setJobCode('test_job_code');
         $schedule->save();
     }
 
