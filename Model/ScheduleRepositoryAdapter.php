@@ -2,10 +2,12 @@
 
 namespace EthanYehuda\CronjobManager\Model;
 
+use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterfaceFactory;
 use Magento\Cron\Model\ScheduleFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class ScheduleRepositoryAdapter implements ScheduleRepositoryAdapterInterface
 {
@@ -23,15 +25,21 @@ class ScheduleRepositoryAdapter implements ScheduleRepositoryAdapterInterface
      * @var ScheduleFactory
      */
     private $coreScheduleFactory;
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
 
     public function __construct(
         ScheduleRepositoryInterface $scheduleRepository,
         ScheduleInterfaceFactory $scheduleFactory,
-        ScheduleFactory $coreScheduleFactory
+        ScheduleFactory $coreScheduleFactory,
+        SearchCriteriaBuilder $searchCriteriaBuilder
     ) {
         $this->scheduleRepository = $scheduleRepository;
         $this->scheduleFactory = $scheduleFactory;
         $this->coreScheduleFactory = $coreScheduleFactory;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     public function get(int $scheduleId): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
@@ -66,4 +74,11 @@ class ScheduleRepositoryAdapter implements ScheduleRepositoryAdapterInterface
 
         return $this->scheduleFactory->create(['data' => $coreSchedule->getData()]);
     }
+
+    public function getByStatus($status)
+    {
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('status', $status)->create();
+        return $this->getList($searchCriteria)->getItems();
+    }
+
 }

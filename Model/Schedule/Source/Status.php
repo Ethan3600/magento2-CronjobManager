@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Model\Schedule\Source;
 
+use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Data\OptionSourceInterface;
 
@@ -16,24 +17,28 @@ class Status implements OptionSourceInterface
     {
         return [
             [
-                'value' => Schedule::STATUS_ERROR,
+                'value' => ScheduleInterface::STATUS_ERROR,
                 'label' => __('Error'),
             ],
             [
-                'value' => Schedule::STATUS_MISSED,
+                'value' => ScheduleInterface::STATUS_MISSED,
                 'label' => __('Missed'),
             ],
             [
-                'value' => Schedule::STATUS_PENDING,
+                'value' => ScheduleInterface::STATUS_PENDING,
                 'label' => __('Pending'),
             ],
             [
-                'value' => Schedule::STATUS_RUNNING,
+                'value' => ScheduleInterface::STATUS_RUNNING,
                 'label' => __('Running'),
             ],
             [
-                'value' => Schedule::STATUS_SUCCESS,
+                'value' => ScheduleInterface::STATUS_SUCCESS,
                 'label' => __('Success'),
+            ],
+            [
+                'value' => ScheduleInterface::STATUS_KILLED,
+                'label' => __('Killed'),
             ],
         ];
     }

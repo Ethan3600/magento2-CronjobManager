@@ -121,4 +121,26 @@ class ScheduleManagement implements ScheduleManagementInterface
 
         return true;
     }
+
+    /**
+     * @param int $jobId
+     * @param int $timestamp
+     * @return bool
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function kill(int $jobId, int $timestamp): bool
+    {
+        $schedule = $this->scheduleRepository->get($jobId);
+        if ($schedule->getStatus() !== Schedule::STATUS_RUNNING) {
+            return false;
+        }
+        $schedule->setData(
+            'kill_request',
+            strftime(ScheduleManagementInterface::TIME_FORMAT, $this->dateTime->gmtTimestamp($timestamp))
+        );
+        $this->scheduleRepository->save($schedule);
+        return true;
+    }
+
 }

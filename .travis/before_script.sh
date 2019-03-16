@@ -25,7 +25,7 @@ cd magento2
 # add composer package under test, composer require will trigger update/install
 composer config minimum-stability dev
 composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-composer require $COMPOSER_PACKAGE_NAME:$TRAVIS_BRANCH-dev#$TRAVIS_COMMIT
+composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
 
 # prepare for test suite
 case $TEST_SUITE in
@@ -39,7 +39,8 @@ case $TEST_SUITE in
             SET @@global.sql_mode = NO_ENGINE_SUBSTITUTION;
             CREATE DATABASE magento_integration_tests;
         '
-        mv etc/install-config-mysql.travis.php.dist etc/install-config-mysql.php
+        cp etc/install-config-mysql.travis.php.dist etc/install-config-mysql.php
+        sed -i '/amqp/d' etc/install-config-mysql.php
 
         cd ../../..
         ;;

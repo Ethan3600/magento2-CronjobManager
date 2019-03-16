@@ -2,8 +2,22 @@
 
 namespace EthanYehuda\CronjobManager\Api\Data;
 
+use Magento\Cron\Model\Schedule;
+
 interface ScheduleInterface
 {
+    const STATUS_PENDING = Schedule::STATUS_PENDING;
+
+    const STATUS_RUNNING = Schedule::STATUS_RUNNING;
+
+    const STATUS_SUCCESS = Schedule::STATUS_SUCCESS;
+
+    const STATUS_MISSED  = Schedule::STATUS_MISSED;
+
+    const STATUS_ERROR   = Schedule::STATUS_ERROR;
+
+    const STATUS_KILLED  = 'killed';
+
     /**
      * @return int
      */
@@ -48,6 +62,11 @@ interface ScheduleInterface
      * @return string|null
      */
     public function getFinishedAt();
+
+    /**
+     * @return string|null
+     */
+    public function getKillRequest();
 
     /**
      * @param int $scheduleId
@@ -102,4 +121,10 @@ interface ScheduleInterface
      * @return ScheduleInterface
      */
     public function setFinishedAt(string $finishedAt): self;
+
+    /**
+     * @param string $killRequest
+     * @return ScheduleInterface
+     */
+    public function setKillRequest(string $killRequest): self;
 }
