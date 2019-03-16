@@ -14,7 +14,7 @@
 				<item name="name" xsi:type="string">add</item>
 				<item name="label" xsi:type="string" translate="true">Schedule Cron Job</item>
 				<item name="class" xsi:type="string">primary</item>
-				<item name="url" xsi:type="string">*/*/create</item>
+				<item name="url" xsi:type="string">*/manage/create</item>
 			</item>
 			<item name="run" xsi:type="array">
 				<item name="name" xsi:type="string">run</item>

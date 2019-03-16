@@ -7,6 +7,7 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 use Magento\Framework\Event\ObserverFactory;
+use Magento\Framework\Controller\ResultFactory;
 
 class Run extends Action
 {
@@ -52,14 +53,15 @@ class Run extends Action
      */
     public function execute()
     {
+        $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+        $resultRedirect->setUrl($this->_redirect->getRefererUrl());
         try {
             $this->cronQueue->execute($this->observer);
         } catch (\Magento\Framework\Exception\CronException $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/config/');
-            return;
+            return $resultRedirect;
         }
         $this->getMessageManager()->addSuccessMessage("Magento Cron Ran Successfully");
-        $this->_redirect('*/config/');
+        return $resultRedirect;
     }
 }
