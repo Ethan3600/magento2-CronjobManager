@@ -8,11 +8,41 @@
 		</item>
 		<item name="template" xsi:type="string">templates/container</item>
 		<item name="buttons" xsi:type="array">
-			<item name="back" xsi:type="array">
-				<item name="name" xsi:type="string">back</item>
-				<item name="label" xsi:type="string" translate="true">Back</item>
-				<item name="class" xsi:type="string">back</item>
+			<item name="add" xsi:type="array">
+				<item name="name" xsi:type="string">add</item>
+				<item name="label" xsi:type="string" translate="true">Schedule Cron Job</item>
+				<item name="class" xsi:type="string">primary</item>
+				<item name="url" xsi:type="string">*/manage/create</item>
+			</item>
+			<item name="run" xsi:type="array">
+				<item name="name" xsi:type="string">run</item>
+				<item name="label" xsi:type="string" translate="true">Run Cron</item>
+				<item name="class" xsi:type="string">primary</item>
+				<item name="url" xsi:type="string">*/config_job/run</item>
+			</item>
+            <item name="dashboard" xsi:type="array">
+				<item name="name" xsi:type="string">dashboard</item>
+				<item name="label" xsi:type="string" translate="true">Dashboard</item>
+				<item name="class" xsi:type="string">dashboard</item>
 				<item name="url" xsi:type="string">*/manage/</item>
+			</item>
+            <item name="config" xsi:type="array">
+				<item name="name" xsi:type="string">config</item>
+				<item name="label" xsi:type="string" translate="true">Job Configuration</item>
+				<item name="class" xsi:type="string">secondary</item>
+				<item name="url" xsi:type="string">*/config/index</item>
+			</item>
+            <item name="timeline" xsi:type="array">
+				<item name="name" xsi:type="string">timeline</item>
+				<item name="label" xsi:type="string" translate="true">Timeline</item>
+				<item name="class" xsi:type="string">secondary</item>
+				<item name="url" xsi:type="string">*/timeline/index</item>
+			</item>
+            <item name="system" xsi:type="array">
+				<item name="name" xsi:type="string">system</item>
+				<item name="label" xsi:type="string" translate="true">System Configurations</item>
+				<item name="class" xsi:type="string">secondary</item>
+				<item name="url" xsi:type="string">adminhtml/system_config/edit/section/system</item>
 			</item>
 			<item name="reload" xsi:type="string">EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit\Reload</item>
 		</item>
