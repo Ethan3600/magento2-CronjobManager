@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Model\Data;
 
+use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use Magento\Framework\DataObject;
 
 /**
@@ -9,15 +10,16 @@ use Magento\Framework\DataObject;
  */
 class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
 {
-    const KEY_SCHEDULE_ID = 'schedule_id';
-    const KEY_JOB_CODE = 'job_code';
-    const KEY_STATUS = 'status';
-    const KEY_PID = 'pid';
-    const KEY_MESSAGES = 'messages';
-    const KEY_CREATED_AT = 'created_at';
+    const KEY_SCHEDULE_ID  = 'schedule_id';
+    const KEY_JOB_CODE     = 'job_code';
+    const KEY_STATUS       = 'status';
+    const KEY_PID          = 'pid';
+    const KEY_MESSAGES     = 'messages';
+    const KEY_CREATED_AT   = 'created_at';
     const KEY_SCHEDULED_AT = 'scheduled_at';
-    const KEY_EXECUTED_AT = 'executed_at';
-    const KEY_FINISHED_AT = 'finished_at';
+    const KEY_EXECUTED_AT  = 'executed_at';
+    const KEY_FINISHED_AT  = 'finished_at';
+    const KEY_KILL_REQUEST = 'kill_request';
 
     public function __construct(array $data = [])
     {
@@ -69,6 +71,11 @@ class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Dat
         return $this->getData(self::KEY_FINISHED_AT);
     }
 
+    public function getKillRequest()
+    {
+        return $this->getData(self::KEY_KILL_REQUEST);
+    }
+
     public function setScheduleId(int $scheduleId): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
     {
         $this->setData(self::KEY_SCHEDULE_ID, $scheduleId);
@@ -108,6 +115,12 @@ class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Dat
     public function setScheduledAt(string $scheduledAt): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
     {
         $this->setData(self::KEY_SCHEDULED_AT, $scheduledAt);
+        return $this;
+    }
+
+    public function setKillRequest(string $killRequest): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
+    {
+        $this->setData(self::KEY_KILL_REQUEST, $killRequest);
         return $this;
     }
 

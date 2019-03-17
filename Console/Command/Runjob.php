@@ -2,43 +2,27 @@
 
 namespace EthanYehuda\CronjobManager\Console\Command;
 
-use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use Magento\Framework\App\ObjectManagerFactory;
+use Magento\Store\Model\Store;
+use Magento\Store\Model\StoreManager;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Magento\Framework\App\Area;
-use Magento\Framework\App\State;
-use Magento\Framework\Console\Cli;
-use Magento\Framework\Stdlib\DateTime\DateTimeFactory;
 
 class Runjob extends Command
 {
     const INPUT_KEY_JOB_CODE = 'job_code';
 
     /**
-     * @var ManagerFactory $managerFactory
+     * @var ObjectManagerFactory
      */
-    private $managerFactory;
-
-    /**
-     * @var \Magento\Framework\App\State $state
-     */
-    private $state;
-
-    /**
-     * @var DateTimeFactory $dateTimeFactory
-     */
-    private $dateTimeFactory;
+    private $objectManagerFactory;
 
     public function __construct(
-        State $state,
-        ManagerFactory $managerFactory,
-        DateTimeFactory $dateTimeFactory
+        ObjectManagerFactory $objectManagerFactory
     ) {
-        $this->managerFactory = $managerFactory;
-        $this->state = $state;
-        $this->dateTimeFactory = $dateTimeFactory;
+        $this->objectManagerFactory = $objectManagerFactory;
         parent::__construct();
     }
 
@@ -60,27 +44,18 @@ class Runjob extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $manager = $this->managerFactory->create();
-        $dateTime = $this->dateTimeFactory->create();
+        /**
+         * @todo Find a way to avoid using `ObjectManager`
+         */
+        $omParams = $_SERVER;
+        $omParams[StoreManager::PARAM_RUN_CODE] = Store::ADMIN_CODE;
+        $omParams[Store::CUSTOM_ENTRY_POINT_PARAM] = true;
+        $objectManager = $this->objectManagerFactory->create($omParams);
 
-        try {
-            $this->state->setAreaCode(Area::AREA_ADMINHTML);
-        } catch (\Magento\Framework\Exception\LocalizedException $exception) {
-            // Area code is already set
-        }
-
-        try {
-            // lets create a new cron job and dispatch it
-            $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
-            $now = strftime('%Y-%m-%dT%H:%M:%S', $dateTime->gmtTimestamp());
-
-            $schedule = $manager->createCronJob($jobCode, $now);
-            $manager->dispatchCron(null, $jobCode, $schedule);
-            $output->writeln("$jobCode successfully ran");
-            return Cli::RETURN_SUCCESS;
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
-            $output->writeln($e->getMessage());
-            return Cli::RETURN_FAILURE;
-        }
+        $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
+        $cron = $objectManager->create(\EthanYehuda\CronjobManager\Model\Cron\Runner::class);
+        list($resultCode, $resultMessage) = $cron->runCron($jobCode);
+        $output->writeln($resultMessage);
+        return $resultCode;
     }
 }

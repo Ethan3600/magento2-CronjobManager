@@ -46,6 +46,12 @@
             <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
         </resources>
     </route>
+    <route url="/V1/cronmanager/schedules/:scheduleId/kill" method="DELETE">
+        <service class="EthanYehuda\CronjobManager\Api\ScheduleManagementInterface" method="kill"/>
+        <resources>
+            <resource ref="EthanYehuda_CronjobManager::cronjobmanager"/>
+        </resources>
+    </route>
 
     <!-- Job Management -->
     <route url="/V1/cronmanager/jobs" method="GET">

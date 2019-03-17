@@ -12,27 +12,39 @@
 		<item name="buttons" xsi:type="array">
 			<item name="add" xsi:type="array">
 				<item name="name" xsi:type="string">add</item>
-				<item name="label" xsi:type="string" translate="true">Add New Cron Job</item>
+				<item name="label" xsi:type="string" translate="true">Schedule Cron Job</item>
 				<item name="class" xsi:type="string">primary</item>
-				<item name="url" xsi:type="string">*/*/create</item>
+				<item name="url" xsi:type="string">*/manage/create</item>
 			</item>
-			<item name="flush" xsi:type="array">
-				<item name="name" xsi:type="string">flush</item>
-				<item name="label" xsi:type="string" translate="true">Flush Jobs</item>
-				<item name="class" xsi:type="string">secondary</item>
-				<item name="url" xsi:type="string">*/manage_job/flush</item>
+			<item name="run" xsi:type="array">
+				<item name="name" xsi:type="string">run</item>
+				<item name="label" xsi:type="string" translate="true">Run Cron</item>
+				<item name="class" xsi:type="string">primary</item>
+				<item name="url" xsi:type="string">*/config_job/run</item>
 			</item>
-			<item name="config" xsi:type="array">
+            <item name="dashboard" xsi:type="array">
+				<item name="name" xsi:type="string">dashboard</item>
+				<item name="label" xsi:type="string" translate="true">Dashboard</item>
+				<item name="class" xsi:type="string">dashboard</item>
+				<item name="url" xsi:type="string">*/manage/</item>
+			</item>
+            <item name="config" xsi:type="array">
 				<item name="name" xsi:type="string">config</item>
 				<item name="label" xsi:type="string" translate="true">Job Configuration</item>
 				<item name="class" xsi:type="string">secondary</item>
 				<item name="url" xsi:type="string">*/config/index</item>
 			</item>
-			<item name="timeline" xsi:type="array">
+            <item name="timeline" xsi:type="array">
 				<item name="name" xsi:type="string">timeline</item>
 				<item name="label" xsi:type="string" translate="true">Timeline</item>
 				<item name="class" xsi:type="string">secondary</item>
 				<item name="url" xsi:type="string">*/timeline/index</item>
+			</item>
+            <item name="system" xsi:type="array">
+				<item name="name" xsi:type="string">system</item>
+				<item name="label" xsi:type="string" translate="true">System Configurations</item>
+				<item name="class" xsi:type="string">secondary</item>
+				<item name="url" xsi:type="string">adminhtml/system_config/edit/section/system</item>
 			</item>
 		</item>
 	</argument>
@@ -131,8 +143,11 @@
 		</column>
 		<column name="job_code">
 			<argument name="data" xsi:type="array">
+				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item>
+					<item name="filter" xsi:type="string">select</item>
+					<item name="dataType" xsi:type="string">select</item>
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
 					<item name="sorting" xsi:type="string">asc</item>
 					<item name="label" xsi:type="string" translate="true">Job Code</item>
 					<item name="draggable" xsi:type="boolean">false</item>
@@ -207,6 +222,16 @@
 					<item name="label" xsi:type="string" translate="true">Finished Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 					<item name="timezone" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+		</column>
+		<column name="pid">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="filter" xsi:type="string">text</item><!-- TODO number -->
+					<item name="sortable" xsi:type="boolean">true</item>
+					<item name="label" xsi:type="string" translate="true">PID</item>
+					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
 			</argument>
 		</column>
