@@ -18,6 +18,10 @@
     <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
          alt="Total Downloads">
   </a>
+  <a href="https://travis-ci.org/Ethan3600/magento2-CronjobManager">
+    <img src="https://travis-ci.org/Ethan3600/magento2-CronjobManager.svg?branch=1.x"
+         alt="Travis CI build status">
+  </a>
 </p>
 
 ## Installation
