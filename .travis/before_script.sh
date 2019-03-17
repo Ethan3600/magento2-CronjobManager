@@ -23,9 +23,28 @@ git clone --branch $MAGENTO_VERSION --depth=1 https://github.com/magento/magento
 cd magento2
 
 # add composer package under test, composer require will trigger update/install
-composer config minimum-stability dev
-composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+case $TRAVIS_BRANCH in
+    1.x)
+        composer config minimum-stability dev
+        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
+        composer require ${COMPOSER_PACKAGE_NAME}:${TRAVIS_BRANCH}-dev\#{$TRAVIS_COMMIT}
+        ;;
+    1.x-develop)
+        composer config minimum-stability dev
+        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
+        composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+        ;;
+    0.x)
+        composer config minimum-stability dev
+        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
+        composer require ${COMPOSER_PACKAGE_NAME}:${TRAVIS_BRANCH}-dev\#{$TRAVIS_COMMIT}
+        ;;
+    0.x-develop)
+        composer config minimum-stability dev
+        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
+        composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+        ;;
+esac
 
 # prepare for test suite
 case $TEST_SUITE in
