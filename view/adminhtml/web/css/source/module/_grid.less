@@ -1,0 +1,35 @@
+//
+//    Grid - status and severity
+// --------------------------------------
+
+@grid-severity-running-color: #808080;
+@grid-severity-running-background-color: #ffff00;
+@grid-severity-running-border: #d8d8d8;
+
+@grid-severity-pending-color: #808080;
+@grid-severity-pending-background-color: #cccccc;
+@grid-severity-pending-border: #d8d8d8;
+
+
+.grid-severity-running,
+.grid-severity-pending {
+  display: block;
+  border: 1px solid @grid-severity-pending-border;
+  padding: 0 3px;
+  font-weight: bold;
+  line-height: 17px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.grid-severity-running {
+  border-color: @grid-severity-running-border;
+  background: @grid-severity-running-background-color;
+  color: @grid-severity-running-color;
+}
+
+.grid-severity-pending {
+  border-color: @grid-severity-pending-border;
+  background: @grid-severity-pending-background-color;
+  color: @grid-severity-pending-color;
+}
