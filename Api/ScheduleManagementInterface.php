@@ -57,6 +57,7 @@ interface ScheduleManagementInterface
 
     /**
      * @param int $jobId
+     * @param int $timestamp
      * @return bool
      */
     public function kill(int $jobId, int $timestamp): bool;
