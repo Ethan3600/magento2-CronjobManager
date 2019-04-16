@@ -29,7 +29,7 @@
 In your Magento2 root directory, you may install this package via composer:
 
 `composer require ethanyehuda/magento2-cronjobmanager`
-
+`php bin/magento module:enable --clear-static-content EthanYehuda_CronjobManager`
 `php bin/magento setup:upgrade`
 
 
