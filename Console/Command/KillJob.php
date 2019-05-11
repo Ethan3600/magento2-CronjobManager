@@ -13,15 +13,19 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
+use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
 
 class KillJob extends Command
 {
     const INPUT_KEY_JOB_CODE = 'job_code';
+
+    const OPTION_KEY_PROC_KILL = 'process-kill';
 
     /**
      * @var State
@@ -52,6 +56,11 @@ class KillJob extends Command
      * @var FilterGroupBuilder 
      */
     private $filterGroupBuilder;
+    
+    /**
+     * @var ProcessManagement 
+     */
+    private $processManagement;
 
     public function __construct(
         State $state,
@@ -59,7 +68,8 @@ class KillJob extends Command
         ScheduleManagementInterface $scheduleManagement,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder
+        FilterGroupBuilder $filterGroupBuilder,
+        ProcessManagement $processManagement
     ) {
         $this->state = $state;
         $this->scheduleRepository = $scheduleRepository;
@@ -67,6 +77,7 @@ class KillJob extends Command
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
         $this->filterGroupBuilder = $filterGroupBuilder;
+        $this->processManagement = $processManagement;
         parent::__construct();
     }
 
@@ -76,7 +87,15 @@ class KillJob extends Command
             new InputArgument(
                 self::INPUT_KEY_JOB_CODE,
                 InputArgument::REQUIRED,
-                'Job code input (ex. \'sitemap_generate\')'
+                "Job code input (ex. 'sitemap_generate')
+                \nSends \"kill request\" to all the cron jobs given a specified job_code.
+                \nKill requests will not kill jobs immediately; instead it will be scheduled to be killed and handled by Magento's cron scheduler"
+            ),
+            new InputOption(
+                self::OPTION_KEY_PROC_KILL,
+                "p",
+                InputOption::VALUE_NONE,
+                "Sends a kill request immediately to the job processes that are running the given job_code"
             )
         ];
 
@@ -97,6 +116,9 @@ class KillJob extends Command
         /** @var string $jobCode */
         $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
 
+        /** @var bool $optionProcKill */
+        $optionProcKill = $input->getOptions(self::OPTION_KEY_PROC_KILL);
+
         /** @var Schedule[] $runningJobs */
         $runningJobs = $this->loadRunningJobsByCode($jobCode);
 
@@ -104,8 +126,14 @@ class KillJob extends Command
         foreach ($runningJobs as $job) {
             /** @var int $id */
             $id = (int)$job->getScheduleId();
-            if ($id !== null && $job->getPid() !== null) {
-                $this->scheduleManagement->kill($id, \time());
+            /** @var int $pid */
+            $pid = (int)$job->getPid();
+            if ($id !== null && $pid !== null) {
+                if ($optionProcKill) {
+                    $this->processManagement->killPid($job->getPid());
+                } else {
+                    $this->scheduleManagement->kill($id, \time());
+                }
             }
         }
         $output->writeln("$jobCode successfully killed");
