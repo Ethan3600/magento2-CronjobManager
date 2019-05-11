@@ -23,6 +23,7 @@ use Magento\Framework\Config\ScopeInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
+use EthanYehuda\CronjobManager\Model\ProcessManagement;
 
 class KillJobTest extends TestCase
 {
@@ -62,13 +63,17 @@ class KillJobTest extends TestCase
             ->setMethods(['create'])
             ->getMock();
 
+        $this->mockProcessManagement = $this->getMockBuilder(ProcessManagement::class)->disableOriginalConstructor()
+            ->getMock();
+
         $this->command = new \EthanYehuda\CronjobManager\Console\Command\KillJob(
             $this->mockState,
             $this->mockScheduleRepository,
             $this->mockScheduleManagement,
             $this->mockSearchCriteriaBuilder,
             $this->mockFilterBuilder,
-            $this->mockFilterGroupBuilder
+            $this->mockFilterGroupBuilder,
+            $this->mockProcessManagement
         );
     }
 
@@ -99,9 +104,43 @@ class KillJobTest extends TestCase
 
         $commandTester = new CommandTester($this->command);
         $resultCode = $commandTester->execute([
-            'job_code' => 'sitemap_generate'
+            'job_code' => 'long_running_cron'
         ]);
 
+        $this->assertEquals(0, $resultCode);
+    }
+
+    public function testExecuteWithProcKillFlag()
+    {
+        $mockSchedule = new Schedule([
+            "schedule_id" => "2246",
+            "job_code" => "long_running_cron",
+            "status" => "running",
+            "pid" => 999,
+            "kill_request" => null
+        ]);
+
+        $this->mockQueryResults([$mockSchedule]);
+
+        $this->mockState->expects($this->once())
+            ->method('setAreaCode')
+            ->with(
+                Area::AREA_ADMINHTML
+            );
+
+        $this->mockProcessManagement->expects($this->once())
+            ->method('killPid')
+            ->with(
+                $this->equalTo(999)
+            );
+
+        $commandTester = new CommandTester($this->command);
+        $resultCode = $commandTester->execute(
+            [
+                'job_code' => 'long_running_cron',
+                '--process-kill' => true
+            ]
+        );
         $this->assertEquals(0, $resultCode);
     }
 
