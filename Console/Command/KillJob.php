@@ -117,7 +117,7 @@ class KillJob extends Command
         $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
 
         /** @var bool $optionProcKill */
-        $optionProcKill = $input->getOptions(self::OPTION_KEY_PROC_KILL);
+        $optionProcKill = $input->getOption(self::OPTION_KEY_PROC_KILL);
 
         /** @var Schedule[] $runningJobs */
         $runningJobs = $this->loadRunningJobsByCode($jobCode);
