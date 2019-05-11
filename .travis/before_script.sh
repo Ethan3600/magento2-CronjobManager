@@ -65,5 +65,5 @@ case $TEST_SUITE in
         ;;
     unit)
         cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
-    ;;
+        ;;
 esac
