@@ -24,22 +24,12 @@ cd magento2
 
 # add composer package under test, composer require will trigger update/install
 case $TRAVIS_BRANCH in
-    1.x)
+    "1.x" | "0.x")
         composer config minimum-stability dev
         composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
         composer require ${COMPOSER_PACKAGE_NAME}:${TRAVIS_BRANCH}-dev\#{$TRAVIS_COMMIT}
         ;;
-    1.x-develop)
-        composer config minimum-stability dev
-        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-        composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
-        ;;
-    0.x)
-        composer config minimum-stability dev
-        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-        composer require ${COMPOSER_PACKAGE_NAME}:${TRAVIS_BRANCH}-dev\#{$TRAVIS_COMMIT}
-        ;;
-    0.x-develop)
+    *)
         composer config minimum-stability dev
         composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
         composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
