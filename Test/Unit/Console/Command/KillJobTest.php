@@ -47,7 +47,7 @@ class KillJobTest extends TestCase
             ->setMethodsExcept([])
             ->getMock();
 
-        $this->mockScheduleManagement = $this->getMockBuilder(ScheduleManagementInterface::class)
+        $this->mockScheduleManagement = $this->getMockBuilder(ScheduleManagementInterface\Proxy::class)
             ->disableOriginalConstructor()
             ->getMock();
 
