@@ -62,6 +62,11 @@ class KillJob extends Command
      */
     private $processManagement;
 
+    /**
+     * @var string[]
+     */
+    private $errors = [];
+
     public function __construct(
         State $state,
         ScheduleRepositoryInterface $scheduleRepository,
@@ -129,12 +134,26 @@ class KillJob extends Command
             /** @var int $pid */
             $pid = (int)$job->getPid();
             if ($id !== null && $pid !== null) {
+                /** @var bool $killed */
+                $killed = false;
                 if ($optionProcKill) {
-                    $this->processManagement->killPid($job->getPid());
+                    $killed = $this->processManagement->killPid($pid);
                 } else {
-                    $this->scheduleManagement->kill($id, \time());
+                    $killed = $this->scheduleManagement->kill($id, \time());
+                }
+
+                if (!$killed) {
+                    $this->errors[] = "Unable to kill {$job->getJobCode()} with PID: $pid";
                 }
             }
+        }
+
+        if (\count($this->errors) > 0) {
+            foreach ($this->errors as $error) {
+                /** @var string $error */
+                $output->writeln($error);
+            }
+            return Cli::RETURN_FAILURE;
         }
         $output->writeln("$jobCode successfully killed");
         return Cli::RETURN_SUCCESS;

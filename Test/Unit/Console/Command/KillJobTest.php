@@ -101,7 +101,7 @@ class KillJobTest extends TestCase
             ->with(
                 $this->equalTo("2246"),
                 $this->isType('int')
-            );
+            )->willReturn(true);
 
         $commandTester = new CommandTester($this->command);
         $resultCode = $commandTester->execute([
@@ -133,7 +133,7 @@ class KillJobTest extends TestCase
             ->method('killPid')
             ->with(
                 $this->equalTo(999)
-            );
+            )->willReturn(true);
 
         $commandTester = new CommandTester($this->command);
         $resultCode = $commandTester->execute(
@@ -143,6 +143,128 @@ class KillJobTest extends TestCase
             ]
         );
         $this->assertEquals(0, $resultCode);
+    }
+
+    public function testExecuteWithKillFailures()
+    {
+        /** @var int $numOfSchedules */
+        $numOfSchedules = 3;
+        /** @var Schedule[] $mockedSchedules */
+        $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
+
+        $this->mockQueryResults($mockedSchedules);
+
+        $this->mockState->expects($this->once())
+            ->method('setAreaCode')
+            ->with(
+                Area::AREA_ADMINHTML
+            );
+
+        $this->mockScheduleManagement->expects($this->exactly($numOfSchedules))
+            ->method('kill')
+            ->with(
+                $this->isType('int'),
+                $this->isType('int')
+            )->willReturn(false);
+
+        $commandTester = new CommandTester($this->command);
+        $resultCode = $commandTester->execute([
+            'job_code' => 'long_running_cron'
+        ]);
+
+        $expectedOutput = [
+            "Unable to kill long_running_cron with PID: 1000",
+            "Unable to kill long_running_cron with PID: 1001",
+            "Unable to kill long_running_cron with PID: 1002\n" // writeln ends with a newline
+        ];
+        $expectedOutput = \implode("\n", $expectedOutput);
+
+        $this->assertEquals(1, $resultCode);
+        $this->assertEquals($expectedOutput, $commandTester->getDisplay());
+    }
+
+    public function testExecuteUsingProcKillWithKillFailures()
+    {
+        /** @var int $numOfSchedules */
+        $numOfSchedules = 3;
+        /** @var Schedule[] $mockedSchedules */
+        $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
+
+        $this->mockQueryResults($mockedSchedules);
+
+        $this->mockState->expects($this->once())
+            ->method('setAreaCode')
+            ->with(
+                Area::AREA_ADMINHTML
+            );
+
+        $this->mockProcessManagement->expects($this->exactly($numOfSchedules))
+            ->method('killPid')
+            ->with(
+                $this->isType('int')
+            )->willReturn(false);
+
+        $commandTester = new CommandTester($this->command);
+        $resultCode = $commandTester->execute(
+            [
+                'job_code' => 'long_running_cron',
+                '--process-kill' => true
+            ]
+        );
+
+        $expectedOutput = [
+            "Unable to kill long_running_cron with PID: 1000",
+            "Unable to kill long_running_cron with PID: 1001",
+            "Unable to kill long_running_cron with PID: 1002\n" // writeln ends with a newline
+        ];
+        $expectedOutput = \implode("\n", $expectedOutput);
+
+        $this->assertEquals(1, $resultCode);
+        $this->assertEquals($expectedOutput, $commandTester->getDisplay());
+    }
+
+    public function testExecuteWithPartialKillFailures()
+    {
+        /** @var int $numOfSchedules */
+        $numOfSchedules = 2;
+        /** @var Schedule[] $mockedSchedules */
+        $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
+
+        $this->mockQueryResults($mockedSchedules);
+
+        $this->mockState->expects($this->once())
+            ->method('setAreaCode')
+            ->with(
+                Area::AREA_ADMINHTML
+            );
+
+        $this->mockScheduleManagement->expects($this->exactly($numOfSchedules))
+            ->method('kill')
+            ->withConsecutive(
+                [
+                    $this->isType('int'),
+                    $this->isType('int')
+                ],
+                [
+                    $this->isType('int'),
+                    $this->isType('int')
+                ]
+            )->willReturnOnConsecutiveCalls(false, true);
+
+        $commandTester = new CommandTester($this->command);
+        $resultCode = $commandTester->execute(
+            [
+                'job_code' => 'long_running_cron',
+            ]
+        );
+
+        $expectedOutput = [
+            "Unable to kill long_running_cron with PID: 1000\n" // writeln ends with a newline
+        ];
+        $expectedOutput = \implode("\n", $expectedOutput);
+
+        $this->assertEquals(1, $resultCode);
+        $this->assertEquals($expectedOutput, $commandTester->getDisplay());
     }
 
     private function mockQueryResults($queryResults)
@@ -165,6 +287,21 @@ class KillJobTest extends TestCase
         $searchResults->expects($this->once())
             ->method('getItems')
             ->willReturn($queryResults);
+    }
+
+    private function mockMultipleSchedules(int $numOfSchedules): array
+    {
+        $mockSchedules = [];
+        for ($i = 0; $i < $numOfSchedules; $i++) {
+            $mockSchedules[] = new Schedule([
+                "schedule_id" => "3233" + $i,
+                "job_code" => "long_running_cron",
+                "status" => "running",
+                "pid" => 1000 + $i,
+                "kill_request" => null
+            ]);
+        }
+        return $mockSchedules;
     }
 }
 
