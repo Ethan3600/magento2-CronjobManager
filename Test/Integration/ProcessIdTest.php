@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @magentoAppArea crontab
+ * @magentoDbIsolation enabled
  */
 class ProcessIdTest extends TestCase
 {

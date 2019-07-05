@@ -22,6 +22,11 @@ class FakeClock implements Clock
         $this->timestamp = $timestamp;
     }
 
+    public function advance(string $expression): void
+    {
+        $this->timestamp = strtotime("+$expression", $this->timestamp);
+    }
+
     public function now(): int
     {
         return $this->timestamp;
