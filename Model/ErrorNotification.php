@@ -7,5 +7,5 @@ use Magento\Cron\Model\Schedule;
 
 interface ErrorNotification
 {
-    public function sendFor(Schedule $schedule);
+    public function sendFor(Schedule $schedule): void;
 }

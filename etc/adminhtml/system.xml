@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="system">
             <group id="cron_job_manager" translate="label" showInDefault="1" showInWebsite="0" showInStore="0" sortOrder="17">
@@ -8,6 +9,31 @@
                     <label>Clean schedule of missing processes</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If a process has status "running", but there is no corresponding process alive on the server, the job will be set to "error". This prevents buildup of false "running" jobs.</comment>
+                </field>
+                <field id="email_notification" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Send notification email if job has error</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="email_identity" translate="label" type="select" sortOrder="110" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                    <depends>
+                        <field id="email_notification">1</field>
+                    </depends>
+                </field>
+                <field id="email_recipients" translate="label comment" type="text" sortOrder="120" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Email recipients</label>
+                    <comment>Comma separeted email addresses</comment>
+                    <depends>
+                        <field id="email_notification">1</field>
+                    </depends>
+                </field>
+                <field id="email_template" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Email template for notifications</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                    <depends>
+                        <field id="email_notification">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

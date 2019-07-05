@@ -6,6 +6,8 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotification;
+use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
+use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use EthanYehuda\CronjobManager\Test\Util\FakeJobConfig;
 use Magento\Cron\Model\ConfigInterface;
@@ -93,6 +95,7 @@ class ErrorNotificationTest extends TestCase
         $this->objectManager->addSharedInstance($dateTime, DateTime::class);
         $this->errorNotification = $this->createMock(ErrorNotification::class);
         $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotification::class);
+        $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotificationEmail::class);
     }
 
     public function testSentIfScheduleHasErrorStatusProcessedByScheduleManagement()

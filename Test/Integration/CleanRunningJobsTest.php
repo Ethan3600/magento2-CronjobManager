@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Model\ErrorNotification;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\ObjectManager\ObjectManager;
@@ -37,6 +38,7 @@ class CleanRunningJobsTest extends TestCase
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
+        $this->objectManager->addSharedInstance($this->createMock(ErrorNotification::class), ErrorNotification::class);
         $this->clock = $this->objectManager->get(Clock::class);
         $this->clock->setTimestamp(strtotime(self::NOW));
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
