@@ -88,6 +88,11 @@ For example: `php bin/magento cronmanager:showjobs`
 
 <img src="https://user-images.githubusercontent.com/6549623/39410837-41f1b060-4bcc-11e8-8b98-7d7253662d5c.png"/>
 
+### Email notifications
+
+You can configure email addresses to be notified if a job has an error:
+
+![email-configuration](https://user-images.githubusercontent.com/367320/60760081-a3970000-a02f-11e9-9615-3eb6c3bd9adb.png)
 
 ### And Much More...
 
