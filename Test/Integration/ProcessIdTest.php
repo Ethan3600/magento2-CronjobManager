@@ -29,19 +29,37 @@ class ProcessIdTest extends TestCase
         $this->whenTryLockJob($schedule);
         $this->thenScheduleIsSavedWithPid($schedule, $pid);
     }
+    public function testProcessIdMaintainedAfterSuccesfulRun()
+    {
+        $this->givenPid($pid);
+        $this->givenPendingSchedule($schedule);
+        $this->whenTryLockJob($schedule);
+        $this->andScheduleSavedWithSuccess($schedule);
+        $this->thenScheduleIsSavedWithPid($schedule, $pid);
+    }
 
     private function givenPendingSchedule(&$schedule)
     {
+        /** @var Schedule $newSchedule */
+        $newSchedule = $this->objectManager->create(Schedule::class);
+        $newSchedule->setStatus(Schedule::STATUS_PENDING);
+        $newSchedule->setJobCode('test_job_code');
+        $newSchedule->save();
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
-        $schedule->setStatus(Schedule::STATUS_PENDING);
-        $schedule->setJobCode('test_job_code');
-        $schedule->save();
+        $schedule->load($newSchedule->getId());
     }
 
     private function whenTryLockJob(Schedule $schedule)
     {
-        $schedule->tryLockJob();
+        $lock = $schedule->tryLockJob();
+        $this->assertTrue($lock, 'Precondition: tryLockJob() should be successful');
+    }
+
+    private function andScheduleSavedWithSuccess(Schedule $schedule)
+    {
+        $schedule->setStatus(Schedule::STATUS_SUCCESS);
+        $schedule->save();
     }
 
     private function thenScheduleIsSavedWithPid(Schedule $schedule, $pid)
