@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="system_cron_job_manager_email_template" label="Cronjob Error Notification" file="cronjob_error.html" type="html"
+              module="EthanYehuda_CronjobManager" area="adminhtml"/>
+</config>

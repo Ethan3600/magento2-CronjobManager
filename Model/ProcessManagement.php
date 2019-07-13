@@ -26,6 +26,5 @@ class ProcessManagement
             }
         }
         return $killed;
-
     }
 }
