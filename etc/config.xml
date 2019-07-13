@@ -5,6 +5,10 @@
         <system>
             <cron_job_manager>
                 <clean_running_schedule>1</clean_running_schedule>
+                <email_notification>0</email_notification>
+                <email_identity>general</email_identity>
+                <email_recipients></email_recipients>
+                <email_template>system_cron_job_manager_email_template</email_template>
             </cron_job_manager>
         </system>
     </default>

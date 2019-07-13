@@ -1,0 +1,19 @@
+<!--@subject {{trans "Cronjob Error: %job_name" job_name=$schedule.getJobCode()}} @-->
+<!--@vars {} @-->
+<p>
+    {{trans "The following cronjob failed:"}}
+    <table>
+        <tr>
+            <th>Job</th><td>{{var schedule.getJobCode()|escape|nl2br}}</td>
+        </tr>
+        <tr>
+            <th>Messages</th><td>{{var schedule.getMessages()|escape|nl2br}}</td>
+        </tr>
+        <tr>
+            <th>Executed at</th><td>{{var schedule.getExecutedAt()|escape}}</td>
+        </tr>
+        <tr>
+            <th>Finished at</th><td>{{var schedule.getFinishedAt()|escape}}</td>
+        </tr>
+    </table>
+</p>
