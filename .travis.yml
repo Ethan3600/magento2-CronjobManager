@@ -13,6 +13,22 @@ addons:
 language: php
 matrix:
   include:
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.3
+       - TEST_SUITE=integration
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.3
+       - TEST_SUITE=unit
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.3-develop
+       - TEST_SUITE=integration
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.3-develop
+       - TEST_SUITE=unit
     - php: 7.2
       env:
        - MAGENTO_VERSION=2.3
