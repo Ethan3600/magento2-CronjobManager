@@ -21,6 +21,7 @@ matrix:
       env:
        - MAGENTO_VERSION=2.4-develop
        - TEST_SUITE=unit
+       - TEST_COVERAGE=true
     - php: 7.3
       env:
        - MAGENTO_VERSION=2.3
@@ -71,3 +72,5 @@ cache:
     - $HOME/.composer/cache
 before_script: ./.travis/before_script.sh
 script: phpunit -c magento2/dev/tests/$TEST_SUITE
+after_success:
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php magento2/vendor/php-coveralls/php-coveralls/bin/php-coveralls -v ; fi

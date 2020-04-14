@@ -1,0 +1,3 @@
+# for php-coveralls
+coverage_clover: magento2/dev/tests/unit/clover.xml
+json_path: magento2/dev/tests/unit/coveralls-upload.json
