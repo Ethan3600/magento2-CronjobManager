@@ -25,6 +25,6 @@
         <listener class="Magento\Framework\TestFramework\Unit\Listener\ReplaceObjectManager"/>
     </listeners>
     <logging>
-        <log type="coverage-clover" target="clover.xml"/>
+        <log type="coverage-clover" target="tmp/clover.xml"/>
     </logging>
 </phpunit>

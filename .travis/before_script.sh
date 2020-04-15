@@ -10,7 +10,7 @@ smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
 echo 'sendmail_path = "/usr/sbin/sendmail -t -i "' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/sendmail.ini
 
 # disable xdebug and adjust memory limit
-test "$TEST_COVERAGE" || echo > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+test "$TEST_SUITE" = "coverage" || echo > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 phpenv rehash;
 
@@ -37,10 +37,10 @@ case $TRAVIS_BRANCH in
 esac
 
 # prepare for test suite
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Integration/phpunit.xml.dist dev/tests/integration/phpunit.xml
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
 case $TEST_SUITE in
-    integration)
-        cp vendor/$COMPOSER_PACKAGE_NAME/Test/Integration/phpunit.xml.dist dev/tests/integration/phpunit.xml
-
+    integration|coverage)
         cd dev/tests/integration
 
         # create database and move db config into place
@@ -53,11 +53,8 @@ case $TEST_SUITE in
 
         cd ../../..
         ;;
-    unit)
-        cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
-        ;;
 esac
 
-if test "$TEST_COVERAGE"; then
+if test "$TEST_SUITE" = "coverage"; then
     composer require --dev --no-interaction php-coveralls/php-coveralls
 fi
