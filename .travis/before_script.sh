@@ -27,7 +27,7 @@ MY_REPO_SLUG=${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}
 MY_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 composer config minimum-stability dev
 composer config repositories.travis_to_test git https://github.com/${MY_REPO_SLUG}.git
-case $TRAVIS_BRANCH in
+case $MY_BRANCH in
     "1.x" | "0.x")
         composer require ${COMPOSER_PACKAGE_NAME}:${MY_BRANCH}-dev\#{$TRAVIS_COMMIT}
         ;;
