@@ -5,6 +5,9 @@
         "php": "~7.1.0||~7.2.0||~7.3.0",
         "magento/framework": "~100.3.0-dev|~101.0.0|~102.0.0"
     },
+    "require-dev": {
+        "ext-pcntl": "*"
+    },
     "type": "magento2-module",
     "license": "OSL-3.0",
     "autoload": {

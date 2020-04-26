@@ -7,9 +7,9 @@ use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\Template\TransportBuilder;
-use Magento\TestFramework\ObjectManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Mail\Template\TransportBuilderMock;
+use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -129,6 +129,7 @@ class ErrorNotificationEmailTest extends TestCase
     private function andEmailShouldHaveContents(Message $sentMessage, array $expectedContents): void
     {
         $content = $sentMessage->getBody()->getParts()[0]->getContent();
+        $content = \Zend_Mime_Decode::decodeQuotedPrintable($content);
         foreach ($expectedContents as $expectedKey => $expectedContent) {
             $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
         }

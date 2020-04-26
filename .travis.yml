@@ -15,19 +15,31 @@ matrix:
   include:
     - php: 7.3
       env:
+       - MAGENTO_VERSION=2.4-develop
+       - TEST_SUITE=coverage
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.4-develop
+       - TEST_SUITE=integration
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.4-develop
+       - TEST_SUITE=unit
+    - php: 7.3
+      env:
        - MAGENTO_VERSION=2.3
        - TEST_SUITE=integration
     - php: 7.3
       env:
        - MAGENTO_VERSION=2.3
        - TEST_SUITE=unit
-    - php: 7.3
+    - php: 7.2
       env:
-       - MAGENTO_VERSION=2.3-develop
+       - MAGENTO_VERSION=2.4-develop
        - TEST_SUITE=integration
-    - php: 7.3
+    - php: 7.2
       env:
-       - MAGENTO_VERSION=2.3-develop
+       - MAGENTO_VERSION=2.4-develop
        - TEST_SUITE=unit
     - php: 7.2
       env:
@@ -39,27 +51,11 @@ matrix:
        - TEST_SUITE=unit
     - php: 7.2
       env:
-       - MAGENTO_VERSION=2.3-develop
-       - TEST_SUITE=integration
-    - php: 7.2
-      env:
-       - MAGENTO_VERSION=2.3-develop
-       - TEST_SUITE=unit
-    - php: 7.1
-      env:
-       - MAGENTO_VERSION=2.3-develop
-       - TEST_SUITE=integration
-    - php: 7.1
-      env:
-       - MAGENTO_VERSION=2.3-develop
-       - TEST_SUITE=unit
-    - php: 7.1
-      env:
-        - MAGENTO_VERSION=2.2-develop
+        - MAGENTO_VERSION=2.2
         - TEST_SUITE=integration
-    - php: 7.1
+    - php: 7.2
       env:
-        - MAGENTO_VERSION=2.2-develop
+        - MAGENTO_VERSION=2.2
         - TEST_SUITE=unit
     - php: 7.1
       env:
@@ -78,4 +74,7 @@ cache:
   directories:
     - $HOME/.composer/cache
 before_script: ./.travis/before_script.sh
-script: phpunit -c magento2/dev/tests/$TEST_SUITE
+script:
+    - if [[ $TEST_SUITE == 'coverage' ]]; then phpunit -c magento2/dev/tests/unit && phpunit -c magento2/dev/tests/integration ; else phpunit -c magento2/dev/tests/$TEST_SUITE ; fi
+after_success:
+  - if [[ $TEST_SUITE == 'coverage' ]]; then travis_retry php $COMPOSER_BIN_DIR/php-coveralls -v ; fi

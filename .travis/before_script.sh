@@ -10,7 +10,7 @@ smtp-sink -d "%d.%H.%M.%S" localhost:2500 1000 &
 echo 'sendmail_path = "/usr/sbin/sendmail -t -i "' > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/sendmail.ini
 
 # disable xdebug and adjust memory limit
-echo > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
+test "$TEST_SUITE" = "coverage" || echo > ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini
 echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 phpenv rehash;
 
@@ -23,24 +23,24 @@ git clone --branch $MAGENTO_VERSION --depth=1 https://github.com/magento/magento
 cd magento2
 
 # add composer package under test, composer require will trigger update/install
-case $TRAVIS_BRANCH in
+MY_REPO_SLUG=${TRAVIS_PULL_REQUEST_SLUG:-$TRAVIS_REPO_SLUG}
+MY_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+composer config minimum-stability dev
+composer config repositories.travis_to_test git https://github.com/${MY_REPO_SLUG}.git
+case $MY_BRANCH in
     "1.x" | "0.x")
-        composer config minimum-stability dev
-        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-        composer require ${COMPOSER_PACKAGE_NAME}:${TRAVIS_BRANCH}-dev\#{$TRAVIS_COMMIT}
+        composer require ${COMPOSER_PACKAGE_NAME}:${MY_BRANCH}-dev\#{$TRAVIS_COMMIT}
         ;;
     *)
-        composer config minimum-stability dev
-        composer config repositories.travis_to_test git https://github.com/$TRAVIS_REPO_SLUG.git
-        composer require ${COMPOSER_PACKAGE_NAME}:dev-${TRAVIS_BRANCH}\#{$TRAVIS_COMMIT}
+        composer require ${COMPOSER_PACKAGE_NAME}:dev-${MY_BRANCH}\#{$TRAVIS_COMMIT}
         ;;
 esac
 
 # prepare for test suite
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Integration/phpunit.xml.dist dev/tests/integration/phpunit.xml
+cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
 case $TEST_SUITE in
-    integration)
-        cp vendor/$COMPOSER_PACKAGE_NAME/Test/Integration/phpunit.xml.dist dev/tests/integration/phpunit.xml
-
+    integration|coverage)
         cd dev/tests/integration
 
         # create database and move db config into place
@@ -53,7 +53,8 @@ case $TEST_SUITE in
 
         cd ../../..
         ;;
-    unit)
-        cp vendor/$COMPOSER_PACKAGE_NAME/Test/Unit/phpunit.xml.dist dev/tests/unit/phpunit.xml
-        ;;
 esac
+
+if test "$TEST_SUITE" = "coverage"; then
+    composer require --dev --no-interaction php-coveralls/php-coveralls
+fi

@@ -22,6 +22,9 @@
     <img src="https://travis-ci.org/Ethan3600/magento2-CronjobManager.svg?branch=1.x"
          alt="Travis CI build status">
   </a>
+  <a href='https://coveralls.io/github/Ethan3600/magento2-CronjobManager'>
+    <img src='https://coveralls.io/repos/github/Ethan3600/magento2-CronjobManager/badge.svg' alt='Coverage Status' />
+  </a>
 </p>
 
 ## Installation
