@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 class ProcessKillRequestsTest extends TestCase
 {
     const NOW = '2019-02-09 18:33:00';
+    const REMOTE_HOSTNAME = 'hostname.example.net';
+
     /**
      * @var int
      */
@@ -46,7 +48,7 @@ class ProcessKillRequestsTest extends TestCase
      */
     private $clock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
@@ -57,7 +59,7 @@ class ProcessKillRequestsTest extends TestCase
         $this->processManagement = $this->objectManager->get(ProcessManagement::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         /*
          * Take care of children that we failed to kill
@@ -70,10 +72,19 @@ class ProcessKillRequestsTest extends TestCase
     public function testDeadRunningJobsAreCleaned()
     {
         $this->givenRunningScheduleWithKillRequest($schedule, $this->timeStampInThePast());
+        $this->givenScheduleIsRunningOnHost($schedule, \gethostname());
         $this->whenEventIsDispatched('process_cron_queue_before');
         $this->thenScheduleHasStatus($schedule, ScheduleInterface::STATUS_KILLED);
         $this->andScheduleHasMessage($schedule, 'Process was killed at ' . self::NOW);
         $this->andProcessIsKilled($schedule);
+    }
+
+    public function testDeadRunningJobsOnAnotherHostAreNotCleaned()
+    {
+        $this->givenRunningScheduleWithKillRequest($schedule, $this->timeStampInThePast());
+        $this->givenScheduleIsRunningOnHost($schedule, self::REMOTE_HOSTNAME);
+        $this->whenEventIsDispatched('process_cron_queue_before');
+        $this->thenScheduleHasStatus($schedule, Schedule::STATUS_RUNNING);
     }
 
     private function givenRunningScheduleWithKillRequest(&$schedule, int $timestamp)
@@ -85,6 +96,12 @@ class ProcessKillRequestsTest extends TestCase
         $schedule->setData('pid', $this->createProcessToKill());
         $schedule->save();
         $this->scheduleManagement->kill((int)$schedule->getId(), $timestamp);
+    }
+
+    private function givenScheduleIsRunningOnHost(Schedule &$schedule, string $hostname): void
+    {
+        $schedule->setData('hostname', $hostname);
+        $schedule->save();
     }
 
     private function whenEventIsDispatched($eventName)
