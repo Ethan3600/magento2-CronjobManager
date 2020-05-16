@@ -1,0 +1,9 @@
+{
+    "cron_schedule": {
+        "column": {
+            "hostname": true,
+            "pid": true,
+            "kill_request": true
+        }
+    }
+}
