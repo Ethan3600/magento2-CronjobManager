@@ -10,6 +10,7 @@ class SchedulePlugin
     public function afterTryLockJob(Schedule $subject, bool $result)
     {
         if ($result) {
+            $subject->setData('hostname', \gethostname());
             $subject->setData('pid', \getmypid());
         }
         return $result;

@@ -36,7 +36,7 @@ class ScheduleResourcePlugin
     }
 
     /**
-     * Replace method to update pid column together with status column
+     * Replace method to update pid and hostname columns together with status column
      *
      * @param \Magento\Cron\Model\ResourceModel\Schedule $subject
      * @param callable $proceed
@@ -68,6 +68,7 @@ class ScheduleResourcePlugin
                 ['existing' => $subject->getTable('cron_schedule')],
                 $match,
                 [
+                    'hostname' => new \Zend_Db_Expr($connection->quote(\gethostname())),
                     'status' => new \Zend_Db_Expr($connection->quote($newStatus)),
                     'pid' => new \Zend_Db_Expr($connection->quote(\getmypid()))
                 ]
