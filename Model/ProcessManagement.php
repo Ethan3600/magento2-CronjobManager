@@ -12,8 +12,11 @@ class ProcessManagement
         return \file_exists('/proc/' . $pid);
     }
 
-    public function killPid($pid): bool
+    public function killPid(int $pid, string $hostname): bool
     {
+        if ($hostname !== \gethostname()) {
+            return false;
+        }
         if (!$this->isPidAlive($pid)) {
             return false;
         }
