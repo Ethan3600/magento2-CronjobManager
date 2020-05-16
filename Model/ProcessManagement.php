@@ -9,7 +9,7 @@ class ProcessManagement
 
     public function isPidAlive(int $pid): bool
     {
-        return \file_exists('/proc/' . $pid);
+        return \posix_kill($pid, 0);
     }
 
     public function killPid(int $pid, string $hostname): bool
