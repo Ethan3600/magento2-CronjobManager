@@ -68,7 +68,11 @@ class ScheduleManagement implements ScheduleManagementInterface
 
     public function listJobs(): array
     {
-        return $this->config->getJobs();
+        $jobList = $this->config->getJobs();
+        foreach ($jobList as &$jobs) {
+            \ksort($jobs);
+        }
+        return $jobList;
     }
 
     public function createSchedule(string $jobCode, $time = null): Schedule
