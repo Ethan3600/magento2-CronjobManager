@@ -5,6 +5,7 @@ namespace Test\Integration\Model;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use Magento\Cron\Model\Schedule;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
@@ -26,11 +27,25 @@ class ScheduleManagementTest extends TestCase
 
     const NOW = '2019-02-09 18:33:00';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
     }
+
+    public function testGetGroupIdWithValidJobCode()
+    {
+        $groupId = $this->scheduleManagement->getGroupId('backend_clean_cache');
+        $this->assertSame('default', $groupId);
+    }
+
+    public function testGetGroupIdWithInvalidJobCode()
+    {
+        $this->expectException(LocalizedException::class);
+        $this->expectExceptionMessage('No such job: not_valid');
+        $this->scheduleManagement->getGroupId('not_valid');
+    }
+
     public function testKillRequestForRunningJobSucceeds()
     {
         $this->givenRunningSchedule($schedule);

@@ -25,10 +25,12 @@ class CleanRunningJobsTest extends TestCase
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var Event\ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var FakeClock
      */

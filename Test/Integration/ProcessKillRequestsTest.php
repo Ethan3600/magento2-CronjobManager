@@ -27,22 +27,27 @@ class ProcessKillRequestsTest extends TestCase
      * @var int
      */
     private $childPid = 0;
+
     /**
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var Event\ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var ScheduleManagementInterface
      */
     private $scheduleManagement;
+
     /**
      * @var ProcessManagement
      */
     private $processManagement;
+
     /**
      * @var FakeClock
      */
@@ -89,7 +94,6 @@ class ProcessKillRequestsTest extends TestCase
 
     private function givenRunningScheduleWithKillRequest(&$schedule, int $timestamp)
     {
-
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);

@@ -22,16 +22,18 @@ class ErrorNotificationEmailTest extends TestCase
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var ErrorNotificationEmail
      */
     private $errorNotificationEmail;
+
     /**
      * @var \Magento\TestFramework\Mail\Template\TransportBuilderMock
      */
     private $transportBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->transportBuilder = $this->objectManager->get(TransportBuilderMock::class);
@@ -131,7 +133,11 @@ class ErrorNotificationEmailTest extends TestCase
         $content = $sentMessage->getBody()->getParts()[0]->getContent();
         $content = \Zend_Mime_Decode::decodeQuotedPrintable($content);
         foreach ($expectedContents as $expectedKey => $expectedContent) {
-            $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
+            if (\method_exists($this, 'assertStringContainsString')) {
+                $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
+            } else {
+                $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
+            }
         }
     }
 }

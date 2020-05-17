@@ -14,7 +14,7 @@
     </testsuites>
     <!-- Code coverage filters -->
     <filter>
-        <whitelist addUncoveredFilesFromWhiteList="true">
+        <whitelist>
             <directory suffix=".php">../../../vendor/ethanyehuda/magento2-cronjobmanager</directory>
             <exclude>
                 <directory>../../../vendor/ethanyehuda/magento2-cronjobmanager/Test</directory>
