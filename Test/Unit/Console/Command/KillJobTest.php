@@ -35,7 +35,7 @@ class KillJobTest extends TestCase
     private $mockFilterBuilder;
     private $mockFilterGroupBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mockState = $this->getMockBuilder(State::class)->setConstructorArgs([
             $this->createMock(ScopeInterface::class),
@@ -304,4 +304,3 @@ class KillJobTest extends TestCase
         return $mockSchedules;
     }
 }
-

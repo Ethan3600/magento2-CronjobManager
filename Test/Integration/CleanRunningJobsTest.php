@@ -19,14 +19,17 @@ use Magento\Framework\Event;
 class CleanRunningJobsTest extends TestCase
 {
     const NOW = '2019-02-09 18:33:00';
+
     /**
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var Event\ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var FakeClock
      */
@@ -34,7 +37,7 @@ class CleanRunningJobsTest extends TestCase
 
     const DEAD_PID = 99999999;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
