@@ -26,11 +26,12 @@ class ScheduleManagementTest extends TestCase
 
     const NOW = '2019-02-09 18:33:00';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
     }
+
     public function testKillRequestForRunningJobSucceeds()
     {
         $this->givenRunningSchedule($schedule);
