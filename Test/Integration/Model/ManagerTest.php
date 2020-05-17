@@ -21,10 +21,10 @@ class ManagerTest extends TestCase
      */
     private $scheduleFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $objectManager = Bootstrap::getObjectManager();
-        
+
         $this->manager = $objectManager->create(Manager::class);
         $this->scheduleFactory = $objectManager->create(ScheduleFactory::class);
     }

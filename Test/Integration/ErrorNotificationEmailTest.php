@@ -22,16 +22,18 @@ class ErrorNotificationEmailTest extends TestCase
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var ErrorNotificationEmail
      */
     private $errorNotificationEmail;
+
     /**
      * @var \Magento\TestFramework\Mail\Template\TransportBuilderMock
      */
     private $transportBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->transportBuilder = $this->objectManager->get(TransportBuilderMock::class);

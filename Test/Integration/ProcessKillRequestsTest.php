@@ -21,32 +21,38 @@ use PHPUnit\Framework\TestCase;
 class ProcessKillRequestsTest extends TestCase
 {
     const NOW = '2019-02-09 18:33:00';
+
     /**
      * @var int
      */
     private $childPid = 0;
+
     /**
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var Event\ManagerInterface
      */
     private $eventManager;
+
     /**
      * @var ScheduleManagementInterface
      */
     private $scheduleManagement;
+
     /**
      * @var ProcessManagement
      */
     private $processManagement;
+
     /**
      * @var FakeClock
      */
     private $clock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
@@ -57,7 +63,7 @@ class ProcessKillRequestsTest extends TestCase
         $this->processManagement = $this->objectManager->get(ProcessManagement::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         /*
          * Take care of children that we failed to kill
@@ -78,7 +84,6 @@ class ProcessKillRequestsTest extends TestCase
 
     private function givenRunningScheduleWithKillRequest(&$schedule, int $timestamp)
     {
-
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);

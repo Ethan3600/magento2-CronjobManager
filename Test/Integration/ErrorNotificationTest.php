@@ -28,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 class ErrorNotificationTest extends TestCase
 {
     const NOW = '2019-02-09 18:33:00';
+
     /**
      * @var ObjectManager
      */
@@ -37,28 +38,33 @@ class ErrorNotificationTest extends TestCase
      * @var ScheduleManagementInterface
      */
     private $scheduleManagement;
+
     /**
      * @var ScheduleRepositoryInterface
      */
     private $scheduleRepository;
+
     /**
      * @var FakeClock
      */
     private $clock;
+
     /**
      * @var \Magento\Framework\App\CacheInterface
      */
     private $cache;
+
     /**
      * @var ErrorNotification|\PHPUnit_Framework_MockObject_MockObject
      */
     private $errorNotification;
+
     /**
      * @var ProcessCronQueueObserver
      */
     private $processCronQueueObserver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(
