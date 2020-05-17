@@ -9,6 +9,7 @@ use Magento\Cron\Model\ConfigInterface;
 use EthanYehuda\CronjobManager\Api\JobManagementInterface;
 use Magento\Cron\Model\ScheduleFactory;
 use Magento\Cron\Model\Schedule;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class ScheduleManagement implements ScheduleManagementInterface
@@ -109,7 +110,10 @@ class ScheduleManagement implements ScheduleManagementInterface
             }
         }
 
-        return null;
+        throw new LocalizedException(__(
+            'No such job: %jobCode',
+            ['jobCode' => $jobCode]
+        ));
     }
 
     public function flush(): bool
