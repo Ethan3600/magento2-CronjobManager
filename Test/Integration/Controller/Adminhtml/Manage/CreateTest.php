@@ -15,6 +15,6 @@ class CreateTest extends AbstractBackendController
         $this->dispatch($this->uri);
         $result = $this->getResponse()->getBody();
 
-        $this->assertContains('<title>Create Cron Job / Tools / System / Magento Admin</title>', $result);
+        $this->assertStringContainsString('<title>Create Cron Job / Tools / System / Magento Admin</title>', $result);
     }
 }

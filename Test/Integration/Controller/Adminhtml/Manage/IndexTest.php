@@ -18,7 +18,7 @@ class IndexTest extends AbstractBackendController
         $this->dispatch($this->uri);
         $result = $this->getResponse()->getBody();
 
-        $this->assertContains('<title>Cron Job Dashboard / Tools / System / Magento Admin</title>', $result);
+        $this->assertStringContainsString('<title>Cron Job Dashboard / Tools / System / Magento Admin</title>', $result);
     }
 
     public static function loadDataFixtureCron()

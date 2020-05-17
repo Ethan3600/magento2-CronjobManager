@@ -15,6 +15,6 @@ class EditTest extends AbstractBackendController
         $this->dispatch($this->uri);
         $result = $this->getResponse()->getBody();
 
-        $this->assertContains('<title>Edit Cron Job / Tools / System / Magento Admin</title>', $result);
+        $this->assertStringContainsString('<title>Edit Cron Job / Tools / System / Magento Admin</title>', $result);
     }
 }
