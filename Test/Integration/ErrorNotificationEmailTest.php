@@ -133,7 +133,11 @@ class ErrorNotificationEmailTest extends TestCase
         $content = $sentMessage->getBody()->getParts()[0]->getContent();
         $content = \Zend_Mime_Decode::decodeQuotedPrintable($content);
         foreach ($expectedContents as $expectedKey => $expectedContent) {
-            $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
+            if (\method_exists($this, 'assertStringContainsString')) {
+                $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
+            } else {
+                $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
+            }
         }
     }
 }
