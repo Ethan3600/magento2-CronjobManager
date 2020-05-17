@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
 group: edge
+services:
+  - elasticsearch
 addons:
   apt:
     packages:

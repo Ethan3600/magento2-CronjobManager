@@ -16,6 +16,9 @@ phpenv rehash;
 
 composer selfupdate
 
+# Allow elasticsearch service to start. See https://docs.travis-ci.com/user/database-setup/#elasticsearch
+sleep 10
+
 # clone main magento github repository
 git clone --branch $MAGENTO_VERSION --depth=1 https://github.com/magento/magento2
 
