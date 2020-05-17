@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
 group: edge
+services:
+  - elasticsearch
 addons:
   apt:
     packages:
@@ -32,14 +34,6 @@ matrix:
     - php: 7.3
       env:
        - MAGENTO_VERSION=2.3
-       - TEST_SUITE=unit
-    - php: 7.2
-      env:
-       - MAGENTO_VERSION=2.4-develop
-       - TEST_SUITE=integration
-    - php: 7.2
-      env:
-       - MAGENTO_VERSION=2.4-develop
        - TEST_SUITE=unit
     - php: 7.2
       env:

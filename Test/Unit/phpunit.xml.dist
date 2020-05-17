@@ -14,7 +14,7 @@
         <ini name="xdebug.max_nesting_level" value="200"/>
     </php>
     <filter>
-        <whitelist addUncoveredFilesFromWhiteList="true">
+        <whitelist>
             <directory suffix=".php">../../../vendor/ethanyehuda/magento2-cronjobmanager</directory>
             <exclude>
                 <directory>../../../vendor/ethanyehuda/magento2-cronjobmanager/Test</directory>

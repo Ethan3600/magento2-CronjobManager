@@ -4,6 +4,7 @@ namespace EthanYehuda\CronjobManager\Api;
 
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 interface ScheduleManagementInterface
@@ -26,7 +27,8 @@ interface ScheduleManagementInterface
     /**
      * @param string $jobCode
      * @param string[]|null $groups
-     * @return string|null
+     * @return string
+     * @throws LocalizedException
      */
     public function getGroupId(string $jobCode, $groups = null);
 
