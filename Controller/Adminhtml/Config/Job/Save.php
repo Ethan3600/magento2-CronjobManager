@@ -76,7 +76,7 @@ class Save extends Action
         if (!isset($params['back'])) {
             $this->_redirect("*/config/index/");
         } else {
-            unset($params['key'], $params['form_key']);
+            unset($params['key'], $params['form_key'], $params['frequency']);
             $this->_redirect("*/config/{$params['back']}/", $params);
         }
     }
