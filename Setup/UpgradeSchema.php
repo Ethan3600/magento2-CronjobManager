@@ -90,7 +90,8 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->setup->getTable('cron_schedule'),
             'hostname',
             [
-                'type' => Table::TYPE_INTEGER,
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
                 'comment' => 'Hostname of the server running this job',
                 'nullable' => true,
                 'default' => null,
