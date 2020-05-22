@@ -40,6 +40,10 @@ class Schedule implements OptionSourceInterface
             array_push($options, $option);
         }
 
+        \usort($options, function ($a, $b) {
+            return \strnatcmp($a['label'], $b['label']);
+        });
+
         return $options;
     }
 
