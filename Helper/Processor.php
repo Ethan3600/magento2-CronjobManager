@@ -19,12 +19,12 @@ class Processor
      * @var CronInstanceFactory
      */
     private $cronInstanceFactory;
-    
+
     /**
      * @var CacheInterface
      */
     private $cache;
-    
+
     /**
      * @var ConfigInterface
      */
@@ -68,7 +68,7 @@ class Processor
 
     /**
      * Runs a scheduled job
-     * 
+     *
      * @param string $scheduledTime
      * @param string $currentTime
      * @param string $jobConfig
@@ -80,24 +80,41 @@ class Processor
      */
     public function runJob($scheduledTime, $currentTime, $jobConfig, $schedule, $groupId)
     {
+        return $this->runScheduledJob($jobConfig, $schedule);
+    }
+
+    /**
+     * Runs a scheduled job
+     *
+     * @param string $scheduledTime
+     * @param string $currentTime
+     * @param string $jobConfig
+     * @param \Magento\Cron\Model\Schedule $schedule
+     * @param int $groupId
+     * @throws \Exception
+     * @throws Ambigous <\Exception, \RuntimeException>
+     */
+    public function runScheduledJob($jobConfig, $schedule)
+    {
         $jobCode = $schedule->getJobCode();
-        
+
         if (!isset($jobConfig['instance'], $jobConfig['method'])) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
             throw new \Exception('No callbacks found');
         }
-        
+
         // dynamically create cron instances
         $model = $this->cronInstanceFactory->create($jobConfig['instance']);
         $callback = [$model, $jobConfig['method']];
         if (!is_callable($callback)) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called', 
+            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
                 $jobConfig['instance'],
                 $jobConfig['method']
             ));
         }
-        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()))->save();
+        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
+        $schedule->getResource()->save($schedule);
 
         try {
             $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
@@ -118,7 +135,7 @@ class Processor
             }
             throw $e;
         }
-        
+
         $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(strftime(
             '%Y-%m-%d %H:%M:%S',
             $this->dateTime->gmtTimestamp()
@@ -128,81 +145,18 @@ class Processor
             $jobCode
         ));
     }
-    
-    /**
-     * Runs a scheduled job
-     *
-     * @param string $scheduledTime
-     * @param string $currentTime
-     * @param string $jobConfig
-     * @param \Magento\Cron\Model\Schedule $schedule
-     * @param int $groupId
-     * @throws \Exception
-     * @throws Ambigous <\Exception, \RuntimeException>
-     */
-    public function runScheduledJob($jobConfig, $schedule)
-    {
-        $jobCode = $schedule->getJobCode();
-        
-        if (!isset($jobConfig['instance'], $jobConfig['method'])) {
-            $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception('No callbacks found');
-        }
-        
-        // dynamically create cron instances
-        $model = $this->cronInstanceFactory->create($jobConfig['instance']);
-        $callback = [$model, $jobConfig['method']];
-        if (!is_callable($callback)) {
-            $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
-                $jobConfig['instance'],
-                $jobConfig['method']
-            ));
-        }
-        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
-        $schedule->getResource()->save($schedule);
-        
-        try {
-            $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
-            call_user_func_array($callback, [$schedule]);
-        } catch (\Throwable $e) {
-            $schedule->setStatus(Schedule::STATUS_ERROR);
-            $this->logger->error(sprintf(
-                'Cron Job %s has an error: %s.',
-                $jobCode,
-                $e->getMessage()
-            ));
-            if (!$e instanceof \Exception) {
-                $e = new \RuntimeException(
-                    'Error when running a cron job',
-                    0,
-                    $e
-                );
-            }
-            throw $e;
-        }
-        
-        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(strftime(
-            '%Y-%m-%d %H:%M:%S',
-            $this->dateTime->gmtTimestamp()
-        ));
-        $this->logger->info(sprintf(
-            'Cron Job %s is successfully finished',
-            $jobCode
-        ));
-    }
-    
+
     public function cleanupJobs($groupId)
     {
         $currentTime = $this->dateTime->gmtTimestamp();
-            
+
         $this->cache->save(
             $this->dateTime->gmtTimestamp(),
             ProcessCronQueueObserver::CACHE_KEY_LAST_HISTORY_CLEANUP_AT . $groupId,
             ['crontab'],
             null
         );
-        
+
         $this->cleanupDisabledJobs($groupId);
         $historySuccess = (int)$this->getCronGroupConfigurationValue(
             $groupId,
@@ -213,16 +167,16 @@ class Processor
             ProcessCronQueueObserver::XML_PATH_HISTORY_FAILURE
         );
         $historyLifetimes = [
-            Schedule::STATUS_SUCCESS => 
+            Schedule::STATUS_SUCCESS =>
                 $historySuccess * ProcessCronQueueObserver::SECONDS_IN_MINUTE,
-            Schedule::STATUS_MISSED => 
+            Schedule::STATUS_MISSED =>
                 $historyFailure * ProcessCronQueueObserver::SECONDS_IN_MINUTE,
-            Schedule::STATUS_ERROR => 
+            Schedule::STATUS_ERROR =>
                 $historyFailure * ProcessCronQueueObserver::SECONDS_IN_MINUTE,
-            Schedule::STATUS_PENDING => 
+            Schedule::STATUS_PENDING =>
                 max($historyFailure, $historySuccess) * ProcessCronQueueObserver::SECONDS_IN_MINUTE,
         ];
-        
+
         $jobs = $this->config->getJobs()[$groupId];
         $scheduleResource = $this->scheduleFactory->create()->getResource();
         $connection = $scheduleResource->getConnection();
@@ -250,7 +204,7 @@ class Processor
                 $jobsToCleanup[] = $jobCode;
             }
         }
-        
+
         if (count($jobsToCleanup) > 0) {
             $scheduleResource = $this->scheduleFactory->create()->getResource();
             $count = $scheduleResource->getConnection()->delete(
@@ -277,7 +231,7 @@ class Processor
         }
         return $cronExpression;
     }
-    
+
     private function getConfigSchedule($jobConfig)
     {
         $cronExpr = $this->scopeConfig->getValue(
@@ -286,7 +240,7 @@ class Processor
         );
         return $cronExpr;
     }
- 
+
     private function getCronGroupConfigurationValue($groupId, $path)
     {
         return $this->scopeConfig->getValue(
