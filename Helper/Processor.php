@@ -100,21 +100,25 @@ class Processor
         $jobCode = $schedule->getJobCode();
 
         if (!isset($jobConfig['instance'], $jobConfig['method'])) {
+            $e = new LocalizedException(__('No callbacks found'));
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->setMessages($e->getMessage());
             $schedule->getResource()->save($schedule);
-            throw new \Exception('No callbacks found');
+            throw $e;
         }
 
         // dynamically create cron instances
         $model = $this->cronInstanceFactory->create($jobConfig['instance']);
         $callback = [$model, $jobConfig['method']];
         if (!is_callable($callback)) {
-            $schedule->setStatus(Schedule::STATUS_ERROR);
-            $schedule->getResource()->save($schedule);
-            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
-                $jobConfig['instance'],
-                $jobConfig['method']
+            $e = new LocalizedException(__(
+                'Invalid callback: %instance::%method can\'t be called',
+                $jobConfig
             ));
+            $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->setMessages($e->getMessage());
+            $schedule->getResource()->save($schedule);
+            throw $e;
         }
 
         // Ensure we are the only process trying to run this job
@@ -133,6 +137,7 @@ class Processor
             call_user_func_array($callback, [$schedule]);
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->setMessages($e->getMessage());
             $schedule->getResource()->save($schedule);
             $this->logger->error(sprintf(
                 'Cron Job %s has an error: %s.',
