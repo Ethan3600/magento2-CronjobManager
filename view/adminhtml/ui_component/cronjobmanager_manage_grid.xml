@@ -147,7 +147,7 @@
 		<column name="schedule_id">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item>
+					<item name="filter" xsi:type="string">textRange</item>
 					<item name="label" xsi:type="string" translate="true">ID</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
@@ -250,7 +250,7 @@
 		<column name="pid">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item><!-- TODO number -->
+					<item name="filter" xsi:type="string">textRange</item>
 					<item name="sortable" xsi:type="boolean">true</item>
 					<item name="label" xsi:type="string" translate="true">PID</item>
 					<item name="draggable" xsi:type="boolean">false</item>
