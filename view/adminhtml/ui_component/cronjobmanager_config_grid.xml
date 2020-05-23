@@ -76,40 +76,40 @@
 		<paging name="listing_paging" />
 		<bookmark name="bookmarks" />
 		<columnsControls name="columns_controls" />
+		<massaction name="listing_massaction">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
+				</item>
+			</argument>
+			<action name="schedule_now">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+						<item name="confirm" xsi:type="array">
+							<item name="title" xsi:type="string" translate="true">Schedule Now</item>
+							<item name="message" xsi:type="string" translate="true">Schedule selected cron jobs to run now?</item>
+						</item>
+						<item name="type" xsi:type="string">schedule_now</item>
+						<item name="label" xsi:type="string" translate="true">Schedule Now</item>
+						<item name="url" xsi:type="url" path="cronjobmanager/config_job/massScheduleNow" />
+					</item>
+				</argument>
+			</action>
+			<action name="restore">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+						<item name="confirm" xsi:type="array">
+							<item name="title" xsi:type="string" translate="true">Restore System Defaults</item>
+							<item name="message" xsi:type="string" translate="true">Restore job configurations to system defaults?</item>
+						</item>
+						<item name="type" xsi:type="string">restore</item>
+						<item name="label" xsi:type="string" translate="true">Restore System Defaults</item>
+						<item name="url" xsi:type="url" path="cronjobmanager/config_job/massRestoreSystemDefault" />
+					</item>
+				</argument>
+			</action>
+		</massaction>
 	</listingToolbar>
-	<massaction name="listing_massaction">
-		<argument name="data" xsi:type="array">
-			<item name="config" xsi:type="array">
-				<item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>
-			</item>
-		</argument>
-		<action name="schedule_now">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="confirm" xsi:type="array">
-						<item name="title" xsi:type="string" translate="true">Schedule Now</item>
-						<item name="message" xsi:type="string" translate="true">Schedule selected cron jobs to run now?</item>
-					</item>
-					<item name="type" xsi:type="string">schedule_now</item>
-					<item name="label" xsi:type="string" translate="true">Schedule Now</item>
-					<item name="url" xsi:type="url" path="cronjobmanager/config_job/massScheduleNow" />
-				</item>
-			</argument>
-		</action>
-		<action name="restore">
-			<argument name="data" xsi:type="array">
-				<item name="config" xsi:type="array">
-					<item name="confirm" xsi:type="array">
-						<item name="title" xsi:type="string" translate="true">Restore System Defaults</item>
-						<item name="message" xsi:type="string" translate="true">Restore job configurations to system defaults?</item>
-					</item>
-					<item name="type" xsi:type="string">restore</item>
-					<item name="label" xsi:type="string" translate="true">Restore System Defaults</item>
-					<item name="url" xsi:type="url" path="cronjobmanager/config_job/massRestoreSystemDefault" />
-				</item>
-			</argument>
-		</action>
-	</massaction>
 	<columns name="cronjobmanager_config_grid_columns">
 		<selectionsColumn name="ids">
 			<argument name="data" xsi:type="array">
