@@ -1,0 +1,10 @@
+{
+    "cron_schedule": {
+        "column": {
+            "duration": true,
+            "group": true,
+            "kill_request": true,
+            "pid": true
+        }
+    }
+}
