@@ -28,7 +28,27 @@ class ScheduleResourcePlugin
         ScheduleResource $subject,
         DataObject $dataObject
     ) {
+        $this->recordJobDuration($dataObject);
         $this->recordJobGroup($dataObject);
+    }
+
+    protected function recordJobDuration(DataObject $dataObject): void
+    {
+        if ($dataObject->dataHasChangedFor('duration')) {
+            // avoid loops
+            return;
+        }
+        $executedAt = $dataObject->getData('executed_at');
+        $finishedAt = $dataObject->getData('finished_at');
+        $executedTimestamp = \strtotime($executedAt ?: 'now') ?: \time();
+        $finishedTimestamp = \strtotime($finishedAt ?: 'now') ?: \time();
+
+        if (!$executedAt) {
+            // Job has not yet started. Nothing to do.
+            return;
+        }
+
+        $dataObject->setData('duration', $finishedTimestamp - $executedTimestamp);
     }
 
     protected function recordJobGroup(DataObject $dataObject): void

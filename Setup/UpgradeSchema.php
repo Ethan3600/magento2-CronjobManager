@@ -48,6 +48,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
         if (version_compare($context->getVersion(), '1.9.0') < 0) {
             $this->addGroupToSchedule();
+            $this->addDurationToSchedule();
         }
 
         $this->setup->endSetup();
@@ -96,6 +97,28 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 'nullable' => true,
                 'default' => null,
                 'after' => 'pid',
+            ]
+        );
+    }
+
+    /**
+     * Add column to cron_schedule to keep track of which a job's duration
+     */
+    public function addDurationToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            // For Magento 2.3+, db_schema.xml is used instead
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable('cron_schedule'),
+            'duration',
+            [
+                'type' => Table::TYPE_INTEGER,
+                'comment' => 'Number of seconds job ran for',
+                'nullable' => true,
+                'default' => null,
+                'after' => 'group',
             ]
         );
     }
