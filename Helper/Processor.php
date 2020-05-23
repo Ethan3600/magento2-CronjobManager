@@ -11,6 +11,7 @@ use Magento\Framework\App\CacheInterface;
 use Magento\Cron\Model\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Processor
@@ -113,6 +114,15 @@ class Processor
                 $jobConfig['method']
             ));
         }
+
+        // Ensure we are the only process trying to run this job
+        if (!$schedule->tryLockJob()) {
+            throw new LocalizedException(__(
+                'Unable to obtain lock for job: %jobCode',
+                ['jobCode' => $jobCode]
+            ));
+        }
+
         $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
         $schedule->getResource()->save($schedule);
 
