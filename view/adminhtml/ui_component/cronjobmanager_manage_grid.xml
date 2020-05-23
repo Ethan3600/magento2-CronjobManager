@@ -148,7 +148,6 @@
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">text</item>
-					<item name="sorting" xsi:type="string">asc</item>
 					<item name="label" xsi:type="string" translate="true">ID</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
@@ -160,7 +159,6 @@
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">textWithDatalist</item>
 					<item name="dataType" xsi:type="string">select</item>
-					<item name="sorting" xsi:type="string">asc</item>
 					<item name="label" xsi:type="string" translate="true">Job Code</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
@@ -171,7 +169,6 @@
 				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">select</item>
-					<item name="sorting" xsi:type="string">asc</item>
 					<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/grid/columns/html</item>
 					<item name="dataType" xsi:type="string">select</item>
 					<item name="label" xsi:type="string" translate="true">Status</item>
@@ -217,6 +214,7 @@
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">dateRange</item>
+					<item name="sorting" xsi:type="string">desc</item>
 					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
 					<item name="dataType" xsi:type="string">date</item>
 					<item name="label" xsi:type="string" translate="true">Executed Date</item>
