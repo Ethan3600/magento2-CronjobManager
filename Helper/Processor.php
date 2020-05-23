@@ -101,6 +101,7 @@ class Processor
 
         if (!isset($jobConfig['instance'], $jobConfig['method'])) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->getResource()->save($schedule);
             throw new \Exception('No callbacks found');
         }
 
@@ -109,6 +110,7 @@ class Processor
         $callback = [$model, $jobConfig['method']];
         if (!is_callable($callback)) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->getResource()->save($schedule);
             throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
                 $jobConfig['instance'],
                 $jobConfig['method']
@@ -131,6 +133,7 @@ class Processor
             call_user_func_array($callback, [$schedule]);
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->getResource()->save($schedule);
             $this->logger->error(sprintf(
                 'Cron Job %s has an error: %s.',
                 $jobCode,
@@ -150,6 +153,7 @@ class Processor
             '%Y-%m-%d %H:%M:%S',
             $this->dateTime->gmtTimestamp()
         ));
+        $schedule->getResource()->save($schedule);
         $this->logger->info(sprintf(
             'Cron Job %s is successfully finished',
             $jobCode
