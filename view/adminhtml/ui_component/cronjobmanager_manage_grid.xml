@@ -75,7 +75,20 @@
 		</argument>
 		<bookmark name="bookmarks" />
 		<columnsControls name="columns_controls" />
-		<filters name="listing_filters" />
+		<filters name="listing_filters">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="templates" xsi:type="array">
+						<item name="filters" xsi:type="array">
+							<item name="select" xsi:type="array">
+								<item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+								<item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+							</item>
+						</item>
+					</item>
+				</item>
+			</argument>
+		</filters>
 		<!-- @todo create search functionality -->
 		<!-- <filterSearch name="fulltext"/> -->
 		<massaction name="listing_massaction">
@@ -102,7 +115,7 @@
 					<item name="config" xsi:type="array">
 						<item name="confirm" xsi:type="array">
 							<item name="title" xsi:type="string" translate="true">Dispatch Now</item>
-							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process 
+							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process
 							can consume a lot of time and memory. Are you sure you want to proceed?</item>
 						</item>
 						<item name="type" xsi:type="string">dispatch</item>
