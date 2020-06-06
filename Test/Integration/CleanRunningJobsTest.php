@@ -19,6 +19,7 @@ use Magento\Framework\Event;
 class CleanRunningJobsTest extends TestCase
 {
     const NOW = '2019-02-09 18:33:00';
+    const REMOTE_HOSTNAME = 'hostname.example.net';
 
     /**
      * @var ObjectManager
@@ -50,9 +51,18 @@ class CleanRunningJobsTest extends TestCase
     public function testDeadRunningJobsAreCleaned()
     {
         $this->givenRunningScheduleWithInactiveProcess($schedule);
+        $this->givenScheduleIsRunningOnHost($schedule, \gethostname());
         $this->whenEventIsDispatched('process_cron_queue_before');
         $this->thenScheduleHasStatus($schedule, Schedule::STATUS_ERROR);
         $this->andScheduleHasMessage($schedule, 'Process went away at ' . self::NOW);
+    }
+
+    public function testDeadRunningJobsOnAnotherHostAreNotCleaned()
+    {
+        $this->givenRunningScheduleWithInactiveProcess($schedule);
+        $this->givenScheduleIsRunningOnHost($schedule, self::REMOTE_HOSTNAME);
+        $this->whenEventIsDispatched('process_cron_queue_before');
+        $this->thenScheduleHasStatus($schedule, Schedule::STATUS_RUNNING);
     }
 
     public function testActiveRunningJobsAreNotCleaned()
@@ -68,6 +78,12 @@ class CleanRunningJobsTest extends TestCase
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
         $schedule->setData('pid', self::DEAD_PID);
+        $schedule->save();
+    }
+
+    private function givenScheduleIsRunningOnHost(Schedule &$schedule, string $hostname): void
+    {
+        $schedule->setData('hostname', $hostname);
         $schedule->save();
     }
 

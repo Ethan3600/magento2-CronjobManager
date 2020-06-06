@@ -38,27 +38,27 @@ class KillJob extends Command
     private $scheduleRepository;
 
     /**
-     * @var ScheduleManagementInterface 
+     * @var ScheduleManagementInterface
      */
     private $scheduleManagement;
 
     /**
-     * @var SearchCriteriaBuilder 
+     * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
-    
+
     /**
-     * @var FilterBuilder 
+     * @var FilterBuilder
      */
     private $filterBuilder;
 
     /**
-     * @var FilterGroupBuilder 
+     * @var FilterGroupBuilder
      */
     private $filterGroupBuilder;
-    
+
     /**
-     * @var ProcessManagement 
+     * @var ProcessManagement
      */
     private $processManagement;
 
@@ -137,7 +137,7 @@ class KillJob extends Command
                 /** @var bool $killed */
                 $killed = false;
                 if ($optionProcKill) {
-                    $killed = $this->processManagement->killPid($pid);
+                    $killed = $this->processManagement->killPid($pid, $job->getHostname());
                 } else {
                     $killed = $this->scheduleManagement->kill($id, \time());
                 }
@@ -190,7 +190,7 @@ class KillJob extends Command
         $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups(
             [$jobCodeFilterGroup, $statusFilterGroup]
         )->create();
-        
+
         /** @var \Magento\Framework\Api\SearchResultsInterface $result */
         $result = $this->scheduleRepository->getList($searchCriteria);
         return $result->getItems();

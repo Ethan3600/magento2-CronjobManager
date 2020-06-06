@@ -53,6 +53,10 @@ class CleanRunningJobs
         $runningJobs = $this->scheduleRepository->getByStatus(ScheduleInterface::STATUS_RUNNING);
 
         foreach ($runningJobs as $schedule) {
+            if ($schedule->getHostname() !== \gethostname()) {
+                continue;
+            }
+
             if ($this->processManagement->isPidAlive($schedule->getPid())) {
                 continue;
             }

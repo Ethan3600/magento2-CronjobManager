@@ -13,6 +13,7 @@ class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Dat
     const KEY_SCHEDULE_ID  = 'schedule_id';
     const KEY_JOB_CODE     = 'job_code';
     const KEY_STATUS       = 'status';
+    const KEY_HOSTNAME     = 'hostname';
     const KEY_PID          = 'pid';
     const KEY_MESSAGES     = 'messages';
     const KEY_CREATED_AT   = 'created_at';
@@ -39,6 +40,11 @@ class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Dat
     public function getStatus(): string
     {
         return $this->getData(self::KEY_STATUS);
+    }
+
+    public function getHostname(): string
+    {
+        return (string) $this->getData(self::KEY_HOSTNAME);
     }
 
     public function getPid()

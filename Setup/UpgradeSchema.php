@@ -46,6 +46,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addKillRequestToSchedule();
         }
 
+        if (version_compare($context->getVersion(), '1.9.0') < 0) {
+            $this->addHostnameToSchedule();
+        }
+
         $this->setup->endSetup();
     }
 
@@ -69,6 +73,29 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 "nullable" => true,
                 "default" => null,
                 "after" => "status",
+            ]
+        );
+    }
+
+    /**
+     * Add column to cron_schedule to keep track of which server is running each process
+     */
+    public function addHostnameToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            // For Magento 2.3+, db_schema.xml is used instead
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable('cron_schedule'),
+            'hostname',
+            [
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
+                'comment' => 'Hostname of the server running this job',
+                'nullable' => true,
+                'default' => null,
+                'after' => 'pid',
             ]
         );
     }

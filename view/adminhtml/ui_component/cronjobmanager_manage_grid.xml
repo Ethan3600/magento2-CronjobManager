@@ -102,7 +102,7 @@
 					<item name="config" xsi:type="array">
 						<item name="confirm" xsi:type="array">
 							<item name="title" xsi:type="string" translate="true">Dispatch Now</item>
-							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process 
+							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process
 							can consume a lot of time and memory. Are you sure you want to proceed?</item>
 						</item>
 						<item name="type" xsi:type="string">dispatch</item>
@@ -222,6 +222,16 @@
 					<item name="label" xsi:type="string" translate="true">Finished Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 					<item name="timezone" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+		</column>
+		<column name="hostname">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="filter" xsi:type="string">text</item>
+					<item name="sortable" xsi:type="boolean">true</item>
+					<item name="label" xsi:type="string" translate="true">Hostname</item>
+					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
 			</argument>
 		</column>
