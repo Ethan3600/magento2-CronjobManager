@@ -47,6 +47,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
 
         if (version_compare($context->getVersion(), '1.9.0') < 0) {
+            $this->addHostnameToSchedule();
+        }
+
+        if (version_compare($context->getVersion(), '1.10.0') < 0) {
             $this->addGroupToSchedule();
             $this->addDurationToSchedule();
         }
@@ -79,6 +83,28 @@ class UpgradeSchema implements UpgradeSchemaInterface
     }
 
     /**
+     * Add column to cron_schedule to keep track of which a job's duration
+     */
+    public function addDurationToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            // For Magento 2.3+, db_schema.xml is used instead
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable('cron_schedule'),
+            'duration',
+            [
+                'type' => Table::TYPE_INTEGER,
+                'comment' => 'Number of seconds job ran for',
+                'nullable' => true,
+                'default' => null,
+                'after' => 'group',
+            ]
+        );
+    }
+
+    /**
      * Add column to cron_schedule to keep track of which group a job belongs to
      */
     public function addGroupToSchedule()
@@ -102,9 +128,9 @@ class UpgradeSchema implements UpgradeSchemaInterface
     }
 
     /**
-     * Add column to cron_schedule to keep track of which a job's duration
+     * Add column to cron_schedule to keep track of which server is running each process
      */
-    public function addDurationToSchedule()
+    public function addHostnameToSchedule()
     {
         if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
             // For Magento 2.3+, db_schema.xml is used instead
@@ -112,13 +138,14 @@ class UpgradeSchema implements UpgradeSchemaInterface
         }
         $this->setup->getConnection()->addColumn(
             $this->setup->getTable('cron_schedule'),
-            'duration',
+            'hostname',
             [
-                'type' => Table::TYPE_INTEGER,
-                'comment' => 'Number of seconds job ran for',
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
+                'comment' => 'Hostname of the server running this job',
                 'nullable' => true,
                 'default' => null,
-                'after' => 'group',
+                'after' => 'pid',
             ]
         );
     }

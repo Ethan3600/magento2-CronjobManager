@@ -51,7 +51,7 @@ class ProcessKillRequests
 
     private function killScheduleProcess(ScheduleInterface $schedule): void
     {
-        if ($this->processManagement->killPid($schedule->getPid())) {
+        if ($this->processManagement->killPid($schedule->getPid(), $schedule->getHostname())) {
             $messages = [];
             if ($schedule->getMessages()) {
                 $messages[] = $schedule->getMessages();

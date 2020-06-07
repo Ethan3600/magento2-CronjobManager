@@ -34,6 +34,11 @@ interface ScheduleInterface
     public function getStatus(): string;
 
     /**
+     * @return string|null
+     */
+    public function getHostname();
+
+    /**
      * @return int|null
      */
     public function getPid();

@@ -3,8 +3,9 @@
         "column": {
             "duration": true,
             "group": true,
-            "kill_request": true,
-            "pid": true
+            "hostname": true,
+            "pid": true,
+            "kill_request": true
         }
     }
 }
