@@ -2,7 +2,9 @@
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="cron_schedule">
+        <column xsi:type="varchar" name="group" nullable="true" length="255" comment="Cron group for this job"/>
         <column xsi:type="varchar" name="hostname" nullable="true" length="255" comment="Hostname of the server running this job"/>
+        <column xsi:type="int" name="duration" padding="10" unsigned="true" nullable="true" comment="Number of seconds job ran for"/>
         <column xsi:type="int" name="pid" padding="10" unsigned="true" nullable="true" comment="Process Id"/>
         <column xsi:type="timestamp" name="kill_request" on_update="false" nullable="true" comment="Kill Request"/>
     </table>

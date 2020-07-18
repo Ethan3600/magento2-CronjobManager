@@ -50,6 +50,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addHostnameToSchedule();
         }
 
+        if (version_compare($context->getVersion(), '1.10.0') < 0) {
+            $this->addGroupToSchedule();
+            $this->addDurationToSchedule();
+        }
+
         $this->setup->endSetup();
     }
 
@@ -73,6 +78,51 @@ class UpgradeSchema implements UpgradeSchemaInterface
                 "nullable" => true,
                 "default" => null,
                 "after" => "status",
+            ]
+        );
+    }
+
+    /**
+     * Add column to cron_schedule to keep track of which a job's duration
+     */
+    public function addDurationToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            // For Magento 2.3+, db_schema.xml is used instead
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable('cron_schedule'),
+            'duration',
+            [
+                'type' => Table::TYPE_INTEGER,
+                'comment' => 'Number of seconds job ran for',
+                'nullable' => true,
+                'default' => null,
+                'after' => 'group',
+            ]
+        );
+    }
+
+    /**
+     * Add column to cron_schedule to keep track of which group a job belongs to
+     */
+    public function addGroupToSchedule()
+    {
+        if (version_compare($this->magentoMetaData->getVersion(), '2.3.0', '>=')) {
+            // For Magento 2.3+, db_schema.xml is used instead
+            return;
+        }
+        $this->setup->getConnection()->addColumn(
+            $this->setup->getTable('cron_schedule'),
+            'group',
+            [
+                'type' => Table::TYPE_TEXT,
+                'length' => 255,
+                'comment' => 'Cron group for this job',
+                'nullable' => true,
+                'default' => null,
+                'after' => 'pid',
             ]
         );
     }
