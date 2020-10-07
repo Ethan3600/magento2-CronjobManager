@@ -27,6 +27,22 @@ matrix:
       env:
        - MAGENTO_VERSION=2.4-develop
        - TEST_SUITE=unit
+    - php: 7.4
+      env:
+       - MAGENTO_VERSION=2.4
+       - TEST_SUITE=integration
+    - php: 7.4
+      env:
+       - MAGENTO_VERSION=2.4
+       - TEST_SUITE=unit
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.4
+       - TEST_SUITE=integration
+    - php: 7.3
+      env:
+       - MAGENTO_VERSION=2.4
+       - TEST_SUITE=unit
     - php: 7.3
       env:
        - MAGENTO_VERSION=2.3
