@@ -51,8 +51,31 @@ case $TEST_SUITE in
             SET @@global.sql_mode = NO_ENGINE_SUBSTITUTION;
             CREATE DATABASE magento_integration_tests;
         '
-        cp etc/install-config-mysql.travis.php.dist etc/install-config-mysql.php
-        sed -i '/amqp/d' etc/install-config-mysql.php
+
+        if test -f etc/install-config-mysql.travis.php.dist; then
+            cp etc/install-config-mysql.travis.php.dist etc/install-config-mysql.php
+            sed -i '/amqp/d' etc/install-config-mysql.php
+        else
+            cat -> etc/install-config-mysql.php <<"EOF"
+<?php
+return [
+    'db-host' => '127.0.0.1',
+    'db-user' => 'root',
+    'db-password' => '',
+    'db-name' => 'magento_integration_tests',
+    'db-prefix' => 'trv_',
+    'backend-frontname' => 'backend',
+    'search-engine' => 'elasticsearch7',
+    'elasticsearch-host' => 'localhost',
+    'elasticsearch-port' => 9200,
+    'admin-user' => \Magento\TestFramework\Bootstrap::ADMIN_NAME,
+    'admin-password' => \Magento\TestFramework\Bootstrap::ADMIN_PASSWORD,
+    'admin-email' => \Magento\TestFramework\Bootstrap::ADMIN_EMAIL,
+    'admin-firstname' => \Magento\TestFramework\Bootstrap::ADMIN_FIRSTNAME,
+    'admin-lastname' => \Magento\TestFramework\Bootstrap::ADMIN_LASTNAME,
+];
+EOF
+        fi
 
         cd ../../..
         ;;
