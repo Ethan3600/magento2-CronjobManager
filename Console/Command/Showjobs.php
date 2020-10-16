@@ -61,9 +61,9 @@ class Showjobs extends Command
 
             foreach ($jobs as $group => $crons) {
                 foreach ($crons as $code => $job) {
-                    $instance = $job['instance'];
-                    $method = $job['method'];
-                    $schedule = (isset($job['schedule']) ? $job['schedule'] : "");
+                    $instance   = (isset($job['instance']) ? $job['instance'] : "");
+                    $method     = (isset($job['method']) ? $job['method'] : "");
+                    $schedule   = (isset($job['schedule']) ? $job['schedule'] : "");
                     $jobData = [
                         $code,
                         $group,
