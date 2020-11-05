@@ -12,6 +12,7 @@ class Filters extends MageFilters
         'select' => 'filterSelect',
         'text' => 'filterInput',
         'textRange' => 'filterRange',
+        'datetimeRange' => 'filterDate',
 
         // Added
         'textWithDatalist' => 'filterInput',
