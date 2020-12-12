@@ -14,7 +14,8 @@ test "$TEST_SUITE" = "coverage" || echo > ~/.phpenv/versions/$(phpenv version-na
 echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 phpenv rehash;
 
-composer selfupdate
+# Pinned to version 1 of composer. See https://github.com/magento/community-features/issues/302
+composer selfupdate --1
 
 # Allow elasticsearch service to start. See https://docs.travis-ci.com/user/database-setup/#elasticsearch
 sleep 10
