@@ -16,7 +16,7 @@ require(
             'cron-validation',
             function (value) {
                 for (let regex in CRON_REGEXES) {
-                    if (regex.test(value)) return true;
+                    if (CRON_REGEXES[regex].test(value)) return true;
                 }
                 return false;
             }, $.mage.__('Invalid cron expression. Please try again.')
