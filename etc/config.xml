@@ -9,6 +9,8 @@
                 <email_identity>general</email_identity>
                 <email_recipients></email_recipients>
                 <email_template>system_cron_job_manager_email_template</email_template>
+                <retry_failed_jobs>0</retry_failed_jobs>
+                <retry_jobs_gone_away>1</retry_jobs_gone_away>
             </cron_job_manager>
         </system>
     </default>

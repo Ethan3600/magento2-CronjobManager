@@ -10,6 +10,15 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>If a process has status "running", but there is no corresponding process alive on the server, the job will be set to "error". This prevents buildup of false "running" jobs.</comment>
                 </field>
+                <field id="retry_jobs_gone_away" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Retry jobs where process has gone missing</label>
+                    <comment>When enabled, any jobs which have been detected as missing (see above) will be scheduled anew for immediate execution</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="clean_running_schedule">1</field>
+                        <field id="retry_failed_jobs">0</field>
+                    </depends>
+                </field>
                 <field id="email_notification" translate="label comment" type="select" sortOrder="100" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
                     <label>Send notification email if job has error</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -34,6 +43,11 @@
                     <depends>
                         <field id="email_notification">1</field>
                     </depends>
+                </field>
+                <field id="retry_failed_jobs" translate="label comment" type="select" sortOrder="200" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Retry jobs which fail</label>
+                    <comment>When enabled, any jobs which result in an "error" status will be scheduled anew for immediate execution</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
         </section>

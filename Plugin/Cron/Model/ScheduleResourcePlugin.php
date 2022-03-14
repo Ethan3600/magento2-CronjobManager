@@ -4,24 +4,33 @@ declare(strict_types=1);
 namespace EthanYehuda\CronjobManager\Plugin\Cron\Model;
 
 use EthanYehuda\CronjobManager\Model\ErrorNotification;
-use Magento\Cron\Model\ConfigInterface;
+use EthanYehuda\CronjobManager\Scope\Config;
 use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ScheduleFactory;
 use Magento\Framework\DataObject;
 
 class ScheduleResourcePlugin
 {
+    /** @var Config */
+    private $config;
+
     /**
      * @var ErrorNotification
      */
     private $errorNotification;
 
+    /** @var ScheduleFactory */
+    private $scheduleFactory;
+
     public function __construct(
-        ConfigInterface $config,
-        ErrorNotification $errorNotification
+        Config $config,
+        ErrorNotification $errorNotification,
+        ScheduleFactory $scheduleFactory
     ) {
         $this->config = $config;
         $this->errorNotification = $errorNotification;
+        $this->scheduleFactory = $scheduleFactory;
     }
 
     public function beforeSave(
@@ -72,7 +81,7 @@ class ScheduleResourcePlugin
     }
 
     /**
-     * Email notification if status has been set to ERROR
+     * Email notification and job retry if status has been set to ERROR
      */
     public function afterSave(
         ScheduleResource $subject,
@@ -83,6 +92,16 @@ class ScheduleResourcePlugin
             && $object->getStatus() === Schedule::STATUS_ERROR
         ) {
             $this->errorNotification->sendFor($object);
+
+            // We check 'scheduled_at' to avoid scheduling jobs run via command line
+            if ($object->getScheduledAt() && $this->config->isRetryFailedJobs()) {
+                $this->scheduleFactory->create()
+                    ->setJobCode($object->getJobCode())
+                    ->setStatus(Schedule::STATUS_PENDING)
+                    ->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S'))
+                    ->setScheduledAt(strftime('%Y-%m-%d %H:%M:%S'))
+                    ->save();
+            }
         }
         return $result;
     }
