@@ -128,6 +128,7 @@ class Grid extends AbstractDataProvider
                     return strpos($v[$reg['field']], $reg['condition']) !== false;
                 };
                 $filterRegistry['condition'] = trim($filterRegistry['condition'], "%");
+                $filterRegistry['condition'] = str_replace(['\%', '\_'], ['%', '_'], $filterRegistry['condition']);
                 $this->filterRegistry[] = $filterRegistry;
                 break;
             case 'eq':
