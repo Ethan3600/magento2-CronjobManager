@@ -18,10 +18,8 @@
     <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
          alt="Total Downloads">
   </a>
-  <a href="https://travis-ci.org/Ethan3600/magento2-CronjobManager">
-    <img src="https://travis-ci.org/Ethan3600/magento2-CronjobManager.svg?branch=1.x"
-         alt="Travis CI build status">
-  </a>
+  <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration/badge.svg"
+       alt="GitHub Actions status">
   <a href='https://coveralls.io/github/Ethan3600/magento2-CronjobManager'>
     <img src='https://coveralls.io/repos/github/Ethan3600/magento2-CronjobManager/badge.svg' alt='Coverage Status' />
   </a>
