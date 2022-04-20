@@ -74,7 +74,7 @@ class Manager
      * @param \Magento\Cron\Model\Schedule $schedule
      * @deprecated
      */
-    public function dispatchCron($jobId = null, $jobCode, $schedule = null)
+    public function dispatchCron($jobId, $jobCode, $schedule = null)
     {
         if (is_null($schedule)) {
             $schedule = $this->scheduleRepository->get($jobId);
