@@ -93,7 +93,8 @@ For example: `php bin/magento cronmanager:showjobs`
 
 ### Email notifications
 
-You can configure email addresses to be notified if a job has an error:
+You can configure email addresses to be notified if a job has an error.
+These settings can be found in Stores -> Settings -> Configuration -> Advanced -> System -> Cron Job Manager.
 
 ![email-configuration](https://user-images.githubusercontent.com/367320/60760081-a3970000-a02f-11e9-9615-3eb6c3bd9adb.png)
 
