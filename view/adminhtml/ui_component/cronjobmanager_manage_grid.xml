@@ -181,7 +181,7 @@
 				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">select</item>
-					<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/grid/columns/html</item>
+					<item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
 					<item name="dataType" xsi:type="string">select</item>
 					<item name="label" xsi:type="string" translate="true">Status</item>
 					<item name="draggable" xsi:type="boolean">false</item>
