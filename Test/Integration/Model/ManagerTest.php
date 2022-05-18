@@ -11,7 +11,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ManagerTest extends TestCase
 {
-    const FIXTURE_CRON_ID = 1;
+    public const FIXTURE_CRON_ID = 1;
+
     /**
      * @var Manager
      */

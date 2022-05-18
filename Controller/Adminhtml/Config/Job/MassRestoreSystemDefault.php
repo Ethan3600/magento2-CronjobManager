@@ -10,25 +10,24 @@ use Magento\Framework\App\CacheInterface;
 
 class MassRestoreSystemDefault extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
-    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
-    
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var JobConfig
      */
     private $helper;
-    
+
     /**
      * @var CacheInterface
      */
     private $cache;
-    
+
     /**
      * @param PageFactory $resultPageFactory
      * @param Context $context
@@ -46,7 +45,7 @@ class MassRestoreSystemDefault extends Action
         $this->helper = $helper;
         $this->cache = $cache;
     }
-    
+
     /**
      * Save cronjob
      *

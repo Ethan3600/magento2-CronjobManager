@@ -11,28 +11,28 @@ use Magento\Ui\Component\MassAction\Filter;
 
 class MassDispatch extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
-    
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var ManagerFactory
      */
     private $managerFactory;
-    
+
     /**
      * @var Filter
      */
     private $filter;
-    
+
     /**
      * @var CollectionFactory
      */
     private $collectionFactory;
-    
+
     public function __construct(
         ManagerFactory $managerFactory,
         PageFactory $resultPageFactory,
@@ -61,7 +61,7 @@ class MassDispatch extends Action
             $this->_redirect('*/manage/index');
             return;
         }
-        
+
         foreach ($collection->getItems() as $schedule) {
             try {
                 $manager->dispatchSchedule($schedule->getId(), $schedule);
@@ -69,7 +69,7 @@ class MassDispatch extends Action
                 $this->getMessageManager()->addErrorMessage($e->getMessage());
             }
         }
-       
+
         $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedules");
         $this->_redirect("*/manage/index/");
     }

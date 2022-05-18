@@ -8,19 +8,19 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 
 class MassScheduleNow extends Action
-{   
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+{
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var ManagerFactory
      */
     private $managerFactory;
-    
+
     public function __construct(
         PageFactory $resultPageFactory,
         Context $context,
@@ -30,7 +30,7 @@ class MassScheduleNow extends Action
         $this->resultPageFactory = $resultPageFactory;
         $this->managerFactory = $managerFactory;
     }
-    
+
     /**
      * Save cronjob
      *

@@ -9,7 +9,7 @@ use Magento\Backend\App\Action;
 
 class Save extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
      * @var \Magento\Framework\View\Result\PageFactory

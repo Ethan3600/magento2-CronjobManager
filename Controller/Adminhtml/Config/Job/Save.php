@@ -10,25 +10,24 @@ use Magento\Backend\App\Action;
 
 class Save extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
-    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
-    
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var ManagerFactory
      */
     private $managerFactory;
-    
+
     /**
      * @var CacheInterface
      */
     private $cache;
-    
+
     /**
      * @var JobConfig
      */

@@ -8,7 +8,7 @@ use Magento\Framework\Message\ManagerInterface;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
-    const MAX_PAGE_SIZE = 35000;
+    protected const MAX_PAGE_SIZE = 35000;
 
     private $loadedData;
 
@@ -74,7 +74,7 @@ class TimelineDataProvider extends AbstractDataProvider
 
         foreach ($this->collection->getItems() as $item) {
             $this->loadedData[$item->getJobCode()][] = $item->getData();
-            
+
             $minimumTime = $this->getFirstHour($item);
             $firstHour = is_null($firstHour) ?
                 $minimumTime: min($firstHour, $this->getFirstHour($item));
@@ -84,7 +84,7 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         array_unshift($this->loadedData, [
-            'total' => $collectionSize, 
+            'total' => $collectionSize,
             'range' => $this->getRange($firstHour, $lastHour)
         ]);
 

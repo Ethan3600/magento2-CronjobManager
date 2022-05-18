@@ -25,7 +25,7 @@ class ScheduleManagementTest extends TestCase
      */
     private $objectManager;
 
-    const NOW = '2019-02-09 18:33:00';
+    protected const NOW = '2019-02-09 18:33:00';
 
     protected function setUp(): void
     {

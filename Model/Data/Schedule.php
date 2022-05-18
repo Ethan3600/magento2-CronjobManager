@@ -10,17 +10,17 @@ use Magento\Framework\DataObject;
  */
 class Schedule extends DataObject implements \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface
 {
-    const KEY_SCHEDULE_ID  = 'schedule_id';
-    const KEY_JOB_CODE     = 'job_code';
-    const KEY_STATUS       = 'status';
-    const KEY_HOSTNAME     = 'hostname';
-    const KEY_PID          = 'pid';
-    const KEY_MESSAGES     = 'messages';
-    const KEY_CREATED_AT   = 'created_at';
-    const KEY_SCHEDULED_AT = 'scheduled_at';
-    const KEY_EXECUTED_AT  = 'executed_at';
-    const KEY_FINISHED_AT  = 'finished_at';
-    const KEY_KILL_REQUEST = 'kill_request';
+    public const KEY_SCHEDULE_ID = 'schedule_id';
+    public const KEY_JOB_CODE = 'job_code';
+    public const KEY_STATUS = 'status';
+    public const KEY_HOSTNAME = 'hostname';
+    public const KEY_PID = 'pid';
+    public const KEY_MESSAGES = 'messages';
+    public const KEY_CREATED_AT = 'created_at';
+    public const KEY_SCHEDULED_AT = 'scheduled_at';
+    public const KEY_EXECUTED_AT = 'executed_at';
+    public const KEY_FINISHED_AT = 'finished_at';
+    public const KEY_KILL_REQUEST = 'kill_request';
 
     public function __construct(array $data = [])
     {

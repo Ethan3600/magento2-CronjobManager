@@ -5,7 +5,7 @@ namespace EthanYehuda\CronjobManager\Model;
 
 class ProcessManagement
 {
-    const SIGKILL = 9;
+    protected const SIGKILL = 9;
 
     public function isPidAlive(int $pid): bool
     {
