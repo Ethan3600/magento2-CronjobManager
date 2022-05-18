@@ -27,7 +27,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function upgrade(
         SchemaSetupInterface $setup,
