@@ -78,13 +78,13 @@ class ScheduleManagement implements ScheduleManagementInterface
 
     public function createSchedule(string $jobCode, $time = null): Schedule
     {
-        $time = strftime(ScheduleManagementInterface::TIME_FORMAT, $time ?? $this->dateTime->gmtTimestamp());
+        $time = date(ScheduleManagementInterface::TIME_FORMAT, $time ?? $this->dateTime->gmtTimestamp());
 
         $schedule = $this->scheduleFactory->create()
             ->setJobCode($jobCode)
             ->setStatus(Schedule::STATUS_PENDING)
             ->setCreatedAt(
-                strftime(ScheduleManagementInterface::TIME_FORMAT, $this->dateTime->gmtTimestamp())
+                date(ScheduleManagementInterface::TIME_FORMAT, $this->dateTime->gmtTimestamp())
             )->setScheduledAt($time);
 
         $this->scheduleRepository->save($schedule);
@@ -145,7 +145,7 @@ class ScheduleManagement implements ScheduleManagementInterface
         }
         $schedule->setData(
             'kill_request',
-            strftime(ScheduleManagementInterface::TIME_FORMAT, $this->dateTime->gmtTimestamp($timestamp))
+            date(ScheduleManagementInterface::TIME_FORMAT, $this->dateTime->gmtTimestamp($timestamp))
         );
         $this->scheduleRepository->save($schedule);
         return true;
