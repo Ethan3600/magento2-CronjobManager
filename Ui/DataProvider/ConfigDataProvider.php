@@ -11,12 +11,12 @@ use Magento\Framework\Registry;
 class ConfigDataProvider extends AbstractDataProvider
 {
     private $loadedData = [];
-    
+
     /**
      * @var Magento\Framework\Registry;
      */
     private $coreRegistry;
-    
+
     /**
      * @var JobConfig;
      */
@@ -45,7 +45,7 @@ class ConfigDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getData()
     {
@@ -56,34 +56,34 @@ class ConfigDataProvider extends AbstractDataProvider
         $params = $this->coreRegistry->registry(
             RegistryConstants::CURRENT_CRON_CONFIG
         );
-        
+
         $jobCode = $params['job_code'];
         $jobData = $this->helper->getJobData($jobCode);
-        
+
         $jobData = [
             'job_code'  => $jobData['name'],
             'group'     => $jobData['group'],
             'frequency' => $jobData['schedule'],
-            'class'     => $jobData["instance"] 
+            'class'     => $jobData["instance"]
                         . '::' . $jobData['method'] . "()"
         ];
-        
+
         $this->loadedData[$jobCode] = $jobData;
-        return $this->loadedData;    
+        return $this->loadedData;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getMeta()
     {
         $meta = parent::getMeta();
         return $meta;
     }
-    
+
     /**
      * Remove dependency to the collections
-     * 
+     *
      * @see \Magento\Ui\DataProvider\AbstractDataProvider::addFilter()
      * @return void
      */
