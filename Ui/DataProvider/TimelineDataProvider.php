@@ -40,7 +40,7 @@ class TimelineDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getData()
     {
@@ -74,7 +74,7 @@ class TimelineDataProvider extends AbstractDataProvider
 
         foreach ($this->collection->getItems() as $item) {
             $this->loadedData[$item->getJobCode()][] = $item->getData();
-            
+
             $minimumTime = $this->getFirstHour($item);
             $firstHour = is_null($firstHour) ?
                 $minimumTime: min($firstHour, $this->getFirstHour($item));
@@ -84,7 +84,7 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         array_unshift($this->loadedData, [
-            'total' => $collectionSize, 
+            'total' => $collectionSize,
             'range' => $this->getRange($firstHour, $lastHour)
         ]);
 
@@ -92,7 +92,7 @@ class TimelineDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getMeta()
     {

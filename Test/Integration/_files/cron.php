@@ -12,7 +12,7 @@ $cron = $objectManager->create(Schedule::class);
 $cron->setId(ManagerTest::FIXTURE_CRON_ID)
     ->setJobCode('fake_job')
     ->setStatus(Schedule::STATUS_PENDING)
-    ->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S', time()))
-    ->setScheduledAt(strftime('%Y-%m-%d %H:%M:%S', strtotime('+5 minutes')));
+    ->setCreatedAt(date('Y-m-d H:i:s', time()))
+    ->setScheduledAt(date('Y-m-d H:i:s', strtotime('+5 minutes')));
 
 $cron->save();
