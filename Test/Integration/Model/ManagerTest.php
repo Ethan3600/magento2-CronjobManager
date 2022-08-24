@@ -35,7 +35,7 @@ class ManagerTest extends TestCase
     {
         $cronJob = $this->manager->createCronJob(
             'expired_tokens_cleanup',
-            strftime('%Y-%m-%dT%H:%M', strtotime('+5 minutes'))
+            date('Y-m-d\TH:i', strtotime('+5 minutes'))
         );
 
         $this->assertInstanceOf(Schedule::class, $cronJob);

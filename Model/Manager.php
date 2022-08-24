@@ -21,7 +21,7 @@ class Manager
      * @var ScheduleRepositoryInterface
      */
     private $scheduleRepository;
-    
+
     public function __construct(
         ScheduleManagementInterface $scheduleManagement,
         ScheduleRepositoryInterface $scheduleRepository
@@ -29,7 +29,7 @@ class Manager
         $this->scheduleManagement = $scheduleManagement;
         $this->scheduleRepository = $scheduleRepository;
     }
-    
+
     public function createCronJob($jobCode, $time)
     {
         return $this->scheduleManagement->createSchedule($jobCode, strtotime($time));
@@ -50,7 +50,7 @@ class Manager
             $schedule->setStatus($status);
         }
         if (!is_null($time)) {
-            $schedule->setScheduledAt(strftime(ScheduleManagementInterface::TIME_FORMAT, strtotime($time)));
+            $schedule->setScheduledAt(date(ScheduleManagementInterface::TIME_FORMAT, strtotime($time)));
         }
 
         $this->scheduleRepository->save($schedule);
@@ -68,7 +68,7 @@ class Manager
 
     /**
      * Dispatches cron schedule
-     * 
+     *
      * @param int $jobId
      * @param string $jobCode
      * @param \Magento\Cron\Model\Schedule $schedule
@@ -82,7 +82,7 @@ class Manager
 
         $this->scheduleManagement->execute($schedule->getId());
     }
-    
+
     /**
      * Dispatches cron schedule
      *
@@ -98,7 +98,7 @@ class Manager
     {
         return $this->scheduleManagement->listJobs();
     }
-    
+
     /**
      * @param String $jobCode
      * @param array | null $groups
@@ -108,7 +108,7 @@ class Manager
     {
         return $this->scheduleManagement->getGroupId($jobCode, $groups);
     }
-    
+
     public function scheduleNow($jobCode)
     {
         return $this->scheduleManagement->scheduleNow($jobCode);

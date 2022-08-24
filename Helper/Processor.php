@@ -113,7 +113,7 @@ class Processor
                 $jobConfig['method']
             ));
         }
-        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
+        $schedule->setExecutedAt(date('Y-m-d H:i:s', $this->dateTime->gmtTimestamp()));
         $schedule->getResource()->save($schedule);
 
         try {
@@ -136,8 +136,8 @@ class Processor
             throw $e;
         }
 
-        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(strftime(
-            '%Y-%m-%d %H:%M:%S',
+        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(date(
+            'Y-m-d H:i:s',
             $this->dateTime->gmtTimestamp()
         ));
         $this->logger->info(sprintf(

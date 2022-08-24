@@ -17,9 +17,9 @@ class Timeline extends AbstractComponent
     {
         return static::NAME;
     }
-    
+
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataSourceData()
     {
