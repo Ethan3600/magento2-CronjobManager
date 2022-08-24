@@ -75,7 +75,20 @@
 		</argument>
 		<bookmark name="bookmarks" />
 		<columnsControls name="columns_controls" />
-		<filters name="listing_filters" />
+		<filters name="listing_filters">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="templates" xsi:type="array">
+						<item name="filters" xsi:type="array">
+							<item name="select" xsi:type="array">
+								<item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+								<item name="template" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+							</item>
+						</item>
+					</item>
+				</item>
+			</argument>
+		</filters>
 		<!-- @todo create search functionality -->
 		<!-- <filterSearch name="fulltext"/> -->
 		<massaction name="listing_massaction">
@@ -102,7 +115,7 @@
 					<item name="config" xsi:type="array">
 						<item name="confirm" xsi:type="array">
 							<item name="title" xsi:type="string" translate="true">Dispatch Now</item>
-							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process 
+							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process
 							can consume a lot of time and memory. Are you sure you want to proceed?</item>
 						</item>
 						<item name="type" xsi:type="string">dispatch</item>
@@ -134,8 +147,7 @@
 		<column name="schedule_id">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item>
-					<item name="sorting" xsi:type="string">asc</item>
+					<item name="filter" xsi:type="string">textRange</item>
 					<item name="label" xsi:type="string" translate="true">ID</item>
 					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
@@ -145,12 +157,22 @@
 			<argument name="data" xsi:type="array">
 				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Schedule</item>
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">select</item>
+					<item name="filter" xsi:type="string">textWithDatalist</item>
 					<item name="dataType" xsi:type="string">select</item>
-					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
-					<item name="sorting" xsi:type="string">asc</item>
 					<item name="label" xsi:type="string" translate="true">Job Code</item>
 					<item name="draggable" xsi:type="boolean">false</item>
+				</item>
+			</argument>
+		</column>
+		<column name="group">
+			<argument name="data" xsi:type="array">
+				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Group</item>
+				<item name="config" xsi:type="array">
+					<item name="dataType" xsi:type="string">select</item>
+					<item name="draggable" xsi:type="boolean">false</item>
+					<item name="filter" xsi:type="string">textWithDatalist</item>
+					<item name="label" xsi:type="string" translate="true">Group</item>
+					<item name="sortable" xsi:type="boolean">true</item>
 				</item>
 			</argument>
 		</column>
@@ -159,7 +181,6 @@
 				<item name="options" xsi:type="object">EthanYehuda\CronjobManager\Model\Schedule\Source\Status</item>
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">select</item>
-					<item name="sorting" xsi:type="string">asc</item>
 					<item name="component" xsi:type="string">EthanYehuda_CronjobManager/js/grid/columns/html</item>
 					<item name="dataType" xsi:type="string">select</item>
 					<item name="label" xsi:type="string" translate="true">Status</item>
@@ -185,7 +206,6 @@
 					<item name="dataType" xsi:type="string">date</item>
 					<item name="label" xsi:type="string" translate="true">Created Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
-					<item name="timezone" xsi:type="boolean">true</item>
 				</item>
 			</argument>
 		</column>
@@ -197,7 +217,6 @@
 					<item name="dataType" xsi:type="string">date</item>
 					<item name="label" xsi:type="string" translate="true">Scheduled Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
-					<item name="timezone" xsi:type="boolean">true</item>
 				</item>
 			</argument>
 		</column>
@@ -205,11 +224,11 @@
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">dateRange</item>
+					<item name="sorting" xsi:type="string">desc</item>
 					<item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
 					<item name="dataType" xsi:type="string">date</item>
 					<item name="label" xsi:type="string" translate="true">Executed Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
-					<item name="timezone" xsi:type="boolean">true</item>
 				</item>
 			</argument>
 		</column>
@@ -221,14 +240,33 @@
 					<item name="dataType" xsi:type="string">date</item>
 					<item name="label" xsi:type="string" translate="true">Finished Date</item>
 					<item name="draggable" xsi:type="boolean">false</item>
-					<item name="timezone" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+		</column>
+		<column name="duration">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="draggable" xsi:type="boolean">false</item>
+					<item name="filter" xsi:type="string">textRange</item>
+					<item name="label" xsi:type="string" translate="true">Duration (seconds)</item>
+					<item name="sortable" xsi:type="boolean">true</item>
+				</item>
+			</argument>
+		</column>
+		<column name="hostname">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="filter" xsi:type="string">text</item>
+					<item name="sortable" xsi:type="boolean">true</item>
+					<item name="label" xsi:type="string" translate="true">Hostname</item>
+					<item name="draggable" xsi:type="boolean">false</item>
 				</item>
 			</argument>
 		</column>
 		<column name="pid">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
-					<item name="filter" xsi:type="string">text</item><!-- TODO number -->
+					<item name="filter" xsi:type="string">textRange</item>
 					<item name="sortable" xsi:type="boolean">true</item>
 					<item name="label" xsi:type="string" translate="true">PID</item>
 					<item name="draggable" xsi:type="boolean">false</item>

@@ -1,0 +1,20 @@
+name: ExtDN M2 Unit Tests
+on: [ push, pull_request ]
+jobs:
+  unit-tests:
+    name: Magento 2 Unit Tests
+    runs-on: ubuntu-latest
+    env:
+      MODULE_NAME: EthanYehuda_CronjobManager
+      COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.3
+        env:
+          MAGENTO_VERSION: '2.3.7'
+      - uses: docker://yireo/github-actions-magento-unit-tests:7.4
+        env:
+          MAGENTO_VERSION: '2.4.3'
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+        env:
+          MAGENTO_VERSION: '2.4.4'

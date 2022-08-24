@@ -129,7 +129,7 @@ class Processor
             ));
         }
 
-        $schedule->setExecutedAt(strftime('%Y-%m-%d %H:%M:%S', $this->dateTime->gmtTimestamp()));
+        $schedule->setExecutedAt(date('Y-m-d H:i:s', $this->dateTime->gmtTimestamp()));
         $schedule->getResource()->save($schedule);
 
         try {
@@ -146,7 +146,7 @@ class Processor
             ));
             if (!$e instanceof \Exception) {
                 $e = new \RuntimeException(
-                    'Error when running a cron job',
+                    'Error when running a cron job: ' . $e->getMessage(),
                     0,
                     $e
                 );
@@ -154,8 +154,8 @@ class Processor
             throw $e;
         }
 
-        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(strftime(
-            '%Y-%m-%d %H:%M:%S',
+        $schedule->setStatus(Schedule::STATUS_SUCCESS)->setFinishedAt(date(
+            'Y-m-d H:i:s',
             $this->dateTime->gmtTimestamp()
         ));
         $schedule->getResource()->save($schedule);
