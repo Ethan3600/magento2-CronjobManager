@@ -116,6 +116,13 @@ class KillJob extends Command
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
         } catch (LocalizedException $exception) {
             // Area code is already set
+            $output->writeln(
+                __(
+                    'WARNING: cannot set area code. This is usually caused by a'
+                    . ' command in a third party module calling'
+                    . ' state->setAreaCode() in its "configure()" method.'
+                )
+            );
         }
 
         /** @var string $jobCode */
