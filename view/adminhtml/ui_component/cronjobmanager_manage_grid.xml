@@ -70,7 +70,6 @@
 		<argument name="data" xsi:type="array">
 			<item name="config" xsi:type="array">
 				<item name="sticky" xsi:type="boolean">false</item>
-				<item name="template" xsi:type="string">EthanYehuda_CronjobManager/visualizer/toolbar</item>
 			</item>
 		</argument>
 		<bookmark name="bookmarks" />
