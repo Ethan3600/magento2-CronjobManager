@@ -8,7 +8,7 @@ use Magento\Framework\Message\ManagerInterface;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
-    const MAX_PAGE_SIZE = 35000;
+    protected const MAX_PAGE_SIZE = 35000;
 
     private $loadedData;
 

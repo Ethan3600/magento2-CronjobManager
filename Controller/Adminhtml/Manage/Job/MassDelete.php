@@ -11,30 +11,29 @@ use Magento\Ui\Component\MassAction\Filter;
 
 class MassDelete extends Action
 {
-    const MAX_QUERY_SIZE = 10;
-    
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
-    
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    protected const MAX_QUERY_SIZE = 10;
+
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var ManagerFactory
      */
     private $managerFactory;
-    
+
     /**
      * @var Filter
      */
     private $filter;
-    
+
     /**
      * @var CollectionFactory
      */
     private $collectionFactory;
-    
+
     public function __construct(
         ManagerFactory $managerFactory,
         PageFactory $resultPageFactory,
@@ -64,7 +63,7 @@ class MassDelete extends Action
             $this->_redirect('*/manage/index');
             return;
         }
-        
+
         if ($size > self::MAX_QUERY_SIZE) {
             $deleteQuery = $collection->getSelect()->deleteFromSelect('main_table');
             $collection->getConnection()->query($deleteQuery);
@@ -77,7 +76,7 @@ class MassDelete extends Action
                 }
             }
         }
-        
+
         $this->getMessageManager()->addSuccessMessage("Successfully Deleted Schedules");
         $this->_redirect("*/manage/index/");
     }

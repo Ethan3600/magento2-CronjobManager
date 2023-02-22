@@ -23,9 +23,8 @@ use EthanYehuda\CronjobManager\Model\Data\Schedule;
 
 class KillJob extends Command
 {
-    const INPUT_KEY_JOB_CODE = 'job_code';
-
-    const OPTION_KEY_PROC_KILL = 'process-kill';
+    protected const INPUT_KEY_JOB_CODE = 'job_code';
+    protected const OPTION_KEY_PROC_KILL = 'process-kill';
 
     /**
      * @var State

@@ -6,8 +6,8 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class ConfigActions extends Column
 {
-    const JOB_CODE = 'job_code';
-    
+    protected const JOB_CODE = 'job_code';
+
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource["data"]["items"])) {
@@ -16,7 +16,7 @@ class ConfigActions extends Column
                 if(!isset($item[self::JOB_CODE]))
                 {
                     throw new NotFoundException(__(
-                        'Missing Job Code: %1.', 
+                        'Missing Job Code: %1.',
                         $item[self::JOB_CODE]
                         )
                     );
@@ -31,5 +31,5 @@ class ConfigActions extends Column
             }
         }
         return $dataSource;
-    }  
+    }
 }

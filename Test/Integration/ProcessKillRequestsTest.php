@@ -20,8 +20,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ProcessKillRequestsTest extends TestCase
 {
-    const NOW = '2019-02-09 18:33:00';
-    const REMOTE_HOSTNAME = 'hostname.example.net';
+    protected const NOW = '2019-02-09 18:33:00';
+    protected const REMOTE_HOSTNAME = 'hostname.example.net';
 
     /**
      * @var int

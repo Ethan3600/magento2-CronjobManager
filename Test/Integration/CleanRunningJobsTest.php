@@ -18,8 +18,9 @@ use Magento\Framework\Event;
  */
 class CleanRunningJobsTest extends TestCase
 {
-    const NOW = '2019-02-09 18:33:00';
-    const REMOTE_HOSTNAME = 'hostname.example.net';
+    protected const NOW = '2019-02-09 18:33:00';
+    protected const REMOTE_HOSTNAME = 'hostname.example.net';
+    protected const DEAD_PID = 99999999;
 
     /**
      * @var ObjectManager
@@ -35,8 +36,6 @@ class CleanRunningJobsTest extends TestCase
      * @var FakeClock
      */
     private $clock;
-
-    const DEAD_PID = 99999999;
 
     protected function setUp(): void
     {

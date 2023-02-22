@@ -6,8 +6,8 @@ use Magento\Ui\Component\AbstractComponent;
 
 class Timeline extends AbstractComponent
 {
-    const NAME = 'cronjobmanager_timeline';
-    
+    public const NAME = 'cronjobmanager_timeline';
+
     /**
      * Get component name
      *

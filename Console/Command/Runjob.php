@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Runjob extends Command
 {
-    const INPUT_KEY_JOB_CODE = 'job_code';
+    protected const INPUT_KEY_JOB_CODE = 'job_code';
 
     /**
      * @var ObjectManagerFactory
