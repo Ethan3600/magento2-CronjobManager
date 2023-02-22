@@ -11,6 +11,7 @@ use Magento\Framework\App\CacheInterface;
 use Magento\Cron\Model\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Processor
@@ -99,20 +100,35 @@ class Processor
         $jobCode = $schedule->getJobCode();
 
         if (!isset($jobConfig['instance'], $jobConfig['method'])) {
+            $e = new LocalizedException(__('No callbacks found'));
             $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception('No callbacks found');
+            $schedule->setMessages($e->getMessage());
+            $schedule->getResource()->save($schedule);
+            throw $e;
         }
 
         // dynamically create cron instances
         $model = $this->cronInstanceFactory->create($jobConfig['instance']);
         $callback = [$model, $jobConfig['method']];
         if (!is_callable($callback)) {
+            $e = new LocalizedException(__(
+                'Invalid callback: %instance::%method can\'t be called',
+                $jobConfig
+            ));
             $schedule->setStatus(Schedule::STATUS_ERROR);
-            throw new \Exception(sprintf('Invalid callback: %s::%s can\'t be called',
-                $jobConfig['instance'],
-                $jobConfig['method']
+            $schedule->setMessages($e->getMessage());
+            $schedule->getResource()->save($schedule);
+            throw $e;
+        }
+
+        // Ensure we are the only process trying to run this job
+        if (!$schedule->tryLockJob()) {
+            throw new LocalizedException(__(
+                'Unable to obtain lock for job: %jobCode',
+                ['jobCode' => $jobCode]
             ));
         }
+
         $schedule->setExecutedAt(date('Y-m-d H:i:s', $this->dateTime->gmtTimestamp()));
         $schedule->getResource()->save($schedule);
 
@@ -121,6 +137,8 @@ class Processor
             call_user_func_array($callback, [$schedule]);
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
+            $schedule->setMessages($e->getMessage());
+            $schedule->getResource()->save($schedule);
             $this->logger->error(sprintf(
                 'Cron Job %s has an error: %s.',
                 $jobCode,
@@ -140,6 +158,7 @@ class Processor
             'Y-m-d H:i:s',
             $this->dateTime->gmtTimestamp()
         ));
+        $schedule->getResource()->save($schedule);
         $this->logger->info(sprintf(
             'Cron Job %s is successfully finished',
             $jobCode
