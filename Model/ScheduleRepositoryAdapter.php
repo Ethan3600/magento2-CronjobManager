@@ -80,5 +80,4 @@ class ScheduleRepositoryAdapter implements ScheduleRepositoryAdapterInterface
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('status', $status)->create();
         return $this->getList($searchCriteria)->getItems();
     }
-
 }

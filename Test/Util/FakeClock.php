@@ -31,5 +31,4 @@ class FakeClock implements Clock
     {
         return $this->timestamp;
     }
-
 }

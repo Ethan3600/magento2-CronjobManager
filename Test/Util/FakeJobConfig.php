@@ -46,5 +46,4 @@ class FakeJobConfig implements \Magento\Cron\Model\ConfigInterface
             \call_user_func(self::$callback, $schedule);
         }
     }
-
 }

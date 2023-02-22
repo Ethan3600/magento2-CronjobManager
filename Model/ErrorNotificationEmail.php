@@ -84,5 +84,4 @@ class ErrorNotificationEmail implements ErrorNotification
             $this->logger->error($e);
         }
     }
-
 }

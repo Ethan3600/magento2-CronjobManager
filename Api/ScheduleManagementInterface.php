@@ -63,5 +63,4 @@ interface ScheduleManagementInterface
      * @return bool
      */
     public function kill(int $jobId, int $timestamp): bool;
-
 }

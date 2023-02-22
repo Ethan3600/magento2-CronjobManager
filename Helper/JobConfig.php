@@ -34,11 +34,11 @@ class JobConfig extends AbstractHelper
     
     public function getJobData($jobCode)
     {
-        if(is_null($this->jobs)) {
+        if (is_null($this->jobs)) {
             $this->jobs = $this->manager->getCronJobs();
         }
         
-        foreach($this->jobs as $groupName => $group) {
+        foreach ($this->jobs as $groupName => $group) {
             if (isset($group[$jobCode])) {
                 $group[$jobCode]['group'] = $groupName;
                 return $this->sanitizeJobConfig($group[$jobCode]);
@@ -79,7 +79,7 @@ class JobConfig extends AbstractHelper
         $job['name'] = !empty($job['name']) ? $job['name'] : '';
         $job['group'] = !empty($job['group']) ? $job['group'] : '';
         $job['schedule'] = !empty($job['schedule']) ? $job['schedule'] : '';
-        $job['instance'] = !empty($job['instance']) ? $job['instance'] : ''; 
+        $job['instance'] = !empty($job['instance']) ? $job['instance'] : '';
         $job['method'] = !empty($job['method']) ? $job['method'] : '';
         return $job;
     }

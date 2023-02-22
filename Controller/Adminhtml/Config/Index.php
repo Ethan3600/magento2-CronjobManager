@@ -22,10 +22,10 @@ class Index extends Action
 
     public function execute()
     {
-    	/** @var \Magento\Backend\Model\View\Result\Page $resultPage */
-    	$resultPage = $this->resultPageFactory->create();
-    	$resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
-    	$resultPage->getConfig()->getTitle()->prepend(__('Job Configuration'));
-    	return $resultPage;
+        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        $resultPage = $this->resultPageFactory->create();
+        $resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
+        $resultPage->getConfig()->getTitle()->prepend(__('Job Configuration'));
+        return $resultPage;
     }
 }

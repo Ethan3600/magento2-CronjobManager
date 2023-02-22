@@ -56,7 +56,8 @@ class TimelineDataProvider extends AbstractDataProvider
             ->addOrder('job_code', 'ASC')
             ->setPageSize(self::MAX_PAGE_SIZE)
             ->addFieldToFilter(
-                'scheduled_at', [
+                'scheduled_at',
+                [
                     'gt' => date(
                         'Y-m-d H:m:s',
                         strtotime(date('Y-m-d H:m:s') . ' -7 day')
@@ -100,7 +101,7 @@ class TimelineDataProvider extends AbstractDataProvider
         return $meta;
     }
 
-    private  function getRange($firstHour, $lastHour)
+    private function getRange($firstHour, $lastHour)
     {
         return [
             'first' => $firstHour,
