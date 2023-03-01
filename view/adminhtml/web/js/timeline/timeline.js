@@ -126,7 +126,7 @@ define([
         updateTimelineWidth: function () {
             var range = this.rows[0].range;
 
-            var first = moment.unix(range.first); 
+            var first = moment.unix(range.first);
             first = first.startOf('hour');
 
             var last = moment.unix(range.last);
@@ -134,7 +134,7 @@ define([
 
             this.width = (last.diff(first, 'seconds') + 3600) / this.scale;
         },
-        
+
         /**
          * Updates data of a range object,
          * e.g. total hours, first hour and last hour, etc.
@@ -172,12 +172,12 @@ define([
             var first = firstHour.format(this.timeframeFormat),
                 last  = lastHour.format(this.timeframeFormat);
 
-            return first + " - " + last; 
+            return first + " - " + last;
         },
 
         /**
          * Converts unix timestamp to moment object
-         *        
+         *
          * @param {String} dateStr
          * @returns {Moment}
          */
@@ -195,7 +195,7 @@ define([
         getFirstHour: function (useMoment) {
             var firstHour = this.rows[0].range.first;
             if (useMoment == null || useMoment) {
-                var first = this.createDate(firstHour); 
+                var first = this.createDate(firstHour);
                 return first.startOf('hour');
             }
             return new Date(new Date(new Date(firstHour * 1000).setMinutes(0)).setSeconds(0));
@@ -210,13 +210,13 @@ define([
          */
         getLastHour: function () {
             var lastHour = this.rows[0].range.last;
-            var last = this.createDate(lastHour); 
+            var last = this.createDate(lastHour);
             return last.add(1, 'hour').startOf('hour');
         },
 
         /**
          * Returns offset relative to the time now
-         * 
+         *
          * @returns {String}
          */
         setNow: function () {
@@ -267,7 +267,7 @@ define([
          * Handler of the data providers' 'reloaded' event.
          */
         onDataReloaded: function () {
-            if (Object.keys(this.rows).length < 1 
+            if (Object.keys(this.rows).length < 1
                 || this.rows == undefined) {
                 loader.get('timeline_container.timeline_panel').hide();
                 return;
@@ -301,6 +301,9 @@ define([
             var properties = [];
             var index = 0;
             ko.utils.objectForEach(obj, function (key, value) {
+                if (key == 'showTotalRecords' && typeof value == 'boolean') {
+                    return;
+                }
                 properties.push({ index: index, key: key, value: value });
                 index++;
             });
@@ -315,7 +318,7 @@ define([
          */
         afterTimelineRender: function () {
             resolver(this.hideLoader, this);
-            var clicked = false, 
+            var clicked = false,
                 scrollVertical = true,
                 scrollHorizontal = true,
                 cursor = null,
@@ -327,7 +330,7 @@ define([
                 var $el = $(el);
                 scrollVertical && $(window).scrollTop(($(window).scrollTop() + (clickY - e.pageY)));
                 scrollHorizontal && $el.scrollLeft(($el.scrollLeft() + (clickX - e.pageX)));
-            } 
+            }
 
             $('.timeline-container').on({
                 'mousemove': function(e) {
@@ -348,4 +351,3 @@ define([
         }
     });
 });
-

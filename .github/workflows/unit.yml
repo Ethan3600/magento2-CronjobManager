@@ -18,3 +18,9 @@ jobs:
       - uses: docker://yireo/github-actions-magento-unit-tests:8.1
         env:
           MAGENTO_VERSION: '2.4.4'
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+        env:
+          MAGENTO_VERSION: '2.4.5'
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.2
+        env:
+          MAGENTO_VERSION: '2.4.6'
