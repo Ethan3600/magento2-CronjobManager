@@ -17,11 +17,19 @@
     "type": "magento2-module",
     "license": "OSL-3.0",
     "autoload": {
+        "psr-4": {
+            "EthanYehuda\\CronjobManager\\": ""
+        },
         "files": [
             "registration.php"
         ],
+        "exclude-from-classmap": [
+            "/Test/"
+        ]
+    },
+    "autoload-dev": {
         "psr-4": {
-            "EthanYehuda\\CronjobManager\\": ""
+            "EthanYehuda\\CronjobManager\\Test": "Test/"
         }
     }
 }
