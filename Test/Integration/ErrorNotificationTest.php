@@ -5,6 +5,7 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
+use EthanYehuda\CronjobManager\Model\Clock;
 use EthanYehuda\CronjobManager\Model\ErrorNotification;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
