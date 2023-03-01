@@ -22,6 +22,7 @@ class ProcessKillRequestsTest extends TestCase
 {
     protected const NOW = '2019-02-09 18:33:00';
     protected const REMOTE_HOSTNAME = 'hostname.example.net';
+    protected const SIGKILL = 9;
 
     /**
      * @var int
@@ -70,7 +71,7 @@ class ProcessKillRequestsTest extends TestCase
          * Take care of children that we failed to kill
          */
         if ($this->childPid) {
-            \posix_kill($this->childPid, SIGKILL);
+            \posix_kill($this->childPid, self::SIGKILL);
         }
     }
 
