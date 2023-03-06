@@ -113,12 +113,12 @@
 				<argument name="data" xsi:type="array">
 					<item name="config" xsi:type="array">
 						<item name="confirm" xsi:type="array">
-							<item name="title" xsi:type="string" translate="true">Dispatch Now</item>
-							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected, (and the amount of them) this process
+							<item name="title" xsi:type="string" translate="true">Schedule duplicate jobs</item>
+							<item name="message" xsi:type="string" translate="true">WARNING: Depending on the actions you selected (and the amount of them), this process
 							can consume a lot of time and memory. Are you sure you want to proceed?</item>
 						</item>
 						<item name="type" xsi:type="string">dispatch</item>
-						<item name="label" xsi:type="string" translate="true">Dispatch Now</item>
+						<item name="label" xsi:type="string" translate="true">Schedule duplicate</item>
 						<item name="url" xsi:type="url" path="cronjobmanager/manage_job/massDispatch" />
 					</item>
 				</argument>
