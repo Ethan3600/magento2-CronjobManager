@@ -75,12 +75,6 @@ The configuration panel boasts a list of features including:
 
    Gives the ability to schedule any task immediately and in the background. Unlike the dispatch feature on the dashboard, which runs the cron on the forefront, scheduling a task from the configuration panel will allow the system to call it asynchronously
 
-* Cron Runner
-
-   Forces Magento to run the scheduler queue on command
-
-<img src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/>
-
 ### Command Line Tools
 
 Use the command line tools to run any cron job and view all tasks in the system:
