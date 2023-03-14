@@ -14,10 +14,10 @@ class CronNotRunning implements MessageInterface
 {
     // Cache the database value for this long in Magento's cache. This is a
     // trade-off between accurate data and going to the database too often.
-    const CACHE_TIMEOUT = 120; // seconds (2 minutes)
+    protected const CACHE_TIMEOUT = 120; // seconds (2 minutes)
 
     // Complain if most recent job to complete was this long ago or more.
-    const THRESHOLD = 1800; // seconds (30 minutes)
+    protected const THRESHOLD = 1800; // seconds (30 minutes)
 
     /**
      * @var CacheInterface

@@ -13,10 +13,10 @@ class CronActions extends Column
     /**
      * Url path
      */
-    const URL_PATH_EDIT     = 'cronjobmanager/manage/edit';
-    const URL_PATH_DELETE   = 'cronjobmanager/manage_job/delete';
-    const URL_PATH_DISPATCH = 'cronjobmanager/manage_job/dispatch';
-    const URL_PATH_KILL     = 'cronjobmanager/manage_job/kill';
+    protected const URL_PATH_EDIT = 'cronjobmanager/manage/edit';
+    protected const URL_PATH_DELETE = 'cronjobmanager/manage_job/delete';
+    protected const URL_PATH_DISPATCH = 'cronjobmanager/manage_job/dispatch';
+    protected const URL_PATH_KILL = 'cronjobmanager/manage_job/kill';
 
     /**
      * @var UrlInterface

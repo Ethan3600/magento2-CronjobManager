@@ -11,23 +11,23 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Run extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
      * @var PageFactory
      */
     private $resultPageFactory;
-    
+
     /**
      * @var ProcessCronQueueObserver
      */
     private $cronQueue;
-    
+
     /**
      * @var Observer
      */
     private $observer;
-    
+
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
@@ -45,7 +45,7 @@ class Run extends Action
         $this->cronQueue= $cronQueue;
         $this->observer = $observerFactory->create('Magento\Framework\Event\Observer');
     }
-    
+
     /**
      * Save cronjob
      *

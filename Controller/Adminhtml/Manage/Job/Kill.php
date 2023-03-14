@@ -8,7 +8,7 @@ use Magento\Backend\App\Action\Context;
 
 class Kill extends AbstractAction
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
      * @var ScheduleManagementInterface

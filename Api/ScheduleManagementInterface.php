@@ -9,7 +9,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 interface ScheduleManagementInterface
 {
-    const TIME_FORMAT = '%Y-%m-%d %H:%M:00';
+    public const TIME_FORMAT = 'Y-m-d H:i:00';
 
     /**
      * @param int $scheduleId
@@ -63,5 +63,4 @@ interface ScheduleManagementInterface
      * @return bool
      */
     public function kill(int $jobId, int $timestamp): bool;
-
 }

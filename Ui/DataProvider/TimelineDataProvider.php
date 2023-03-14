@@ -8,7 +8,7 @@ use Magento\Framework\Message\ManagerInterface;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
-    const MAX_PAGE_SIZE = 35000;
+    protected const MAX_PAGE_SIZE = 35000;
 
     private $loadedData;
 
@@ -40,7 +40,7 @@ class TimelineDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getData()
     {
@@ -56,7 +56,8 @@ class TimelineDataProvider extends AbstractDataProvider
             ->addOrder('job_code', 'ASC')
             ->setPageSize(self::MAX_PAGE_SIZE)
             ->addFieldToFilter(
-                'scheduled_at', [
+                'scheduled_at',
+                [
                     'gt' => date(
                         'Y-m-d H:m:s',
                         strtotime(date('Y-m-d H:m:s') . ' -7 day')
@@ -74,7 +75,7 @@ class TimelineDataProvider extends AbstractDataProvider
 
         foreach ($this->collection->getItems() as $item) {
             $this->loadedData[$item->getJobCode()][] = $item->getData();
-            
+
             $minimumTime = $this->getFirstHour($item);
             $firstHour = is_null($firstHour) ?
                 $minimumTime: min($firstHour, $this->getFirstHour($item));
@@ -84,7 +85,7 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         array_unshift($this->loadedData, [
-            'total' => $collectionSize, 
+            'total' => $collectionSize,
             'range' => $this->getRange($firstHour, $lastHour)
         ]);
 
@@ -92,7 +93,7 @@ class TimelineDataProvider extends AbstractDataProvider
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getMeta()
     {
@@ -100,7 +101,7 @@ class TimelineDataProvider extends AbstractDataProvider
         return $meta;
     }
 
-    private  function getRange($firstHour, $lastHour)
+    private function getRange($firstHour, $lastHour)
     {
         return [
             'first' => $firstHour,

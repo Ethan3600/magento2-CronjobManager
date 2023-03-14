@@ -41,10 +41,10 @@
                     position: 'top',
                     closeButton: false
                 ">
-                    <text args="isToday($date()) ? formatHeader($date()) \: formatHeader($date())"/>
+                    <text args="isToday($date()) ? formatHeader($date()) \: formatHeader($date())"></text>
                 </div>
                 <time attr="'data-tooltip-trigger': $index" class="timeline-date">
-                    <text args="isToday($date()) ? $t('\(Today\) ' + formatHeader($date())) \: formatHeader($date())"/>
+                    <text args="isToday($date()) ? $t('\(Today\) ' + formatHeader($date())) \: formatHeader($date())"></text>
                 </time>
             </li>
         </ul>
@@ -60,15 +60,15 @@
                         _running: isRunning($row()),
                         _pending: isPending($row())	
                     "
-                    render="recordTmpl"/>
+                    render="recordTmpl"></li>
             </if>
 
             <ifnot args="hasData()">
                 <li class="timeline-item" data-role="no-data-msg">
                     <div class="timeline-event">
                         <span class="timeline-event-title"
-                                translate="'We couldn\'t find any records.'"/>
-                        <div class="timeline-event-info"/>
+                                translate="'We couldn\'t find any records.'"></span>
+                        <div class="timeline-event-info"></div>
                     </div>
                 </li>
             </ifnot>

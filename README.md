@@ -18,10 +18,8 @@
     <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
          alt="Total Downloads">
   </a>
-  <a href="https://travis-ci.org/Ethan3600/magento2-CronjobManager">
-    <img src="https://travis-ci.org/Ethan3600/magento2-CronjobManager.svg?branch=1.x"
-         alt="Travis CI build status">
-  </a>
+  <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration/badge.svg"
+       alt="GitHub Actions status">
   <a href='https://coveralls.io/github/Ethan3600/magento2-CronjobManager'>
     <img src='https://coveralls.io/repos/github/Ethan3600/magento2-CronjobManager/badge.svg' alt='Coverage Status' />
   </a>
@@ -93,7 +91,8 @@ For example: `php bin/magento cronmanager:showjobs`
 
 ### Email notifications
 
-You can configure email addresses to be notified if a job has an error:
+You can configure email addresses to be notified if a job has an error.
+These settings can be found in Stores -> Settings -> Configuration -> Advanced -> System -> Cron Job Manager.
 
 ![email-configuration](https://user-images.githubusercontent.com/367320/60760081-a3970000-a02f-11e9-9615-3eb6c3bd9adb.png)
 
