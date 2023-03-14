@@ -16,6 +16,9 @@ class ScheduleResourcePlugin
      */
     private $errorNotification;
 
+    /** @var ConfigInterface */
+    private $config;
+
     public function __construct(
         ConfigInterface $config,
         ErrorNotification $errorNotification
