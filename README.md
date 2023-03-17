@@ -18,10 +18,18 @@
     <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
          alt="Total Downloads">
   </a>
-  <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration/badge.svg"
-       alt="GitHub Actions status">
   <a href='https://coveralls.io/github/Ethan3600/magento2-CronjobManager'>
     <img src='https://coveralls.io/repos/github/Ethan3600/magento2-CronjobManager/badge.svg' alt='Coverage Status' />
+  </a>
+  <br>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/coding-standard.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/coding-standard.yml/badge.svg" alt="ExtDN M2 Coding Standard">
+  </a>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration.yml/badge.svg" alt="ExtDN M2 Integration Tests">
+  </a>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/unit.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/unit.yml/badge.svg" alt="ExtDN M2 Unit Tests">
   </a>
 </p>
 
