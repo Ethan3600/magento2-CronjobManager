@@ -3,6 +3,7 @@
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
+use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
@@ -28,7 +29,7 @@ class Edit extends Action
     /**
      * Save cronjob
      *
-     * @return void
+     * @return Page
      */
     public function execute()
     {
@@ -38,7 +39,7 @@ class Edit extends Action
             $this->getRequest()->getParams()
         );
 
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
         $resultPage->getConfig()->getTitle()->prepend(__('Edit Configuration'));
