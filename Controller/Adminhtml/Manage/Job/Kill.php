@@ -11,8 +11,8 @@ class Kill extends AbstractAction
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param Context $context
+     * @param ScheduleManagementInterface $scheduleManagement
      */
     public function __construct(
         Context $context,
@@ -41,6 +41,7 @@ class Kill extends AbstractAction
             $this->_redirect('*/manage/index/');
             return;
         }
+
         $this->_redirect('*/manage/index/');
     }
 }

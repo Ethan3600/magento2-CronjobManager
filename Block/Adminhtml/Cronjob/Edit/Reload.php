@@ -7,7 +7,7 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class Reload extends GenericButton implements ButtonProviderInterface
 {
     /**
-     * @return array
+     * @inheritDoc
      */
     public function getButtonData()
     {

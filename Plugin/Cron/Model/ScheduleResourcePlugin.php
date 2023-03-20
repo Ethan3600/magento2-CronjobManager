@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Plugin\Cron\Model;
@@ -11,12 +12,24 @@ use Magento\Framework\DataObject;
 
 class ScheduleResourcePlugin
 {
+    /**
+     * @param ConfigInterface $config
+     * @param ErrorNotification $errorNotification
+     */
     public function __construct(
         private readonly ConfigInterface $config,
         private readonly ErrorNotification $errorNotification,
     ) {
     }
 
+    /**
+     * Store job duration and group on cronjob model
+     *
+     * @param ScheduleResource $subject
+     * @param DataObject $dataObject
+     *
+     * @return void
+     */
     public function beforeSave(
         ScheduleResource $subject,
         DataObject $dataObject
@@ -25,12 +38,20 @@ class ScheduleResourcePlugin
         $this->recordJobGroup($dataObject);
     }
 
+    /**
+     * Store job duration on cronjob model
+     *
+     * @param DataObject $dataObject
+     *
+     * @return void
+     */
     protected function recordJobDuration(DataObject $dataObject): void
     {
         if ($dataObject->dataHasChangedFor('duration')) {
             // avoid loops
             return;
         }
+
         $executedAt = $dataObject->getData('executed_at');
         $finishedAt = $dataObject->getData('finished_at');
         $executedTimestamp = \strtotime($executedAt ?: 'now') ?: \time();
@@ -44,12 +65,20 @@ class ScheduleResourcePlugin
         $dataObject->setData('duration', $finishedTimestamp - $executedTimestamp);
     }
 
+    /**
+     * Store job group on cronjob model
+     *
+     * @param DataObject $dataObject
+     *
+     * @return void
+     */
     protected function recordJobGroup(DataObject $dataObject): void
     {
         if ($dataObject->dataHasChangedFor('group')) {
             // avoid loops
             return;
         }
+
         if ($dataObject->getData('group')) {
             // already have recorded group. Nothing to do.
             return;
@@ -66,6 +95,12 @@ class ScheduleResourcePlugin
 
     /**
      * Email notification if status has been set to ERROR
+     *
+     * @param ScheduleResource $subject
+     * @param ScheduleResource $result
+     * @param Schedule $object
+     *
+     * @return ScheduleResource
      */
     public function afterSave(
         ScheduleResource $subject,
@@ -77,6 +112,7 @@ class ScheduleResourcePlugin
         ) {
             $this->errorNotification->sendFor($object);
         }
+
         return $result;
     }
 }

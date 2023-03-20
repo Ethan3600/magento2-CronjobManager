@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config;
 
+use Magento\Backend\Model\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
@@ -10,6 +11,10 @@ class Index extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
     public function __construct(
         Context $context,
         private readonly PageFactory $resultPageFactory,
@@ -17,9 +22,12 @@ class Index extends Action
         parent::__construct($context);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute()
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('EthanYehuda_CronjobManager::cronjobmanager');
         $resultPage->getConfig()->getTitle()->prepend(__('Job Configuration'));

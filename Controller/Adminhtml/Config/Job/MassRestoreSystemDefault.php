@@ -39,17 +39,20 @@ class MassRestoreSystemDefault extends Action
             $this->_redirect('*/config/index');
             return;
         }
+
         try {
             foreach ($params as $jobCode) {
                 $path = $this->helper->constructFrequencyPath($jobCode);
                 $this->helper->restoreSystemDefault($path);
             }
+
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/config/index/');
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully restored system defaults");
         $this->_redirect("*/config/index/");
     }

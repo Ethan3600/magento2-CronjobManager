@@ -2,22 +2,20 @@
 
 namespace EthanYehuda\CronjobManager\Ui\Component\Listing\DataProviders\Cronjobmanager\Config;
 
+use EthanYehuda\CronjobManager\Model\Manager;
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
 use EthanYehuda\CronjobManager\Helper\JobConfig;
+use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class Grid extends AbstractDataProvider
 {
     /**
-     * Page size
-     *
      * @var int
      */
     private $pageSize = 20;
 
     /**
-     * Pagination number
-     *
      * @var int
      */
     private $pageNum = 1;
@@ -38,7 +36,7 @@ class Grid extends AbstractDataProvider
     private $records = [];
 
     /**
-     * @var EthanYehuda\CronjobManager\Model\Manager $manager
+     * @var Manager $manager
      */
     private $manager;
 
@@ -54,6 +52,15 @@ class Grid extends AbstractDataProvider
      */
     private $currentFilter;
 
+    /**
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
+     * @param ManagerFactory $manager
+     * @param JobConfig $helper
+     * @param array $meta
+     * @param array $data
+     */
     public function __construct(
         $name,
         $primaryFieldName,
@@ -67,6 +74,9 @@ class Grid extends AbstractDataProvider
         $this->manager = $manager->create();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getData()
     {
         $this->prepareJobConfigRecords();
@@ -98,8 +108,8 @@ class Grid extends AbstractDataProvider
     /**
      * Set the sort order
      *
-     * @param type $field
-     * @param type $direction
+     * @param string $col
+     * @param string $dir
      */
     public function addOrder($col, $dir)
     {
@@ -110,7 +120,7 @@ class Grid extends AbstractDataProvider
     /**
      * @inheritdoc
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
         $conditionType = $filter->getConditionType();
         $filterRegistry = [
@@ -139,6 +149,11 @@ class Grid extends AbstractDataProvider
         }
     }
 
+    /**
+     * Retrieve relevant records from the database
+     *
+     * @return void
+     */
     private function prepareJobConfigRecords()
     {
         $this->records = [
@@ -162,7 +177,7 @@ class Grid extends AbstractDataProvider
                     'class' => "$instance::$method()"
                 ];
 
-                array_push($this->records['items'], $jobData);
+                $this->records['items'][] = $jobData;
             }
         }
     }
@@ -199,6 +214,11 @@ class Grid extends AbstractDataProvider
         $this->records['items'] = $items;
     }
 
+    /**
+     * Apply current filter to records
+     *
+     * @return void
+     */
     private function filterRecords()
     {
         foreach ($this->filterRegistry as $filter) {

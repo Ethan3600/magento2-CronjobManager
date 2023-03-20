@@ -1,4 +1,5 @@
 <?php
+
 namespace EthanYehuda\CronjobManager\Ui\Component\Listing\Column;
 
 use Magento\Framework\Exception\NotFoundException;
@@ -8,6 +9,11 @@ class ConfigActions extends Column
 {
     protected const JOB_CODE = 'job_code';
 
+    /**
+     * @inheritDoc
+     *
+     * @throws NotFoundException
+     */
     public function prepareDataSource(array $dataSource)
     {
         if (isset($dataSource["data"]["items"])) {

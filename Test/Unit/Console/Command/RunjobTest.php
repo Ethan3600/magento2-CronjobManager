@@ -7,14 +7,15 @@ use EthanYehuda\CronjobManager\Model\Cron\Runner;
 use Magento\Framework\App\ObjectManagerFactory;
 use Magento\Framework\Console\Cli;
 use Magento\Framework\ObjectManagerInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class RunjobTest extends TestCase
 {
+    /** @var Runner|(Runner&MockObject)|MockObject */
     protected $runner;
-    protected $command;
 
     protected function setUp(): void
     {

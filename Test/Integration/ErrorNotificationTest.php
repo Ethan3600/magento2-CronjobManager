@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
@@ -91,6 +92,7 @@ class ErrorNotificationTest extends TestCase
         foreach ($this->scheduleRepository->getList(new SearchCriteria())->getItems() as $schedule) {
             $this->scheduleRepository->delete($schedule);
         }
+
         // Crontab cache contains last schedule generation timestamp
         $this->cache->clean(['crontab']);
     }
@@ -131,7 +133,7 @@ class ErrorNotificationTest extends TestCase
         $this->objectManager->get(\Magento\Framework\App\Console\Request::class)->setParams(
             [ProcessCronQueueObserver::STANDALONE_PROCESS_STARTED => '1']
         );
-        $this->processCronQueueObserver->execute(new \Magento\Framework\Event\Observer);
+        $this->processCronQueueObserver->execute(new \Magento\Framework\Event\Observer());
     }
 
     private function givenCronjobThrows(\Exception $exception): void

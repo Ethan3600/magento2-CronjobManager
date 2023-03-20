@@ -7,7 +7,8 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 
 class ScheduleDataProvider extends AbstractDataProvider
 {
-    protected $loadedData;
+    /** @var array */
+    protected $loadedData = [];
 
     /**
      * @param string $name

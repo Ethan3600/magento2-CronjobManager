@@ -11,6 +11,10 @@ class MassScheduleNow extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
+    /**
+     * @param Context $context
+     * @param ManagerFactory $managerFactory
+     */
     public function __construct(
         Context $context,
         private readonly ManagerFactory $managerFactory,
@@ -32,6 +36,7 @@ class MassScheduleNow extends Action
             $this->_redirect('*/config/index');
             return;
         }
+
         try {
             foreach ($params as $jobCode) {
                 $manager->scheduleNow($jobCode);
@@ -41,6 +46,7 @@ class MassScheduleNow extends Action
             $this->_redirect('*/config/index/');
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedule Now Action");
         $this->_redirect("*/config/index/");
     }

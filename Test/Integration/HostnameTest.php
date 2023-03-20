@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;

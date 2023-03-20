@@ -6,7 +6,6 @@ use Magento\Cron\Model\ResourceModel\Schedule\Collection as ScheduleResourceMode
 
 class Collection extends ScheduleResourceModelCollection
 {
-
     /**
      * @var string
      */

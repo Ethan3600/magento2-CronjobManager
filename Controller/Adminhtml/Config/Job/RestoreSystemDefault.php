@@ -13,6 +13,11 @@ class RestoreSystemDefault extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
+    /**
+     * @param Context $context
+     * @param CacheInterface $cache
+     * @param JobConfig $helper
+     */
     public function __construct(
         Context $context,
         private readonly CacheInterface $cache,
@@ -35,6 +40,7 @@ class RestoreSystemDefault extends Action
             $this->_redirect('*/config/edit/');
             return;
         }
+
         $group = isset($params['group']) ? $params['group'] : null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
@@ -46,6 +52,7 @@ class RestoreSystemDefault extends Action
             $this->_redirect('*/config/edit/', $params);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully restored Cron Job: {$jobCode} to system defaults");
         $this->_redirect('*/config/index/');
     }

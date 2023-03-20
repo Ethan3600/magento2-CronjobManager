@@ -96,6 +96,7 @@ class ManagerTest extends TestCase
     private function loadCron($id)
     {
         $cron = $this->scheduleFactory->create();
+        // phpcs:ignore Magento2.Methods.DeprecatedModelMethod.FoundDeprecatedModelMethod
         $cron->getResource()->load($cron, $id);
 
         return $cron;

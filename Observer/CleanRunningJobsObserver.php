@@ -11,6 +11,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 class CleanRunningJobsObserver implements ObserverInterface
 {
+    /**
+     * @param CleanRunningJobs $cleanRunningJobs
+     * @param ScopeConfigInterface $scopeConfig
+     */
     public function __construct(
         private readonly CleanRunningJobs $cleanRunningJobs,
         private readonly ScopeConfigInterface $scopeConfig,
@@ -18,12 +22,13 @@ class CleanRunningJobsObserver implements ObserverInterface
     }
 
     /**
+     * Mark jobs as 'went away' if configured to do so
+     *
      * If this feature is active, Find all jobs in status "running" (according to db),
      * and check if the process is alive. If not, set status to error, with the message
      * "Process went away"
      *
-     * @param \Magento\Framework\Event\Observer $observer
-     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     * @param Observer $observer
      */
     public function execute(Observer $observer)
     {

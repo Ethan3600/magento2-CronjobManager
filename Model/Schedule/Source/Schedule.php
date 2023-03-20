@@ -7,6 +7,9 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Schedule implements OptionSourceInterface
 {
+    /**
+     * @param Config $cronConfig
+     */
     public function __construct(
         private readonly Config $cronConfig,
     ) {
@@ -31,7 +34,7 @@ class Schedule implements OptionSourceInterface
                 'value' => $cron['name'],
                 'label' => $cron['name']
             ];
-            array_push($options, $option);
+            $options[] = $option;
         }
 
         \usort($options, function ($a, $b) {
@@ -52,11 +55,6 @@ class Schedule implements OptionSourceInterface
      */
     private function mergeCronGroups($groups)
     {
-        $merged = [];
-        foreach ($groups as $group) {
-            $merged = array_merge($merged, $group);
-        }
-
-        return $merged;
+        return array_merge([], ...$groups);
     }
 }

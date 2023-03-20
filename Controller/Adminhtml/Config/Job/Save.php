@@ -13,6 +13,11 @@ class Save extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
+    /**
+     * @param Context $context
+     * @param CacheInterface $cache
+     * @param JobConfig $helper
+     */
     public function __construct(
         Context $context,
         private readonly CacheInterface $cache,
@@ -35,6 +40,7 @@ class Save extends Action
             $this->_redirect('*/config/edit/');
             return;
         }
+
         $group = $params['group'] ? $params['group'] : null;
         $frequency = $params['frequency'] ? $params['frequency'] : null;
         try {
@@ -47,6 +53,7 @@ class Save extends Action
             $this->_redirect('*/config/edit/', $params);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
         if (!isset($params['back'])) {
             $this->_redirect("*/config/index/");

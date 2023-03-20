@@ -1,14 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Model;
 
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class ProcessKillRequests
 {
+    /**
+     * @param ScheduleRepositoryAdapterInterface $scheduleRepository
+     * @param ProcessManagement $processManagement
+     * @param DateTime $dateTime
+     * @param Clock $clock
+     */
     public function __construct(
         private readonly ScheduleRepositoryAdapterInterface $scheduleRepository,
         private readonly ProcessManagement $processManagement,
@@ -17,6 +25,12 @@ class ProcessKillRequests
     ) {
     }
 
+    /**
+     * Kill any running jobs, which have been marked for termination
+     *
+     * @return void
+     * @throws CouldNotSaveException
+     */
     public function execute()
     {
         $runningJobs = $this->scheduleRepository->getByStatus(ScheduleInterface::STATUS_RUNNING);
@@ -27,6 +41,14 @@ class ProcessKillRequests
         }
     }
 
+    /**
+     * Terminate the specified process
+     *
+     * @param ScheduleInterface $schedule
+     *
+     * @return void
+     * @throws CouldNotSaveException
+     */
     private function killScheduleProcess(ScheduleInterface $schedule): void
     {
         if ($this->processManagement->killPid($schedule->getPid(), $schedule->getHostname())) {
@@ -34,6 +56,7 @@ class ProcessKillRequests
             if ($schedule->getMessages()) {
                 $messages[] = $schedule->getMessages();
             }
+
             $messages[] = 'Process was killed at ' . $this->dateTime->gmtDate(null, $this->clock->now());
             $schedule
                 ->setMessages(\implode("\n", $messages))

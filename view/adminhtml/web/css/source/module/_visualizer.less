@@ -1,6 +1,6 @@
 //
-// Variables
-// ____________________________
+//  Variables
+//  ____________________________
 
 @visualizer-item__missed--background: #414141;
 @visualizer-item__missed--color: #fff;
@@ -35,7 +35,7 @@
     &._running {
         .timeline-event {
             overflow: visible;
-            
+
             svg {
                 display: inline-block;
             }
@@ -50,16 +50,16 @@
     &._missed {
         .timeline-event {
             background: @visualizer-item__missed--background;
-            color: @visualizer-item__missed--color;
             border: @visualizer-item__missed--border;
+            color: @visualizer-item__missed--color;
         }
     }
-    
+
     &._running {
         .timeline-event {
             background: @visualizer-item_running--background;
-            color: @visualizer-item_running--color;
             border: @visualizer-item_running--border;
+            color: @visualizer-item_running--color;
 
             .timeline-ending {
                 color: @visualizer-item_running--color;
@@ -72,16 +72,16 @@
     &._error {
         .timeline-event {
             background: @visualizer-item_error--background;
-            color: @visualizer-item_error--color;
             border: @visualizer-item_error--border;
+            color: @visualizer-item_error--color;
         }
     }
-    
+
     &._pending {
         .timeline-event {
             background: @visualizer-item_pending--background;
-            color: @visualizer-item_pending--color;
             border: @visualizer-item_pending--border;
+            color: @visualizer-item_pending--color;
 
             .timeline-ending {
                 color: @visualizer-item_pending--color;

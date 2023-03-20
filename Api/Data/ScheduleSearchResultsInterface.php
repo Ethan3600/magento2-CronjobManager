@@ -7,12 +7,17 @@ use Magento\Framework\Api\SearchResultsInterface;
 interface ScheduleSearchResultsInterface extends SearchResultsInterface
 {
     /**
+     * Get items list
+     *
      * @return \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface[]
      */
     public function getItems();
 
     /**
-     * @param \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface[]
+     * Set items list
+     *
+     * @param \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface[] $items
+     *
      * @return $this
      */
     public function setItems(array $items);

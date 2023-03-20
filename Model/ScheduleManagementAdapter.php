@@ -9,12 +9,19 @@ use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 
 class ScheduleManagementAdapter implements ScheduleManagementAdapterInterface
 {
+    /**
+     * @param ScheduleInterfaceFactory $scheduleFactory
+     * @param ScheduleManagementInterface $scheduleManagement
+     */
     public function __construct(
         private readonly ScheduleInterfaceFactory $scheduleFactory,
         private readonly ScheduleManagementInterface $scheduleManagement,
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function scheduleNow(string $jobCode): Data\ScheduleInterface
     {
         $coreSchedule = $this->scheduleManagement->scheduleNow($jobCode);
@@ -22,6 +29,9 @@ class ScheduleManagementAdapter implements ScheduleManagementAdapterInterface
         return $this->scheduleFactory->create(['data' => $coreSchedule->getData()]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function schedule(string $jobCode, int $time): Data\ScheduleInterface
     {
         $coreSchedule = $this->scheduleManagement->schedule($jobCode, $time);

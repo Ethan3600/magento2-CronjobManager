@@ -1,9 +1,9 @@
 //
-// Variables
-// ____________________________
+//  Variables
+//  ____________________________
 
 @row--height: 40px;
-@row--boarder: 1px solid #DADFE0;
+@row--boarder: 1px solid #dadfe0;
 
 @hours--height: auto;
 
@@ -12,37 +12,37 @@
 @wrapper--background-color: #f1f1f1;
 @wrapper--border: 1px solid @wrapper__border-color;
 @wrapper--margin-bottom: 2rem;
-@wrapper__border-color: #999999;
+@wrapper__border-color: #999;
 
 @left-content__row--background-color: #fff;
 
-// Status colors
-@status--success: #1CA84C;
-@status--pending: #A4A8A3;
-@status--missed: #F75300;
-@status--running: #09A7E6;
-@status--error: #D71200;
+//  Status colors
+@status--success: #1ca84c;
+@status--pending: #a4a8a3;
+@status--missed: #f75300;
+@status--running: #09a7e6;
+@status--error: #d71200;
 
 .cronjobmanager {
-    // overriding body line height
-    line-height: 0.36px;
+    //  overriding body line height
+    line-height: .36px;
 
     .row {
         border-bottom: @row--boarder;
-        padding: 0;
-        margin: 0;
         height: @row--height;
+        margin: 0;
+        padding: 0;
     }
 
     .wrapper {
-        position: relative;
-        margin-bottom: @wrapper--margin-bottom;
+        background-color: @wrapper--background-color;
+        border: @wrapper--border;
         float: left;
+        margin-bottom: @wrapper--margin-bottom;
         overflow-x: scroll;
         overflow-y: hidden;
+        position: relative;
         width: 100%;
-        border: @wrapper--border;
-        background-color: @wrapper--background-color;
     }
 
     .hours {
@@ -62,16 +62,16 @@
     }
 
     .timeline-date {
-        padding: 0.9rem 0rem;
+        padding: .9rem 0;
     }
 
     .left-content {
-        float: left;
         border-right: @wrapper--border;
+        float: left;
 
         .timeline-unit {
-            width: 100%;
             border-right: none;
+            width: 100%;
         }
 
         .row {
@@ -80,12 +80,12 @@
     }
 
     .timeline-container {
-        overflow: auto;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
         -khtml-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        overflow: auto;
         user-select: none;
 
         &__panel {
@@ -97,27 +97,25 @@
         }
 
         &__now {
+            background-color: red;
+            height: 100%;
             position: absolute;
             width: 1px;
-            height: 100%;
-            background-color: red;
             z-index: 0;
 
             &::before {
-                position: absolute;
-                top: 0;
-                right: -10px;
-                height: 0;
-                width: 0px;
                 border: 10px solid transparent;
-                border-top-color: transparent;
                 border-top-color: red;
-                content: "";
+                content: '';
+                height: 0;
+                position: absolute;
+                right: -10px;
+                top: 0;
+                width: 0;
             }
         }
 
         .timeline-date__container {
-
             &::before {
                 background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
                 bottom: 0;
@@ -132,10 +130,10 @@
     }
 
     .cron-job {
-        position: absolute;
-        margin-top: 5px;
         background-color: @status--pending;
         height: 30px;
+        margin-top: 5px;
+        position: absolute;
         z-index: 1;
 
         &.success {
@@ -156,4 +154,3 @@
         }
     }
 }
-

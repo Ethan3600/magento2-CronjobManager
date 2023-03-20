@@ -5,21 +5,18 @@ namespace EthanYehuda\CronjobManager\Block\Adminhtml\Cronjob\Edit;
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
 use Magento\Backend\Block\Widget\Context;
 use Magento\Framework\Registry;
+use Magento\Framework\UrlInterface;
 
 class GenericButton
 {
     /**
-     * Url Builder
-     *
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
     protected $urlBuilder;
 
     /**
-     * Constructor
-     *
-     * @param \Magento\Backend\Block\Widget\Context $context
-     * @param \Magento\Framework\Registry $registry
+     * @param Context $context
+     * @param Registry $registry
      */
     public function __construct(
         Context $context,
@@ -28,6 +25,9 @@ class GenericButton
         $this->urlBuilder = $context->getUrlBuilder();
     }
 
+    /**
+     * Return suitable URL parameters for editing the current job
+     */
     public function getRequestParams()
     {
         return $this->registry->registry(RegistryConstants::CURRENT_CRON_JOB) ?

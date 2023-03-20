@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Model;
@@ -14,6 +15,12 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
  */
 class CleanRunningJobs
 {
+    /**
+     * @param ScheduleRepositoryAdapterInterface $scheduleRepository
+     * @param ProcessManagement $processManagement
+     * @param DateTime $dateTime
+     * @param Clock $clock
+     */
     public function __construct(
         private readonly ScheduleRepositoryAdapterInterface $scheduleRepository,
         private readonly ProcessManagement $processManagement,

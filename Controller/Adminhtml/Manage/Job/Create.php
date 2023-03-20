@@ -12,7 +12,8 @@ class Create extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param Context $context
+     * @param Manager $cronJobManager
      */
     public function __construct(
         Context $context,
@@ -37,6 +38,7 @@ class Create extends Action
             $this->_redirect('*/manage/create/');
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully Created Cron Job: {$jobCode}");
         $this->_redirect('*/manage/index/');
     }

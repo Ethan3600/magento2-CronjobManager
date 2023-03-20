@@ -14,6 +14,12 @@ class MassDelete extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     protected const MAX_QUERY_SIZE = 10;
 
+    /**
+     * @param ManagerFactory $managerFactory
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param Context $context
+     */
     public function __construct(
         private readonly ManagerFactory $managerFactory,
         private readonly Filter $filter,

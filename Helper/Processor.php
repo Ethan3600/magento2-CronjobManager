@@ -16,6 +16,15 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Processor
 {
+    /**
+     * @param CronInstanceFactory $cronInstanceFactory
+     * @param ScheduleFactory $scheduleFactory
+     * @param CacheInterface $cache
+     * @param ConfigInterface $config
+     * @param ScopeConfigInterface $scopeConfig
+     * @param DateTime $dateTime
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         private readonly CronInstanceFactory $cronInstanceFactory,
         private readonly ScheduleFactory $scheduleFactory,
@@ -33,8 +42,9 @@ class Processor
      * @param string $scheduledTime
      * @param string $currentTime
      * @param string $jobConfig
-     * @param \Magento\Cron\Model\Schedule $schedule
+     * @param Schedule $schedule
      * @param int $groupId
+     *
      * @throws \Exception
      * @throws Ambigous <\Exception, \RuntimeException>
      * @deprecated
@@ -47,11 +57,9 @@ class Processor
     /**
      * Runs a scheduled job
      *
-     * @param string $scheduledTime
-     * @param string $currentTime
      * @param string $jobConfig
-     * @param \Magento\Cron\Model\Schedule $schedule
-     * @param int $groupId
+     * @param Schedule $schedule
+     *
      * @throws \Exception
      * @throws Ambigous <\Exception, \RuntimeException>
      */
@@ -111,6 +119,7 @@ class Processor
                     $e
                 );
             }
+
             throw $e;
         }
 
@@ -125,6 +134,13 @@ class Processor
         ));
     }
 
+    /**
+     * Clean up jobs for a given group
+     *
+     * @param string $groupId
+     *
+     * @return void
+     */
     public function cleanupJobs($groupId)
     {
         $currentTime = $this->dateTime->gmtTimestamp();
@@ -169,11 +185,19 @@ class Processor
                 ]
             );
         }
+
         if ($count) {
             $this->logger->info(sprintf('%d cron jobs were cleaned', $count));
         }
     }
 
+    /**
+     * Clean up disabled jobs for a given group
+     *
+     * @param string $groupId
+     *
+     * @return void
+     */
     private function cleanupDisabledJobs($groupId)
     {
         $jobs = $this->config->getJobs();
@@ -197,20 +221,36 @@ class Processor
         }
     }
 
+    /**
+     * Retrieve cron expression for a job code
+     *
+     * @param string $jobConfig
+     *
+     * @return mixed|null
+     */
     private function getCronExpression($jobConfig)
     {
         $cronExpression = null;
         if (isset($jobConfig['config_path'])) {
             $cronExpression = $this->getConfigSchedule($jobConfig) ?: null;
         }
+
         if (!$cronExpression) {
             if (isset($jobConfig['schedule'])) {
                 $cronExpression = $jobConfig['schedule'];
             }
         }
+
         return $cronExpression;
     }
 
+    /**
+     * Get configuration for the schedule
+     *
+     * @param string $jobConfig
+     *
+     * @return mixed
+     */
     private function getConfigSchedule($jobConfig)
     {
         $cronExpr = $this->scopeConfig->getValue(
@@ -220,6 +260,14 @@ class Processor
         return $cronExpr;
     }
 
+    /**
+     * Get configuration value for the specified cron group and path
+     *
+     * @param string $groupId
+     * @param string $path
+     *
+     * @return mixed
+     */
     private function getCronGroupConfigurationValue($groupId, $path)
     {
         return $this->scopeConfig->getValue(

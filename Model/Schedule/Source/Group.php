@@ -7,6 +7,9 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Group implements OptionSourceInterface
 {
+    /**
+     * @param Config $cronConfig
+     */
     public function __construct(
         protected Config $cronConfig,
     ) {
@@ -29,6 +32,7 @@ class Group implements OptionSourceInterface
                 'label' => $group,
             ];
         }
+
         return $options;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace EthanYehuda\CronjobManager\Model\System\Message;
 
 use DateTime;
@@ -19,6 +20,11 @@ class CronNotRunning implements MessageInterface
     // Complain if most recent job to complete was this long ago or more.
     protected const THRESHOLD = 1800; // seconds (30 minutes)
 
+    /**
+     * @param CacheInterface $cache
+     * @param CollectionFactory $collectionFactory
+     * @param TimezoneInterface $timezone
+     */
     public function __construct(
         protected CacheInterface $cache,
         protected CollectionFactory $collectionFactory,
@@ -26,16 +32,25 @@ class CronNotRunning implements MessageInterface
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getIdentity(): string
     {
         return 'cronjobmanager_recently_run';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isDisplayed(): bool
     {
         return $this->getLastRuntime() < (time() - self::THRESHOLD);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getText(): Phrase
     {
         if ($this->getLastRuntime()) {
@@ -52,11 +67,19 @@ class CronNotRunning implements MessageInterface
         return new Phrase('Cron does not appear to be running properly. No jobs have ever completed.');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSeverity(): int
     {
         return MessageInterface::SEVERITY_MAJOR;
     }
 
+    /**
+     * Return a timestamp for when the last cron job ran
+     *
+     * @return int
+     */
     protected function getLastRuntime(): int
     {
         $cacheEntry = $this->cache->load($this->getIdentity());
@@ -77,6 +100,11 @@ class CronNotRunning implements MessageInterface
         return $lastRuntime;
     }
 
+    /**
+     * Look up in the database when the last cronjob completed
+     *
+     * @return int
+     */
     protected function calculateLastRuntime(): int
     {
         $collection = $this->collectionFactory->create();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Console\Command;
@@ -26,11 +27,18 @@ class KillJob extends Command
     protected const INPUT_KEY_JOB_CODE = 'job_code';
     protected const OPTION_KEY_PROC_KILL = 'process-kill';
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $errors = [];
 
+    /**
+     * @param State $state
+     * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param ScheduleManagementInterface $scheduleManagement
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param FilterGroupBuilder $filterGroupBuilder
+     * @param ProcessManagement $processManagement
+     */
     public function __construct(
         private readonly State $state,
         private readonly ScheduleRepositoryInterface $scheduleRepository,
@@ -43,15 +51,19 @@ class KillJob extends Command
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure()
     {
         $arguments = [
             new InputArgument(
                 self::INPUT_KEY_JOB_CODE,
                 InputArgument::REQUIRED,
-                "Job code input (ex. 'sitemap_generate')
-                \nSends \"kill request\" to all the cron jobs given a specified job_code.
-                \nKill requests will not kill jobs immediately; instead it will be scheduled to be killed and handled by Magento's cron scheduler"
+                "Job code input (ex. 'sitemap_generate')" .
+                    "\nSends \"kill request\" to all the cron jobs given a specified job_code." .
+                    "\nKill requests will not kill jobs immediately; instead it will be scheduled" .
+                    " to be killed and handled by Magento's cron scheduler"
             ),
             new InputOption(
                 self::OPTION_KEY_PROC_KILL,
@@ -67,11 +79,14 @@ class KillJob extends Command
         parent::configure();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
-        } catch (LocalizedException $exception) {
+        } catch (LocalizedException) {
             // Area code is already set
             $output->writeln(
                 __(
@@ -88,18 +103,12 @@ class KillJob extends Command
         /** @var bool $optionProcKill */
         $optionProcKill = $input->getOption(self::OPTION_KEY_PROC_KILL);
 
-        /** @var Schedule[] $runningJobs */
         $runningJobs = $this->loadRunningJobsByCode($jobCode);
 
-        /** @var Schedule $job */
         foreach ($runningJobs as $job) {
-            /** @var int $id */
-            $id = (int)$job->getScheduleId();
-            /** @var int $pid */
-            $pid = (int)$job->getPid();
-            if ($id !== null && $pid !== null) {
-                /** @var bool $killed */
-                $killed = false;
+            $id = $job->getScheduleId();
+            $pid = (int) $job->getPid();
+            if ($id && $pid) {
                 if ($optionProcKill) {
                     $killed = $this->processManagement->killPid($pid, $job->getHostname());
                 } else {
@@ -114,16 +123,21 @@ class KillJob extends Command
 
         if (\count($this->errors) > 0) {
             foreach ($this->errors as $error) {
-                /** @var string $error */
                 $output->writeln($error);
             }
+
             return Cli::RETURN_FAILURE;
         }
+
         $output->writeln("$jobCode successfully killed");
         return Cli::RETURN_SUCCESS;
     }
 
     /**
+     * Load running jobs by code
+     *
+     * @param string $jobCode
+     *
      * @return Schedule[]
      */
     private function loadRunningJobsByCode(string $jobCode): array

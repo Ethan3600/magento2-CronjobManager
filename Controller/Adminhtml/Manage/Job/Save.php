@@ -13,6 +13,7 @@ class Save extends Action
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
+     * @param Manager $cronJobManager
      */
     public function __construct(
         Context $context,
@@ -35,6 +36,7 @@ class Save extends Action
             $this->_redirect('*/manage/edit/');
             return;
         }
+
         $jobCode = $params['job_code'] ? $params['job_code'] : null;
         $status = $params['status'] ? $params['status'] : null;
         $scheduledAt = $params['scheduled_at'] ? $params['scheduled_at'] : null;
@@ -45,6 +47,7 @@ class Save extends Action
             $this->_redirect('*/manage/edit/', ['id' => $jobId]);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
         if (!isset($params['back'])) {
             $this->_redirect("*/manage/index/");

@@ -21,6 +21,13 @@ class ScheduleRepository implements ScheduleRepositoryInterface
      */
     private $scheduleCache = [];
 
+    /**
+     * @param ScheduleFactory $scheduleFactory
+     * @param ScheduleResource $scheduleResource
+     * @param CollectionFactory $collectionFactory
+     * @param CollectionProcessorInterface $collectionProcessor
+     * @param SearchResultsInterfaceFactory $searchResultsFactory
+     */
     public function __construct(
         private readonly ScheduleFactory $scheduleFactory,
         private readonly ScheduleResource $scheduleResource,
@@ -30,6 +37,9 @@ class ScheduleRepository implements ScheduleRepositoryInterface
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get(int $scheduleId): Schedule
     {
         if (isset($this->scheduleCache[$scheduleId])) {
@@ -47,6 +57,9 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         return $this->scheduleCache[$scheduleId];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getList(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria): SearchResultsInterface
     {
         /** @var \EthanYehuda\CronjobManager\Model\ResourceModel\Schedule\Collection $collection */
@@ -62,6 +75,9 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         return $searchResults;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function save(Schedule $schedule): Schedule
     {
         try {
@@ -69,11 +85,15 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
+
         unset($this->scheduleCache[$schedule->getId()]);
 
         return $schedule;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function delete(Schedule $schedule): bool
     {
         try {
@@ -81,11 +101,15 @@ class ScheduleRepository implements ScheduleRepositoryInterface
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__($exception->getMessage()));
         }
+
         unset($this->scheduleCache[$schedule->getId()]);
 
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function deleteById(int $scheduleId): bool
     {
         return $this->delete($this->get($scheduleId));

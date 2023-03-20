@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
@@ -150,6 +151,7 @@ class ProcessKillRequestsTest extends TestCase
                 sleep(1);
             }
         }
+
         return 0;
     }
 

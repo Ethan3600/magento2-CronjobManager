@@ -5,11 +5,13 @@ namespace EthanYehuda\CronjobManager\Ui\DataProvider;
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
 use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Framework\Registry;
 
 class ConfigDataProvider extends AbstractDataProvider
 {
+    /** @var array */
     private $loadedData = [];
 
     /**
@@ -73,11 +75,15 @@ class ConfigDataProvider extends AbstractDataProvider
     /**
      * Remove dependency to the collections
      *
-     * @see \Magento\Ui\DataProvider\AbstractDataProvider::addFilter()
+     * @see AbstractDataProvider::addFilter()
+     *
+     * @param Filter $filter
+     *
      * @return void
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
+        // phpcs:ignore Squiz.PHP.NonExecutableCode.ReturnNotRequired
         return;
     }
 }

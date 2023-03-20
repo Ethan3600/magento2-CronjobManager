@@ -1,17 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Unit\Console\Command;
 
+use EthanYehuda\CronjobManager\Console\Command\KillJob;
+use Magento\Framework\Api\SearchResultsInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use Magento\Framework\App\State;
 use Magento\Framework\App\Area;
-use Magento\Framework\Console\Cli;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\Search\FilterGroup;
 use Magento\Framework\Api\FilterBuilder;
@@ -19,20 +18,31 @@ use Magento\Framework\Api\Filter;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Config\ScopeInterface;
-
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
-use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
 
 class KillJobTest extends TestCase
 {
+    /** @var KillJob */
     private $command;
+
+    /** @var (State&MockObject)|MockObject */
     private $mockState;
+
+    /** @var (ScheduleRepositoryInterface&MockObject)|MockObject */
     private $mockScheduleRepository;
+
+    /** @var (ScheduleManagementInterface\Proxy&MockObject)|MockObject */
     private $mockScheduleManagement;
+
+    /** @var (SearchCriteriaBuilder&MockObject)|MockObject */
     private $mockSearchCriteriaBuilder;
+
+    /** @var (FilterBuilder&MockObject)|MockObject */
     private $mockFilterBuilder;
+
+    /** @var (FilterGroupBuilder&MockObject)|MockObject */
     private $mockFilterGroupBuilder;
 
     protected function setUp(): void
@@ -52,22 +62,26 @@ class KillJobTest extends TestCase
             ->setMethods(['kill'])
             ->getMock();
 
-        $this->mockSearchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)->disableOriginalConstructor()
+        $this->mockSearchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
+            ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
 
-        $this->mockFilterBuilder = $this->getMockBuilder(FilterBuilder::class)->disableOriginalConstructor()
+        $this->mockFilterBuilder = $this->getMockBuilder(FilterBuilder::class)
+            ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
 
-        $this->mockFilterGroupBuilder = $this->getMockBuilder(FilterGroupBuilder::class)->disableOriginalConstructor()
+        $this->mockFilterGroupBuilder = $this->getMockBuilder(FilterGroupBuilder::class)
+            ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
 
-        $this->mockProcessManagement = $this->getMockBuilder(ProcessManagement::class)->disableOriginalConstructor()
+        $this->mockProcessManagement = $this->getMockBuilder(ProcessManagement::class)
+            ->disableOriginalConstructor()
             ->getMock();
 
-        $this->command = new \EthanYehuda\CronjobManager\Console\Command\KillJob(
+        $this->command = new KillJob(
             $this->mockState,
             $this->mockScheduleRepository,
             $this->mockScheduleManagement,
@@ -147,7 +161,6 @@ class KillJobTest extends TestCase
 
     public function testExecuteWithKillFailures()
     {
-        /** @var int $numOfSchedules */
         $numOfSchedules = 3;
         /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
@@ -185,7 +198,6 @@ class KillJobTest extends TestCase
 
     public function testExecuteUsingProcKillWithKillFailures()
     {
-        /** @var int $numOfSchedules */
         $numOfSchedules = 3;
         /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
@@ -225,7 +237,6 @@ class KillJobTest extends TestCase
 
     public function testExecuteWithPartialKillFailures()
     {
-        /** @var int $numOfSchedules */
         $numOfSchedules = 2;
         /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
@@ -279,7 +290,7 @@ class KillJobTest extends TestCase
             ->method('create')
             ->willReturn($this->createMock(SearchCriteria::class));
 
-        $searchResults = $this->createMock(\Magento\Framework\Api\SearchResultsInterface::class);
+        $searchResults = $this->createMock(SearchResultsInterface::class);
 
         $this->mockScheduleRepository->expects($this->once())
             ->method('getList')
@@ -294,7 +305,7 @@ class KillJobTest extends TestCase
         $mockSchedules = [];
         for ($i = 0; $i < $numOfSchedules; $i++) {
             $mockSchedules[] = new Schedule([
-                "schedule_id" => "3233" + $i,
+                "schedule_id" => "3233" . $i,
                 "job_code" => "long_running_cron",
                 "status" => "running",
                 "pid" => 1000 + $i,

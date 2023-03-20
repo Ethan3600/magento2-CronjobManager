@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Model;
@@ -19,8 +20,11 @@ class ErrorNotificationEmail implements ErrorNotification
     private const XML_PATH_EMAIL_RECIPIENTS = 'system/cron_job_manager/email_recipients';
 
     /**
-     * ErrorNotificationEmail constructor.
      * @param TransportBuilder $mailTransportBuilder
+     * @param StoreManagerInterface $storeManager
+     * @param ScopeConfigInterface $scopeConfig
+     * @param SenderResolverInterface $senderResolver
+     * @param LoggerInterface $logger
      */
     public function __construct(
         private readonly TransportBuilder $mailTransportBuilder,
@@ -31,19 +35,25 @@ class ErrorNotificationEmail implements ErrorNotification
     ) {
     }
 
+    /**
+     * @inheritDoc
+     */
     public function sendFor(Schedule $schedule): void
     {
         if (!$this->scopeConfig->isSetFlag(self::XML_PATH_EMAIL_ENABLED)) {
             return;
         }
+
         try {
-            $recipients = explode(',', (string)$this->scopeConfig->getValue(self::XML_PATH_EMAIL_RECIPIENTS));
+            $recipients = explode(',', (string) $this->scopeConfig->getValue(self::XML_PATH_EMAIL_RECIPIENTS));
             $recipients = array_map('trim', $recipients);
             $sender = $this->senderResolver->resolve(
                 $this->scopeConfig->getValue(self::XML_PATH_EMAIL_IDENTITY)
             );
 
-            $this->mailTransportBuilder->setTemplateIdentifier($this->scopeConfig->getValue(self::XML_PATH_EMAIL_TEMPLATE));
+            $this->mailTransportBuilder->setTemplateIdentifier(
+                $this->scopeConfig->getValue(self::XML_PATH_EMAIL_TEMPLATE)
+            );
             $this->mailTransportBuilder->setTemplateVars(['schedule' => $schedule]);
             $this->mailTransportBuilder->setTemplateOptions(
                 [

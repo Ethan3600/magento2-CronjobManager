@@ -13,11 +13,13 @@ use Magento\Framework\Console\Cli;
 
 class Showjobs extends Command
 {
-    /**
-     * @var array $headers
-     */
+    /** @var array */
     private $headers = ['Job Code', 'Group', 'Frequency', 'Class'];
 
+    /**
+     * @param State $state
+     * @param ManagerFactory $managerFactory
+     */
     public function __construct(
         private readonly State $state,
         private readonly ManagerFactory $managerFactory
@@ -25,6 +27,9 @@ class Showjobs extends Command
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure()
     {
         $this->setName("cronmanager:showjobs");
@@ -32,6 +37,9 @@ class Showjobs extends Command
         parent::configure();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $manager = $this->managerFactory->create();
