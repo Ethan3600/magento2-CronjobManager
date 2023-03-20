@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Model;
 
-class SystemClock implements Clock
+class SystemClock implements ClockInterface
 {
     /**
      * @inheritDoc

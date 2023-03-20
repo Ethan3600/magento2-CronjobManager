@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Util;
 
-use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Model\ClockInterface;
 
-class FakeClock implements Clock
+class FakeClock implements ClockInterface
 {
     public function __construct(
         private int $timestamp = 0

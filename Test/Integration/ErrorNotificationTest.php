@@ -6,7 +6,7 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
-use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotification;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
@@ -73,11 +73,11 @@ class ErrorNotificationTest extends TestCase
             [
                 'preferences' => [
                     ConfigInterface::class => FakeJobConfig::class,
-                    Clock::class           => FakeClock::class,
+                    ClockInterface::class => FakeClock::class,
                 ],
             ]
         );
-        $this->clock = $this->objectManager->get(Clock::class);
+        $this->clock = $this->objectManager->get(ClockInterface::class);
         $this->clock->setTimestamp(strtotime(self::NOW));
         $this->setUpMocks();
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);

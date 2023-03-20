@@ -19,13 +19,13 @@ class CleanRunningJobs
      * @param ScheduleRepositoryAdapterInterface $scheduleRepository
      * @param ProcessManagement $processManagement
      * @param DateTime $dateTime
-     * @param Clock $clock
+     * @param ClockInterface $clock
      */
     public function __construct(
         private readonly ScheduleRepositoryAdapterInterface $scheduleRepository,
         private readonly ProcessManagement $processManagement,
         private readonly DateTime $dateTime,
-        private readonly Clock $clock,
+        private readonly ClockInterface $clock,
     ) {
     }
 

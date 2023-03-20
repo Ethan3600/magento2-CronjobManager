@@ -6,7 +6,7 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
-use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
@@ -58,8 +58,8 @@ class ProcessKillRequestsTest extends TestCase
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->objectManager->configure(['preferences' => [Clock::class => FakeClock::class]]);
-        $this->clock = $this->objectManager->get(Clock::class);
+        $this->objectManager->configure(['preferences' => [ClockInterface::class => FakeClock::class]]);
+        $this->clock = $this->objectManager->get(ClockInterface::class);
         $this->clock->setTimestamp(strtotime(self::NOW));
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
