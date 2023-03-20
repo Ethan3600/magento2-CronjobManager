@@ -46,9 +46,9 @@ class ErrorNotificationEmailTest extends TestCase
     }
 
     /**
-     * @magentoConfigFixture default_store system/cron_job_manager/email_notification 0
      * @magentoAdminConfigFixture system/cron_job_manager/email_recipients errors@example.com,other@example.com
      * @magentoAdminConfigFixture system/cron_job_manager/email_identity general
+     * @magentoConfigFixture default_store system/cron_job_manager/email_notification 0
      * @magentoConfigFixture current_store trans_email/ident_general/name No-Reply
      * @magentoConfigFixture current_store trans_email/ident_general/email noreply@example.com
      */

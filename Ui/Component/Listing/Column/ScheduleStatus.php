@@ -11,6 +11,7 @@ class ScheduleStatus extends Column
      * Prepare Data Source
      *
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)

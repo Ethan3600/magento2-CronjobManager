@@ -19,7 +19,6 @@ class CronActions extends Column
     protected const URL_PATH_KILL = 'cronjobmanager/manage_job/kill';
 
     /**
-     * CronActions constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
@@ -42,6 +41,7 @@ class CronActions extends Column
      * Prepare Data Source.
      *
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)

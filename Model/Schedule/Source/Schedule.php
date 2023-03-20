@@ -51,6 +51,7 @@ class Schedule implements OptionSourceInterface
      * This method merges them into one array
      *
      * @param array $groups
+     *
      * @return array
      */
     private function mergeCronGroups($groups)

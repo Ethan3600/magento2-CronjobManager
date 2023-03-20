@@ -91,6 +91,7 @@ class ManagerTest extends TestCase
 
     /**
      * @param int $id
+     *
      * @return \Magento\Cron\Model\Schedule
      */
     private function loadCron($id)

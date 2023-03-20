@@ -40,6 +40,7 @@ class GenericButton
      *
      * @param   string $route
      * @param   array $params
+     *
      * @return  string
      */
     public function getUrl($route = '', $params = [])

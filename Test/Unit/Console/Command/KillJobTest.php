@@ -312,6 +312,7 @@ class KillJobTest extends TestCase
                 "kill_request" => null
             ]);
         }
+
         return $mockSchedules;
     }
 }
