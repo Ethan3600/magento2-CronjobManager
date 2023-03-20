@@ -26,7 +26,7 @@ class MassDelete extends Action
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {

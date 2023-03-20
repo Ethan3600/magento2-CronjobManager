@@ -24,7 +24,7 @@ class Kill extends AbstractAction
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
