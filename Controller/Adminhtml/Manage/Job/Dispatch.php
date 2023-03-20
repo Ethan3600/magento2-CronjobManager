@@ -2,8 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Manage\Job;
 
-use EthanYehuda\CronjobManager\Model\Manager;
-use Magento\Framework\View\Result\PageFactory;
+use EthanYehuda\CronjobManager\Model\ScheduleManagement;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 
@@ -11,47 +10,37 @@ class Dispatch extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
+    /** @var ScheduleManagement */
+    private $scheduleManagement;
 
     /**
-     * @var Manager
-     */
-    private $cronJobManager;
-
-    /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param Context $context
+     * @param ScheduleManagement $scheduleManagement
      */
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        Manager $cronJobManager
+        ScheduleManagement $scheduleManagement
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager = $cronJobManager;
+        $this->scheduleManagement = $scheduleManagement;
     }
 
     /**
-     * Save cronjob
+     * Schedule a new run of the selected jobcode
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
-        $jobId = $this->getRequest()->getParam('id');
         $jobCode = $this->getRequest()->getParam('job_code');
+
         try {
-            $this->cronJobManager->dispatchCron($jobId, $jobCode);
+            $this->scheduleManagement->scheduleNow($jobCode);
+            $this->getMessageManager()->addSuccessMessage(__('Successfully scheduled selected job'));
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
-            $this->_redirect('*/manage/index/');
-            return;
         }
-        $this->getMessageManager()->addSuccessMessage("Successfully Dispatched Cron Job: {$jobCode}");
-        $this->_redirect('*/manage/index/');
+
+        $this->_redirect('*/manage/index');
     }
 }

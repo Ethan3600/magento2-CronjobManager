@@ -96,11 +96,12 @@ class CronActions extends Column
                                     'job_code' => $item['job_code'],
                                 ]
                             ),
-                            'label' => __('Dispatch'),
+                            'label' => __('Schedule duplicate job'),
                             'confirm' => [
-                                'job_code' => __('Dispatch %1', $jobCode),
+                                'job_code' => __('Schedule %1', $jobCode),
                                 'message' => __(
-                                    'Are you sure you want to <b>dispatch %1</b>? This may be time consuming and resource intensive.',
+                                    'Are you sure you want to <b>schedule %1</b> to run (again) now?'
+                                    . ' This may be time consuming and resource intensive.',
                                     $jobCode
                                 ),
                             ],
