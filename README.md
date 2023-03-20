@@ -44,10 +44,16 @@ In your Magento2 root directory, you may install this package via composer:
 
 ## Support
 
-CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3 | Magento 2.4
---- | :---: | :---: | :---: | :---: | :---:
-1.x | :x: | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark:
-
+Magento version | CronjobManager
+--- | ---
+Magento 2.4.6 | :white_check_mark: `^1.15 \|\| ^2.0`
+Magento 2.4.5 | :white_check_mark: `^1.13.3 \|\| ^2.0`
+Magento 2.4.4 | :white_check_mark: `^1.13.3 \|\| ^2.0`
+Magento 2.4.x | :white_check_mark: `^1.0`
+Magento 2.3.x | :white_check_mark: `^1.0`
+Magento 2.2.x | :white_check_mark: `^1.0`
+Magento 2.1.x | :x: Not supported
+Magento 2.0.x | :x: Not supported
 
 ## Features
 
