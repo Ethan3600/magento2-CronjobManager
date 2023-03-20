@@ -39,24 +39,6 @@ class Processor
     /**
      * Runs a scheduled job
      *
-     * @param string $scheduledTime
-     * @param string $currentTime
-     * @param string $jobConfig
-     * @param Schedule $schedule
-     * @param int $groupId
-     *
-     * @throws \Exception
-     * @throws Ambigous <\Exception, \RuntimeException>
-     * @deprecated
-     */
-    public function runJob($scheduledTime, $currentTime, $jobConfig, $schedule, $groupId)
-    {
-        return $this->runScheduledJob($jobConfig, $schedule);
-    }
-
-    /**
-     * Runs a scheduled job
-     *
      * @param string $jobConfig
      * @param Schedule $schedule
      *

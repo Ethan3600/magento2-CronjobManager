@@ -98,33 +98,6 @@ class Manager
     }
 
     /**
-     * Dispatches cron schedule
-     *
-     * @param int $jobId
-     * @param string $jobCode
-     * @param Schedule $schedule
-     */
-    public function dispatchCron($jobId, $jobCode, $schedule = null)
-    {
-        if ($schedule === null) {
-            $schedule = $this->scheduleRepository->get($jobId);
-        }
-
-        $this->scheduleManagement->execute($schedule->getId());
-    }
-
-    /**
-     * Dispatches cron schedule
-     *
-     * @param int $jobId
-     * @param Schedule $schedule
-     */
-    public function dispatchSchedule($jobId, $schedule = null)
-    {
-        $this->scheduleManagement->execute($jobId);
-    }
-
-    /**
      * Get a list of all cron jobs
      *
      * @return string[]
@@ -145,17 +118,5 @@ class Manager
     public function getGroupId($jobCode, $groups = null)
     {
         return $this->scheduleManagement->getGroupId($jobCode, $groups);
-    }
-
-    /**
-     * Schedule a new run of the specified job code
-     *
-     * @param string $jobCode
-     *
-     * @return Schedule
-     */
-    public function scheduleNow($jobCode)
-    {
-        return $this->scheduleManagement->scheduleNow($jobCode);
     }
 }
