@@ -12,7 +12,7 @@ use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
-class ErrorNotificationEmail implements ErrorNotification
+class ErrorNotificationEmail implements ErrorNotificationInterface
 {
     private const XML_PATH_EMAIL_ENABLED    = 'system/cron_job_manager/email_notification';
     private const XML_PATH_EMAIL_TEMPLATE   = 'system/cron_job_manager/email_template';

@@ -6,7 +6,7 @@ namespace EthanYehuda\CronjobManager\Model;
 
 use Magento\Cron\Model\Schedule;
 
-interface ErrorNotification
+interface ErrorNotificationInterface
 {
     /**
      * Send an email notification for the given schedule model

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Plugin\Cron\Model;
 
-use EthanYehuda\CronjobManager\Model\ErrorNotification;
+use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use Magento\Cron\Model\ConfigInterface;
 use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Cron\Model\Schedule;
@@ -14,11 +14,11 @@ class ScheduleResourcePlugin
 {
     /**
      * @param ConfigInterface $config
-     * @param ErrorNotification $errorNotification
+     * @param ErrorNotificationInterface $errorNotification
      */
     public function __construct(
         private readonly ConfigInterface $config,
-        private readonly ErrorNotification $errorNotification,
+        private readonly ErrorNotificationInterface $errorNotification,
     ) {
     }
 

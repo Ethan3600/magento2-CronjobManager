@@ -7,7 +7,7 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Model\ClockInterface;
-use EthanYehuda\CronjobManager\Model\ErrorNotification;
+use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
@@ -57,7 +57,7 @@ class ErrorNotificationTest extends TestCase
     private $cache;
 
     /**
-     * @var ErrorNotification|\PHPUnit_Framework_MockObject_MockObject
+     * @var ErrorNotificationInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $errorNotification;
 
@@ -102,8 +102,8 @@ class ErrorNotificationTest extends TestCase
         $dateTime = $this->createMock(DateTime::class);
         $dateTime->method('gmtTimestamp')->willReturnCallback([$this->clock, 'now']);
         $this->objectManager->addSharedInstance($dateTime, DateTime::class);
-        $this->errorNotification = $this->createMock(ErrorNotification::class);
-        $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotification::class);
+        $this->errorNotification = $this->createMock(ErrorNotificationInterface::class);
+        $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotificationInterface::class);
         $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotificationEmail::class);
     }
 
