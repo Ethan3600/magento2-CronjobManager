@@ -13,15 +13,15 @@ define([
 
     window.virtualRegistry = [];
 
-   /**
-     * Simulates Ko's observable functionality for 
+    /**
+     * Simulates Ko's observable functionality for
      * properties of the DOM
      */
     var simulatedObservable = (function() {
-     
+
         var timer = null;
         var items = [];
-     
+
         var check = function() {
             items = items.filter(function(item) {
                 return !!item.elem.parents('html').length;
@@ -35,7 +35,7 @@ define([
                 item.obs(item.getter());
             });
         };
-     
+
         return function(elem, getter) {
             var obs = ko.observable(getter());
             items.push({ obs: obs, getter: getter, elem: $(elem) });
@@ -44,7 +44,7 @@ define([
             }
             return obs;
         };
-    })(); 
+    })();
 
     /**
      * Get's the offset relative to the window for a cron
@@ -54,7 +54,7 @@ define([
      * @param {Object} tcOffset - timeline container offset results
      * @param {int} i - iterations in the virtualForEach
      * @param {Object} - panelOffset
-     * @return {Object} cronOffset - top and left 
+     * @return {Object} cronOffset - top and left
      */
     var preCalculateOffset = function(viewModel, cron, tcOffset, i, panelOffset) {
         var cronOffset = {};
@@ -63,13 +63,13 @@ define([
         var rowHoursOffset = 31;
         var rowHeight = 40;
         var rowHeightOffset = i * rowHeight;
-        cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset; 
+        cronOffset.top = tcOffset.top + rowHeightOffset + rowHoursOffset;
         ///////////////Horizontal Offset////////////////
         var timeOffset = viewModel.getOffset(cron, true);
         cronOffset.left = timeOffset + panelOffset();
 
         return cronOffset;
-    }
+    };
 
     ko.bindingHandlers.virtualForEach = {
 
@@ -79,7 +79,7 @@ define([
         init: function(element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var timelineViewModel = bindingContext.$parent;
             var totalTasks = timelineViewModel.transformedRows().length - 1;
-            var element = element.parentNode;
+            element = element.parentNode;
             var clone = $(element).clone();
             $(element).empty();
 
@@ -111,7 +111,7 @@ define([
             var refresh = function() {
                 var topBoundry = $(window).scrollTop();
                 var bottomBoundry = topBoundry + $(window).height() + 40;
-                var leftBoundry = tcOffset.left;   
+                var leftBoundry = tcOffset.left;
                 var rightBoundry = $timelineCont.width() + leftBoundry;
 
                 // flag to check if entire row is in bounds
@@ -139,7 +139,7 @@ define([
                             break;
                         }
                     }
-                };
+                }
 
                 window.virtualRegistry[index] = {
                     el: element,
@@ -208,7 +208,7 @@ define([
                     clearTimeout(windowTimer);
                 }
                 windowTimer = setTimeout(function() {
-                    raf(refresh); 
+                    raf(refresh);
                 }, 150);
             });
 
@@ -218,7 +218,7 @@ define([
                     clearTimeout(panelTimer);
                 }
                 panelTimer = setTimeout(function() {
-                    raf(refresh); 
+                    raf(refresh);
                 }, 1000);
             });
 
@@ -228,7 +228,7 @@ define([
             });
 
             if (index === totalTasks) {
-                // trigger's materialization after 
+                // trigger's materialization after
                 // the last virtualForEach has run
                 $timelineCont.trigger('timeline.ready');
             }

@@ -4,7 +4,7 @@ define([
     'require',
     './virtual-foreach'
 ], function (_, bootstrap, require) {
-   return _.extend(bootstrap, {
-       virtualForEach: require('./virtual-foreach')
-   }) 
+    return _.extend(bootstrap, {
+        virtualForEach: require('./virtual-foreach')
+    });
 });

@@ -11,7 +11,7 @@
         <div class="data-tooltip-title" ko-scope="requestChild('name')">
             <text args="getLabel($row())"></text>
         </div>
- 
+
         <div class="data-tooltip-content">
             <dl class="staging-events-summary">
             	<dt>
@@ -20,28 +20,28 @@
                 <dd ko-scope="requestChild('schedule_id')">
                     <text args="getLabel($row())"></text>
                 </dd>
-                
+
             	<dt>
                     <translate args="'Job Code'"></translate>:
                 </dt>
                 <dd ko-scope="requestChild('job_code')">
                     <text args="getLabel($row())"></text>
                 </dd>
-            
+
                 <dt>
                     <translate args="'Status'"></translate>:
                 </dt>
                 <dd ko-scope="requestChild('status')">
                     <text args="getLabel($row())"></text>
                 </dd>
- 
+
                 <dt>
                     <translate args="'Start'"></translate>:
                 </dt>
                 <dd>
                     <time text="formatDetails(getStartDate($row()))"></time>
                 </dd>
- 
+
                 <ifnot args="isPermanent($row())">
                     <dt>
                         <translate args="'End'"></translate>:

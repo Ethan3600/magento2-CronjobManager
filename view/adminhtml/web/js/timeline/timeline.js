@@ -15,7 +15,7 @@ define([
     return Collection.extend({
         defaults: {
             timeframeFormat: 'MM/DD HH:mm',
-        	dateFormat: 'MM/DD HH:mm',
+            dateFormat: 'MM/DD HH:mm',
             template: 'EthanYehuda_CronjobManager/timeline/timeline',
             detailsTmpl: 'EthanYehuda_CronjobManager/timeline/details',
             imports: {
@@ -112,7 +112,7 @@ define([
             }
 
             if (moment(end).isValid() && job.executed_at != null) {
-               duration = (end - start) / this.scale;
+                duration = (end - start) / this.scale;
             }
             duration = Math.round(duration);
             duration = duration > minWidth ? duration : minWidth;
@@ -172,7 +172,7 @@ define([
             var first = firstHour.format(this.timeframeFormat),
                 last  = lastHour.format(this.timeframeFormat);
 
-            return first + " - " + last;
+            return first + ' - ' + last;
         },
 
         /**
@@ -286,8 +286,8 @@ define([
         reloader: function () {
             // Unregister all virtual foreach events
             // so we don't overlap materializations
-            $(window).off()
-            $('.timeline-container__panel').off()
+            $(window).off();
+            $('.timeline-container__panel').off();
             resolver(this.reloadHandler, this);
         },
 
@@ -321,11 +321,10 @@ define([
             var clicked = false,
                 scrollVertical = true,
                 scrollHorizontal = true,
-                cursor = null,
                 clickY,
                 clickX;
 
-           function updateScrollPos(e, el) {
+            function updateScrollPos(e, el) {
                 $('html').css('cursor', 'move');
                 var $el = $(el);
                 scrollVertical && $(window).scrollTop(($(window).scrollTop() + (clickY - e.pageY)));
