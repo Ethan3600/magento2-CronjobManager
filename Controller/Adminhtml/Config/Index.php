@@ -10,13 +10,10 @@ class Index extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
-    private $resultPageFactory;
-
     public function __construct(
         Context $context,
-        PageFactory $resultPageFactory
+        private readonly PageFactory $resultPageFactory,
     ) {
-        $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
 

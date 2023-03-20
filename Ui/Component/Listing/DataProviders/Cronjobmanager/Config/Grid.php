@@ -54,23 +54,17 @@ class Grid extends AbstractDataProvider
      */
     private $currentFilter;
 
-    /**
-     * @var JobConfig
-     */
-    private $helper;
-
     public function __construct(
         $name,
         $primaryFieldName,
         $requestFieldName,
         ManagerFactory $manager,
-        JobConfig $helper,
+        private readonly JobConfig $helper,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
         $this->manager = $manager->create();
-        $this->helper = $helper;
     }
 
     public function getData()

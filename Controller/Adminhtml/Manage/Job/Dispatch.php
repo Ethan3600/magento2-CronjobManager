@@ -10,19 +10,15 @@ class Dispatch extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
-    /** @var ScheduleManagement */
-    private $scheduleManagement;
-
     /**
      * @param Context $context
      * @param ScheduleManagement $scheduleManagement
      */
     public function __construct(
         Context $context,
-        ScheduleManagement $scheduleManagement
+        private readonly ScheduleManagement $scheduleManagement,
     ) {
         parent::__construct($context);
-        $this->scheduleManagement = $scheduleManagement;
     }
 
     /**

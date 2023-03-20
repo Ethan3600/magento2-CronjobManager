@@ -11,35 +11,12 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class ScheduleRepositoryAdapter implements ScheduleRepositoryAdapterInterface
 {
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var ScheduleInterfaceFactory
-     */
-    private $scheduleFactory;
-
-    /**
-     * @var ScheduleFactory
-     */
-    private $coreScheduleFactory;
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
     public function __construct(
-        ScheduleRepositoryInterface $scheduleRepository,
-        ScheduleInterfaceFactory $scheduleFactory,
-        ScheduleFactory $coreScheduleFactory,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
+        private readonly ScheduleInterfaceFactory $scheduleFactory,
+        private readonly ScheduleFactory $coreScheduleFactory,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
     ) {
-        $this->scheduleRepository = $scheduleRepository;
-        $this->scheduleFactory = $scheduleFactory;
-        $this->coreScheduleFactory = $coreScheduleFactory;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
     }
 
     public function get(int $scheduleId): \EthanYehuda\CronjobManager\Api\Data\ScheduleInterface

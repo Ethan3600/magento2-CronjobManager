@@ -16,13 +16,6 @@ class GenericButton
     protected $urlBuilder;
 
     /**
-     * Registry
-     *
-     * @var \Magento\Framework\Registry
-     */
-    protected $registry;
-
-    /**
      * Constructor
      *
      * @param \Magento\Backend\Block\Widget\Context $context
@@ -30,10 +23,9 @@ class GenericButton
      */
     public function __construct(
         Context $context,
-        Registry$registry
+        protected Registry $registry,
     ) {
         $this->urlBuilder = $context->getUrlBuilder();
-        $this->registry = $registry;
     }
 
     public function getRequestParams()

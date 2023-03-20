@@ -14,15 +14,9 @@ class Runjob extends Command
 {
     protected const INPUT_KEY_JOB_CODE = 'job_code';
 
-    /**
-     * @var ObjectManagerFactory
-     */
-    private $objectManagerFactory;
-
     public function __construct(
-        ObjectManagerFactory $objectManagerFactory
+        private readonly ObjectManagerFactory $objectManagerFactory,
     ) {
-        $this->objectManagerFactory = $objectManagerFactory;
         parent::__construct();
     }
 

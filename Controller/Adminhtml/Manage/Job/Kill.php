@@ -11,20 +11,14 @@ class Kill extends AbstractAction
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var ScheduleManagementInterface
-     */
-    private $scheduleManagement;
-
-    /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
         Context $context,
-        ScheduleManagementInterface $scheduleManagement
+        private readonly ScheduleManagementInterface $scheduleManagement,
     ) {
         parent::__construct($context);
-        $this->scheduleManagement = $scheduleManagement;
     }
 
     /**

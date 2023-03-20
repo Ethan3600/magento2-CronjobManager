@@ -7,15 +7,9 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Group implements OptionSourceInterface
 {
-    /**
-     * @var Config
-     */
-    protected $cronConfig;
-
     public function __construct(
-        Config $config
+        protected Config $cronConfig,
     ) {
-        $this->cronConfig = $config;
     }
 
     /**

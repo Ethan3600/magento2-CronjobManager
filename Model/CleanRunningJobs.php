@@ -14,33 +14,12 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
  */
 class CleanRunningJobs
 {
-    /**
-     * @var ProcessManagement
-     */
-    private $processManagement;
-    /**
-     * @var ScheduleRepositoryAdapterInterface
-     */
-    private $scheduleRepository;
-    /**
-     * @var Clock
-     */
-    private $clock;
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
     public function __construct(
-        ScheduleRepositoryAdapterInterface $scheduleRepository,
-        ProcessManagement $processManagement,
-        DateTime $dateTime,
-        Clock $clock
+        private readonly ScheduleRepositoryAdapterInterface $scheduleRepository,
+        private readonly ProcessManagement $processManagement,
+        private readonly DateTime $dateTime,
+        private readonly Clock $clock,
     ) {
-        $this->processManagement = $processManagement;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->dateTime = $dateTime;
-        $this->clock = $clock;
     }
 
     /**

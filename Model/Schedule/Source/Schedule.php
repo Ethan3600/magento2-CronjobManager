@@ -7,15 +7,9 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Schedule implements OptionSourceInterface
 {
-    /**
-     * @var Config
-     */
-    private $cronConfig;
-
     public function __construct(
-        Config $config
+        private readonly Config $cronConfig,
     ) {
-        $this->cronConfig = $config;
     }
 
     /**

@@ -9,18 +9,11 @@ use Magento\Framework\ObjectManagerInterface;
 
 class InstanceFactory
 {
-    /**
-     * Object Manager
-     *
-     * @var ObjectManagerInterface
-     */
-    private $objectManager;
-
-    public function __construct(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
+    public function __construct(
+        private readonly ObjectManagerInterface $objectManager,
+    ) {
     }
-    
+
     public function create($className)
     {
         $cronInstance = $this->objectManager->create($className);
@@ -29,7 +22,7 @@ class InstanceFactory
                 __('%1 doesn\'t exist in the system', $className)
                 );
         }
-        
+
         return $cronInstance;
     }
 }

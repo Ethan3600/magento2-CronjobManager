@@ -11,11 +11,6 @@ use Magento\Framework\Exception\ValidatorException;
 class JobConfig extends AbstractHelper
 {
     /**
-     * @var WriterInterface
-     */
-    private $configWriter;
-    
-    /**
      * @var EthanYehuda\CronjobManager\Model\Manager
      */
     private $manager;
@@ -24,11 +19,10 @@ class JobConfig extends AbstractHelper
     
     public function __construct(
         Context $context,
-        WriterInterface $configWriter,
+        private readonly WriterInterface $configWriter,
         ManagerFactory $managerFactory
     ) {
         parent::__construct($context);
-        $this->configWriter = $configWriter;
         $this->manager = $managerFactory->create();
     }
     

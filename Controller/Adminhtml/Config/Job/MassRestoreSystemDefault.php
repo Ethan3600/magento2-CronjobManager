@@ -14,36 +14,18 @@ class MassRestoreSystemDefault extends Action
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var JobConfig
-     */
-    private $helper;
-
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
      * @param PageFactory $resultPageFactory
      * @param Context $context
      * @param JobConfig $helper
      * @param CacheInterface $cache
      */
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context,
-        JobConfig $helper,
-        CacheInterface $cache
+        private readonly JobConfig $helper,
+        private readonly CacheInterface $cache,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->helper = $helper;
-        $this->cache = $cache;
     }
 
     /**

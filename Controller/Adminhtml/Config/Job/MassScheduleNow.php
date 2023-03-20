@@ -11,24 +11,12 @@ class MassScheduleNow extends Action
 {
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context,
-        ManagerFactory $managerFactory
+        private readonly ManagerFactory $managerFactory,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->managerFactory = $managerFactory;
     }
 
     /**

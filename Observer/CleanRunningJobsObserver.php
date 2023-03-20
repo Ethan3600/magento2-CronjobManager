@@ -11,18 +11,10 @@ use Magento\Framework\Event\ObserverInterface;
 
 class CleanRunningJobsObserver implements ObserverInterface
 {
-    /** @var \Magento\Framework\App\Config\ScopeConfigInterface */
-    private $scopeConfig;
-
-    /** @var CleanRunningJobs */
-    private $cleanRunningJobs;
-
     public function __construct(
-        CleanRunningJobs $cleanRunningJobs,
-        ScopeConfigInterface $scopeConfig
+        private readonly CleanRunningJobs $cleanRunningJobs,
+        private readonly ScopeConfigInterface $scopeConfig,
     ) {
-        $this->scopeConfig = $scopeConfig;
-        $this->cleanRunningJobs = $cleanRunningJobs;
     }
 
     /**

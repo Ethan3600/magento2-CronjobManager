@@ -14,26 +14,14 @@ use Magento\Framework\Console\Cli;
 class Showjobs extends Command
 {
     /**
-     * @var \EthanYehuda\CronjobManager\Model\ManagerFactory $managerFactory
-     */
-    private $managerFactory;
-
-    /**
-     * @var \Magento\Framework\App\State $state
-     */
-    private $state;
-
-    /**
      * @var array $headers
      */
     private $headers = ['Job Code', 'Group', 'Frequency', 'Class'];
 
     public function __construct(
-        State $state,
-        ManagerFactory $managerFactory
+        private readonly State $state,
+        private readonly ManagerFactory $managerFactory
     ) {
-        $this->managerFactory = $managerFactory;
-        $this->state = $state;
         parent::__construct();
     }
 

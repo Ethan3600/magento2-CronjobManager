@@ -14,43 +14,13 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class ScheduleManagement implements ScheduleManagementInterface
 {
-    /**
-     * @var Processor
-     */
-    private $processor;
-
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var ConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var ScheduleFactory
-     */
-    private $scheduleFactory;
-
     public function __construct(
-        Processor $processor,
-        ScheduleRepositoryInterface $scheduleRepository,
-        ConfigInterface $config,
-        DateTime $dateTime,
-        ScheduleFactory $scheduleFactory
+        private readonly Processor $processor,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
+        private readonly ConfigInterface $config,
+        private readonly DateTime $dateTime,
+        private readonly ScheduleFactory $scheduleFactory,
     ) {
-        $this->processor = $processor;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->config = $config;
-        $this->dateTime = $dateTime;
-        $this->scheduleFactory = $scheduleFactory;
     }
 
     public function execute(int $scheduleId): bool

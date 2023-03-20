@@ -14,38 +14,14 @@ class MassDelete extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     protected const MAX_QUERY_SIZE = 10;
 
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-
-    /**
-     * @var Filter
-     */
-    private $filter;
-
-    /**
-     * @var CollectionFactory
-     */
-    private $collectionFactory;
-
     public function __construct(
-        ManagerFactory $managerFactory,
-        PageFactory $resultPageFactory,
-        Filter $filter,
-        CollectionFactory $collectionFactory,
+        private readonly ManagerFactory $managerFactory,
+        private readonly PageFactory $resultPageFactory,
+        private readonly Filter $filter,
+        private readonly CollectionFactory $collectionFactory,
         Context $context
     ) {
         parent::__construct($context);
-        $this->managerFactory = $managerFactory;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
     }
 
     /**

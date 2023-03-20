@@ -19,29 +19,11 @@ class CronNotRunning implements MessageInterface
     // Complain if most recent job to complete was this long ago or more.
     protected const THRESHOLD = 1800; // seconds (30 minutes)
 
-    /**
-     * @var CacheInterface
-     */
-    protected $cache;
-
-    /**
-     * @var CollectionFactory
-     */
-    protected $collectionFactory;
-
-    /**
-     * @var TimezoneInterface
-     */
-    protected $timezone;
-
     public function __construct(
-        CacheInterface $cache,
-        CollectionFactory $collectionFactory,
-        TimezoneInterface $timezone
+        protected CacheInterface $cache,
+        protected CollectionFactory $collectionFactory,
+        protected TimezoneInterface $timezone,
     ) {
-        $this->cache = $cache;
-        $this->collectionFactory = $collectionFactory;
-        $this->timezone = $timezone;
     }
 
     public function getIdentity(): string

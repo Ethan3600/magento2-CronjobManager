@@ -17,47 +17,17 @@ use Magento\Framework\Api\SearchResultsInterface;
 class ScheduleRepository implements ScheduleRepositoryInterface
 {
     /**
-     * @var ScheduleFactory
-     */
-    private $scheduleFactory;
-
-    /**
-     * @var ScheduleResource
-     */
-    private $scheduleResource;
-
-    /**
-     * @var CollectionFactory
-     */
-    private $collectionFactory;
-
-    /**
-     * @var CollectionProcessorInterface
-     */
-    private $collectionProcessor;
-
-    /**
-     * @var SearchResultsInterfaceFactory
-     */
-    private $searchResultsFactory;
-
-    /**
      * @var array
      */
     private $scheduleCache = [];
 
     public function __construct(
-        ScheduleFactory $scheduleFactory,
-        ScheduleResource $scheduleResource,
-        CollectionFactory $collectionFactory,
-        CollectionProcessorInterface $collectionProcessor,
-        SearchResultsInterfaceFactory $searchResultsFactory
+        private readonly ScheduleFactory $scheduleFactory,
+        private readonly ScheduleResource $scheduleResource,
+        private readonly CollectionFactory $collectionFactory,
+        private readonly CollectionProcessorInterface $collectionProcessor,
+        private readonly SearchResultsInterfaceFactory $searchResultsFactory,
     ) {
-        $this->scheduleFactory = $scheduleFactory;
-        $this->scheduleResource = $scheduleResource;
-        $this->collectionFactory = $collectionFactory;
-        $this->collectionProcessor = $collectionProcessor;
-        $this->searchResultsFactory = $searchResultsFactory;
     }
 
     public function get(int $scheduleId): Schedule

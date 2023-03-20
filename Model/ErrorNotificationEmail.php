@@ -19,42 +19,16 @@ class ErrorNotificationEmail implements ErrorNotification
     private const XML_PATH_EMAIL_RECIPIENTS = 'system/cron_job_manager/email_recipients';
 
     /**
-     * @var TransportBuilder
-     */
-    private $mailTransportBuilder;
-    /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-    /**
-     * @var SenderResolverInterface
-     */
-    private $senderResolver;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
      * ErrorNotificationEmail constructor.
      * @param TransportBuilder $mailTransportBuilder
      */
     public function __construct(
-        TransportBuilder $mailTransportBuilder,
-        StoreManagerInterface $storeManager,
-        ScopeConfigInterface $scopeConfig,
-        SenderResolverInterface $senderResolver,
-        LoggerInterface $logger
+        private readonly TransportBuilder $mailTransportBuilder,
+        private readonly StoreManagerInterface $storeManager,
+        private readonly ScopeConfigInterface $scopeConfig,
+        private readonly SenderResolverInterface $senderResolver,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->mailTransportBuilder = $mailTransportBuilder;
-        $this->storeManager = $storeManager;
-        $this->scopeConfig = $scopeConfig;
-        $this->senderResolver = $senderResolver;
-        $this->logger = $logger;
     }
 
     public function sendFor(Schedule $schedule): void

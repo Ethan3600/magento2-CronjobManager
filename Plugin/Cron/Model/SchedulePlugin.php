@@ -8,14 +8,9 @@ use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 
 class SchedulePlugin
 {
-    /**
-     * @var ScheduleResource
-     */
-    protected $scheduleResource;
-
-    public function __construct(ScheduleResource $scheduleResource)
-    {
-        $this->scheduleResource = $scheduleResource;
+    public function __construct(
+        protected ScheduleResource $scheduleResource,
+    ) {
     }
 
     public function afterTryLockJob(Schedule $subject, bool $result)

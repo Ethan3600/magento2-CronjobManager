@@ -9,22 +9,10 @@ use Magento\Framework\Console\Cli;
 
 class Runner
 {
-    /**
-     * @var State
-     */
-    private $state;
-
-    /**
-     * @var ScheduleManagementInterfaceFactory
-     */
-    private $scheduleManagementFactory;
-
     public function __construct(
-        State $state,
-        ScheduleManagementInterfaceFactory $scheduleManagementFactory
+        private readonly State $state,
+        private readonly ScheduleManagementInterfaceFactory $scheduleManagementFactory,
     ) {
-        $this->state = $state;
-        $this->scheduleManagementFactory = $scheduleManagementFactory;
     }
 
     public function runCron($jobCode)

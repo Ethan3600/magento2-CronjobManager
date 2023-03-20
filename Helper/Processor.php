@@ -16,55 +16,15 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Processor
 {
-    /**
-     * @var CronInstanceFactory
-     */
-    private $cronInstanceFactory;
-
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var ConfigInterface
-     */
-    private $config;
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $scopeConfig;
-    /**
-     * @var ScheduleFactory
-     */
-    private $scheduleFactory;
-
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     public function __construct(
-        CronInstanceFactory $cronInstanceFactory,
-        ScheduleFactory $scheduleFactory,
-        CacheInterface $cache,
-        ConfigInterface $config,
-        ScopeConfigInterface $scopeConfig,
-        DateTime $dateTime,
-        LoggerInterface $logger
+        private readonly CronInstanceFactory $cronInstanceFactory,
+        private readonly ScheduleFactory $scheduleFactory,
+        private readonly CacheInterface $cache,
+        private readonly ConfigInterface $config,
+        private readonly ScopeConfigInterface $scopeConfig,
+        private readonly DateTime $dateTime,
+        private readonly LoggerInterface $logger,
     ) {
-        $this->cronInstanceFactory = $cronInstanceFactory;
-        $this->scheduleFactory = $scheduleFactory;
-        $this->cache = $cache;
-        $this->config = $config;
-        $this->scopeConfig = $scopeConfig;
-        $this->dateTime = $dateTime;
-        $this->logger = $logger;
     }
 
     /**

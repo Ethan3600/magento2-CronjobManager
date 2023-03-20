@@ -12,22 +12,10 @@ use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
  */
 class Manager
 {
-    /**
-     * @var ScheduleManagementInterface
-     */
-    private $scheduleManagement;
-
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
     public function __construct(
-        ScheduleManagementInterface $scheduleManagement,
-        ScheduleRepositoryInterface $scheduleRepository
+        private readonly ScheduleManagementInterface $scheduleManagement,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
     ) {
-        $this->scheduleManagement = $scheduleManagement;
-        $this->scheduleRepository = $scheduleRepository;
     }
 
     public function createCronJob($jobCode, $time)

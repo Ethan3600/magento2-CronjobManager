@@ -12,27 +12,15 @@ class Flush extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var Manager
-     */
-    private $cronJobManager;
-
-    /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context,
-        Manager $cronJobManager
+        private readonly Manager $cronJobManager,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager = $cronJobManager;
     }
 
     /**

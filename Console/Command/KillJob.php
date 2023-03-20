@@ -27,61 +27,19 @@ class KillJob extends Command
     protected const OPTION_KEY_PROC_KILL = 'process-kill';
 
     /**
-     * @var State
-     */
-    private $state;
-
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var ScheduleManagementInterface
-     */
-    private $scheduleManagement;
-
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
-
-    /**
-     * @var FilterBuilder
-     */
-    private $filterBuilder;
-
-    /**
-     * @var FilterGroupBuilder
-     */
-    private $filterGroupBuilder;
-
-    /**
-     * @var ProcessManagement
-     */
-    private $processManagement;
-
-    /**
      * @var string[]
      */
     private $errors = [];
 
     public function __construct(
-        State $state,
-        ScheduleRepositoryInterface $scheduleRepository,
-        ScheduleManagementInterface $scheduleManagement,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        ProcessManagement $processManagement
+        private readonly State $state,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
+        private readonly ScheduleManagementInterface $scheduleManagement,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly FilterBuilder $filterBuilder,
+        private readonly FilterGroupBuilder $filterGroupBuilder,
+        private readonly ProcessManagement $processManagement,
     ) {
-        $this->state = $state;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->scheduleManagement = $scheduleManagement;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
-        $this->processManagement = $processManagement;
         parent::__construct();
     }
 

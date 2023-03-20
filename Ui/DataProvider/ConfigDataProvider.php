@@ -13,20 +13,11 @@ class ConfigDataProvider extends AbstractDataProvider
     private $loadedData = [];
 
     /**
-     * @var Magento\Framework\Registry;
-     */
-    private $coreRegistry;
-
-    /**
-     * @var JobConfig;
-     */
-    private $helper;
-
-    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param CollectionFactory $collectionFactory
+     * @param JobConfig $helper
+     * @param Registry $coreRegistry
      * @param array $meta
      * @param array $data
      */
@@ -34,14 +25,12 @@ class ConfigDataProvider extends AbstractDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        JobConfig $helper,
-        Registry $coreRegistry,
+        private readonly JobConfig $helper,
+        private readonly Registry $coreRegistry,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->helper = $helper;
-        $this->coreRegistry = $coreRegistry;
     }
 
     /**

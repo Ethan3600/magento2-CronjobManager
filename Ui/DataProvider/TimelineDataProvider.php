@@ -13,15 +13,11 @@ class TimelineDataProvider extends AbstractDataProvider
     private $loadedData;
 
     /**
-     * @var \Magento\Framework\Message\ManagerInterface
-     */
-    private $messageManager;
-
-    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
      * @param CollectionFactory $collectionFactory
+     * @param ManagerInterface $messageManager
      * @param array $meta
      * @param array $data
      */
@@ -30,12 +26,11 @@ class TimelineDataProvider extends AbstractDataProvider
         $primaryFieldName,
         $requestFieldName,
         CollectionFactory $collectionFactory,
-        ManagerInterface $messageManager,
+        private readonly ManagerInterface $messageManager,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->messageManager = $messageManager;
         $this->collection = $collectionFactory->create();
     }
 

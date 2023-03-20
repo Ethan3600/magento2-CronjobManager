@@ -7,14 +7,9 @@ use EthanYehuda\CronjobManager\Model\Clock;
 
 class FakeClock implements Clock
 {
-    /**
-     * @var int
-     */
-    private $timestamp;
-
-    public function __construct(int $timestamp = 0)
-    {
-        $this->timestamp = $timestamp;
+    public function __construct(
+        private int $timestamp = 0
+    ) {
     }
 
     public function setTimestamp(int $timestamp): void

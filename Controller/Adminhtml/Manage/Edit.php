@@ -13,28 +13,16 @@ class Edit extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var \Magento\Framework\Registry
-     */
-    private $coreRegistry;
-
-    /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
      * @param \Magento\Framework\Registry
      */
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context,
-        Registry $coreRegistry
+        private readonly Registry $coreRegistry,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->coreRegistry = $coreRegistry;
     }
 
     /**

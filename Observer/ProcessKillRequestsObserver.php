@@ -9,14 +9,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ProcessKillRequestsObserver implements ObserverInterface
 {
-    /**
-     * @var ProcessKillRequests
-     */
-    private $processKillRequests;
-
-    public function __construct(ProcessKillRequests $processKillRequests)
-    {
-        $this->processKillRequests = $processKillRequests;
+    public function __construct(
+        private readonly ProcessKillRequests $processKillRequests,
+    ) {
     }
 
     public function execute(Observer $observer)

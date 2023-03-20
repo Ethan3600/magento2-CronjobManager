@@ -19,18 +19,6 @@ class CronActions extends Column
     protected const URL_PATH_KILL = 'cronjobmanager/manage_job/kill';
 
     /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * Escaper.
-     *
-     * @var Escaper
-     */
-    private $escaper;
-
-    /**
      * CronActions constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -42,13 +30,11 @@ class CronActions extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
-        Escaper $escaper,
+        private readonly UrlInterface $urlBuilder,
+        private readonly Escaper $escaper,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->escaper = $escaper;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 

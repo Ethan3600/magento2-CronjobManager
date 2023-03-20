@@ -13,34 +13,18 @@ class MassDispatch extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var Filter
-     */
-    private $filter;
-
-    /**
-     * @var CollectionFactory
-     */
-    private $collectionFactory;
-
-    /** @var ScheduleManagement */
-    private $scheduleManagement;
-
-    /**
      * @param Filter $filter
      * @param CollectionFactory $collectionFactory
      * @param ScheduleManagement $scheduleManagement
      * @param Context $context
      */
     public function __construct(
-        Filter $filter,
-        CollectionFactory $collectionFactory,
-        ScheduleManagement $scheduleManagement,
+        private readonly Filter $filter,
+        private readonly CollectionFactory $collectionFactory,
+        private readonly ScheduleManagement $scheduleManagement,
         Context $context
     ) {
         parent::__construct($context);
-        $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
-        $this->scheduleManagement = $scheduleManagement;
     }
 
     /**

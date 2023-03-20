@@ -11,20 +11,10 @@ use Magento\Framework\DataObject;
 
 class ScheduleResourcePlugin
 {
-    /**
-     * @var ErrorNotification
-     */
-    private $errorNotification;
-
-    /** @var ConfigInterface */
-    private $config;
-
     public function __construct(
-        ConfigInterface $config,
-        ErrorNotification $errorNotification
+        private readonly ConfigInterface $config,
+        private readonly ErrorNotification $errorNotification,
     ) {
-        $this->config = $config;
-        $this->errorNotification = $errorNotification;
     }
 
     public function beforeSave(

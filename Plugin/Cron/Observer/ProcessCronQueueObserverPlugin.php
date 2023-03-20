@@ -7,18 +7,10 @@ use Magento\Framework\Event\Observer;
 
 class ProcessCronQueueObserverPlugin
 {
-    /** @var \Magento\Cron\Model\ResourceModel\Schedule */
-    private $resourceModel;
-
-    /** @var \Magento\Framework\Event\Manager */
-    private $eventManager;
-
     public function __construct(
-        \Magento\Cron\Model\ResourceModel\Schedule $resourceModel,
-        \Magento\Framework\Event\Manager $eventManager
+        private readonly \Magento\Cron\Model\ResourceModel\Schedule $resourceModel,
+        private readonly \Magento\Framework\Event\Manager $eventManager,
     ) {
-        $this->resourceModel = $resourceModel;
-        $this->eventManager = $eventManager;
     }
 
     /**

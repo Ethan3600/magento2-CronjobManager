@@ -14,35 +14,17 @@ class Save extends Action
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
      * @var ManagerFactory
      */
     private $managerFactory;
 
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-
-    /**
-     * @var JobConfig
-     */
-    private $helper;
-
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context,
-        CacheInterface $cache,
-        JobConfig $helper
+        private readonly CacheInterface $cache,
+        private readonly JobConfig $helper,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cache = $cache;
-        $this->helper = $helper;
     }
 
     /**
