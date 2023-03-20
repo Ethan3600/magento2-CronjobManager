@@ -13,12 +13,6 @@
 				<item name="class" xsi:type="string">primary</item>
 				<item name="url" xsi:type="string">*/manage/create</item>
 			</item>
-			<item name="run" xsi:type="array">
-				<item name="name" xsi:type="string">run</item>
-				<item name="label" xsi:type="string" translate="true">Run Cron</item>
-				<item name="class" xsi:type="string">primary</item>
-				<item name="url" xsi:type="string">*/config_job/run</item>
-			</item>
             <item name="dashboard" xsi:type="array">
 				<item name="name" xsi:type="string">dashboard</item>
 				<item name="label" xsi:type="string" translate="true">Dashboard</item>
