@@ -16,7 +16,6 @@ class MassDelete extends Action
 
     public function __construct(
         private readonly ManagerFactory $managerFactory,
-        private readonly PageFactory $resultPageFactory,
         private readonly Filter $filter,
         private readonly CollectionFactory $collectionFactory,
         Context $context

@@ -12,7 +12,6 @@ class MassScheduleNow extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     public function __construct(
-        private readonly PageFactory $resultPageFactory,
         Context $context,
         private readonly ManagerFactory $managerFactory,
     ) {

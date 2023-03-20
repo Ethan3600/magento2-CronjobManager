@@ -12,11 +12,9 @@ class Delete extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        private readonly PageFactory $resultPageFactory,
         Context $context,
         private readonly Manager $cronJobManager,
     ) {

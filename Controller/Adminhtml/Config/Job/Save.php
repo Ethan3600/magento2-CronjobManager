@@ -13,13 +13,7 @@ class Save extends Action
     public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-
     public function __construct(
-        private readonly PageFactory $resultPageFactory,
         Context $context,
         private readonly CacheInterface $cache,
         private readonly JobConfig $helper,

@@ -14,13 +14,11 @@ class MassRestoreSystemDefault extends Action
     public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
     /**
-     * @param PageFactory $resultPageFactory
      * @param Context $context
      * @param JobConfig $helper
      * @param CacheInterface $cache
      */
     public function __construct(
-        private readonly PageFactory $resultPageFactory,
         Context $context,
         private readonly JobConfig $helper,
         private readonly CacheInterface $cache,
