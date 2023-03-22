@@ -87,6 +87,7 @@ class Processor
 
         try {
             $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
+            //phpcs:ignore Magento2.Functions.DiscouragedFunction
             call_user_func_array($callback, [$schedule]);
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
