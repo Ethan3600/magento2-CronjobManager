@@ -15,6 +15,8 @@
 @wrapper__border-color: #999;
 
 @left-content__row--background-color: #fff;
+@date-sep-line-background: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
+@now-line-color: #f00;
 
 //  Status colors
 @status--success: #1ca84c;
@@ -97,7 +99,7 @@
         }
 
         &__now {
-            background-color: red;
+            background-color: @now-line-color;
             height: 100%;
             position: absolute;
             width: 1px;
@@ -105,7 +107,7 @@
 
             &::before {
                 border: 10px solid transparent;
-                border-top-color: red;
+                border-top-color: @now-line-color;
                 content: '';
                 height: 0;
                 position: absolute;
@@ -118,7 +120,7 @@
         .timeline-date {
             &__container {
                 &::before {
-                    background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
+                    background: @date-sep-line-background;
                     bottom: 0;
                     content: '';
                     margin-left: -1px;
