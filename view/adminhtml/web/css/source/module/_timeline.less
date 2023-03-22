@@ -115,16 +115,18 @@
             }
         }
 
-        .timeline-date__container {
-            &::before {
-                background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
-                bottom: 0;
-                content: '';
-                margin-left: -1px;
-                position: absolute;
-                top: 3.3rem;
-                width: 1px;
-                z-index: 0;
+        .timeline-date {
+            &__container {
+                &::before {
+                    background-image: repeating-linear-gradient(180deg, transparent, transparent 5px, #3e4040 5px, #3e4040 6px, #979999 6px, #979999 7px);
+                    bottom: 0;
+                    content: '';
+                    margin-left: -1px;
+                    position: absolute;
+                    top: 3.3rem;
+                    width: 1px;
+                    z-index: 0;
+                }
             }
         }
     }
