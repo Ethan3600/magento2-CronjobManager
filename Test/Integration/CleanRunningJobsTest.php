@@ -42,7 +42,10 @@ class CleanRunningJobsTest extends TestCase
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(['preferences' => [ClockInterface::class => FakeClock::class]]);
-        $this->objectManager->addSharedInstance($this->createMock(ErrorNotificationInterface::class), ErrorNotificationInterface::class);
+        $this->objectManager->addSharedInstance(
+            $this->createMock(ErrorNotificationInterface::class),
+            ErrorNotificationInterface::class
+        );
         $this->clock = $this->objectManager->get(ClockInterface::class);
         $this->clock->setTimestamp(strtotime(self::NOW));
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
