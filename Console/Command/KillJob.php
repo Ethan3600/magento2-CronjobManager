@@ -113,7 +113,7 @@ class KillJob extends Command
         $killCount = 0;
 
         foreach ($runningJobs as $job) {
-            $id = $job->getScheduleId();
+            $id = (int) $job->getScheduleId();
             $pid = (int) $job->getPid();
             if ($id && $pid) {
                 if ($optionProcKill) {
@@ -151,7 +151,7 @@ class KillJob extends Command
      *
      * @param string $jobCode
      *
-     * @return Schedule[]
+     * @return \Magento\Cron\Model\Schedule[]
      */
     private function loadRunningJobsByCode(string $jobCode): array
     {
