@@ -33,7 +33,7 @@ class KillJobTest extends TestCase
     /** @var (ScheduleRepositoryInterface&MockObject)|MockObject */
     private $mockScheduleRepository;
 
-    /** @var (ScheduleManagementInterface\Proxy&MockObject)|MockObject */
+    /** @var (ScheduleManagementInterface&MockObject)|MockObject */
     private $mockScheduleManagement;
 
     /** @var (SearchCriteriaBuilder&MockObject)|MockObject */
@@ -57,7 +57,7 @@ class KillJobTest extends TestCase
             ->setMethodsExcept([])
             ->getMock();
 
-        $this->mockScheduleManagement = $this->getMockBuilder(ScheduleManagementInterface\Proxy::class)
+        $this->mockScheduleManagement = $this->getMockBuilder(ScheduleManagementInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['kill'])
             ->getMock();

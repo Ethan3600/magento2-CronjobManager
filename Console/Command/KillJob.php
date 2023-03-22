@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
-use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface\Proxy as ScheduleManagementInterface;
+use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
 
