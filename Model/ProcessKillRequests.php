@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EthanYehuda\CronjobManager\Model;
 
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
+use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
@@ -35,7 +36,10 @@ class ProcessKillRequests
     {
         $runningJobs = $this->scheduleRepository->getByStatus(ScheduleInterface::STATUS_RUNNING);
         foreach ($runningJobs as $schedule) {
-            if ($schedule->getKillRequest() && $schedule->getKillRequest() <= \time() && $schedule->getPid()) {
+            if ($schedule->getKillRequest()
+                && $schedule->getKillRequest() <= date(ScheduleManagementInterface::TIME_FORMAT)
+                && $schedule->getPid()
+            ) {
                 $this->killScheduleProcess($schedule);
             }
         }
