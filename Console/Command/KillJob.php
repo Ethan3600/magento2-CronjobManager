@@ -118,6 +118,10 @@ class KillJob extends Command
             if ($id && $pid) {
                 if ($optionProcKill) {
                     $killed = $this->processManagement->killPid($pid, $job->getHostname());
+                    if ($killed) {
+                        $job->setStatus(Schedule::STATUS_KILLED);
+                        $this->scheduleRepository->save($job);
+                    }
                 } else {
                     $killed = $this->scheduleManagement->kill($id, \time());
                 }
