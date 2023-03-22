@@ -8,7 +8,7 @@ jobs:
       MODULE_NAME: EthanYehuda_CronjobManager
       COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: docker://yireo/github-actions-magento-unit-tests:7.3
         env:
           MAGENTO_VERSION: '2.3.7'
