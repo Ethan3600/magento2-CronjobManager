@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: extdn/github-actions-m2/magento-coding-standard@master
+      - uses: extdn/github-actions-m2/magento-coding-standard/8.1@master
