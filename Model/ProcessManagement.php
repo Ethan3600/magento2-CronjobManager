@@ -40,9 +40,10 @@ class ProcessManagement
         }
 
         //TODO first try to send SIGINT, wait up to X seconds, then send SIGKILL if process still running
+
         // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
         $killed = \posix_kill($pid, self::SIGKILL);
-        if ($killed && !$this->isPidAlive($pid)) {
+        if ($killed && $this->isPidAlive($pid)) {
             // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
             \sleep(5);
             if ($this->isPidAlive($pid)) {
