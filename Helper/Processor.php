@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Helper;
 
+use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Model\Cron\InstanceFactory as CronInstanceFactory;
 use Psr\Log\LoggerInterface;
 use Magento\Cron\Observer\ProcessCronQueueObserver;
@@ -24,6 +25,7 @@ class Processor
      * @param ScopeConfigInterface $scopeConfig
      * @param DateTime $dateTime
      * @param LoggerInterface $logger
+     * @param ScheduleRepositoryInterface $scheduleRepository
      */
     public function __construct(
         private readonly CronInstanceFactory $cronInstanceFactory,
@@ -33,6 +35,7 @@ class Processor
         private readonly ScopeConfigInterface $scopeConfig,
         private readonly DateTime $dateTime,
         private readonly LoggerInterface $logger,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
     ) {
     }
 
@@ -53,7 +56,7 @@ class Processor
             $e = new LocalizedException(__('No callbacks found'));
             $schedule->setStatus(Schedule::STATUS_ERROR);
             $schedule->setMessages($e->getMessage());
-            $schedule->getResource()->save($schedule);
+            $this->scheduleRepository->save($schedule);
             throw $e;
         }
 
@@ -67,7 +70,7 @@ class Processor
             ));
             $schedule->setStatus(Schedule::STATUS_ERROR);
             $schedule->setMessages($e->getMessage());
-            $schedule->getResource()->save($schedule);
+            $this->scheduleRepository->save($schedule);
             throw $e;
         }
 
@@ -80,7 +83,7 @@ class Processor
         }
 
         $schedule->setExecutedAt(date('Y-m-d H:i:s', $this->dateTime->gmtTimestamp()));
-        $schedule->getResource()->save($schedule);
+        $this->scheduleRepository->save($schedule);
 
         try {
             $this->logger->info(sprintf('Cron Job %s is run', $jobCode));
@@ -88,7 +91,7 @@ class Processor
         } catch (\Throwable $e) {
             $schedule->setStatus(Schedule::STATUS_ERROR);
             $schedule->setMessages($e->getMessage());
-            $schedule->getResource()->save($schedule);
+            $this->scheduleRepository->save($schedule);
             $this->logger->error(sprintf(
                 'Cron Job %s has an error: %s.',
                 $jobCode,
@@ -109,7 +112,7 @@ class Processor
             'Y-m-d H:i:s',
             $this->dateTime->gmtTimestamp()
         ));
-        $schedule->getResource()->save($schedule);
+        $this->scheduleRepository->save($schedule);
         $this->logger->info(sprintf(
             'Cron Job %s is successfully finished',
             $jobCode
