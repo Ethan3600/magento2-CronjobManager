@@ -105,6 +105,13 @@ class KillJob extends Command
 
         $runningJobs = $this->loadRunningJobsByCode($jobCode);
 
+        if (!count($runningJobs)) {
+            $output->writeln("No jobs for '$jobCode' are currently running.");
+            return Cli::RETURN_SUCCESS;
+        }
+
+        $killCount = 0;
+
         foreach ($runningJobs as $job) {
             $id = $job->getScheduleId();
             $pid = (int) $job->getPid();
@@ -115,7 +122,9 @@ class KillJob extends Command
                     $killed = $this->scheduleManagement->kill($id, \time());
                 }
 
-                if (!$killed) {
+                if ($killed) {
+                    $killCount++;
+                } else {
                     $this->errors[] = "Unable to kill {$job->getJobCode()} with PID: $pid";
                 }
             }
@@ -129,7 +138,11 @@ class KillJob extends Command
             return Cli::RETURN_FAILURE;
         }
 
-        $output->writeln("$jobCode successfully killed");
+        if ($optionProcKill) {
+            $output->writeln("$jobCode successfully sent SIG_KILL to $killCount process(es)");
+        } else {
+            $output->writeln("$jobCode successfully marked $killCount jobs for termination");
+        }
         return Cli::RETURN_SUCCESS;
     }
 
