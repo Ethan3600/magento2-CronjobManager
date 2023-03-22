@@ -56,6 +56,10 @@ class Schedule implements OptionSourceInterface
      */
     private function mergeCronGroups($groups)
     {
-        return array_merge([], ...$groups);
+        $merged = [];
+        foreach ($groups as $group) {
+            $merged += $group;
+        }
+        return $merged;
     }
 }
