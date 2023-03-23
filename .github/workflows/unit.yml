@@ -1,26 +1,38 @@
 name: ExtDN M2 Unit Tests
 on: [ push, pull_request ]
 jobs:
-  unit-tests:
-    name: Magento 2 Unit Tests
+  unit-tests-mage246:
+    name: Magento 2 Unit Tests (M 2.4.6)
     runs-on: ubuntu-latest
     env:
       MODULE_NAME: EthanYehuda_CronjobManager
       COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
     steps:
       - uses: actions/checkout@v3
-      - uses: docker://yireo/github-actions-magento-unit-tests:7.3
-        env:
-          MAGENTO_VERSION: '2.3.7'
-      - uses: docker://yireo/github-actions-magento-unit-tests:7.4
-        env:
-          MAGENTO_VERSION: '2.4.3'
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
-        env:
-          MAGENTO_VERSION: '2.4.4'
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
-        env:
-          MAGENTO_VERSION: '2.4.5'
       - uses: docker://yireo/github-actions-magento-unit-tests:8.2
         env:
           MAGENTO_VERSION: '2.4.6'
+
+  unit-tests-mage245:
+    name: Magento 2 Unit Tests (M 2.4.5)
+    runs-on: ubuntu-latest
+    env:
+      MODULE_NAME: EthanYehuda_CronjobManager
+      COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+        env:
+          MAGENTO_VERSION: '2.4.5'
+
+  unit-tests-mage244:
+    name: Magento 2 Unit Tests (M 2.4.4)
+    runs-on: ubuntu-latest
+    env:
+      MODULE_NAME: EthanYehuda_CronjobManager
+      COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+        env:
+          MAGENTO_VERSION: '2.4.4'
