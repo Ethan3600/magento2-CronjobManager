@@ -30,7 +30,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EthanYehuda\\CronjobManager\\Test": "Test/"
+            "EthanYehuda\\CronjobManager\\Test\\": "Test/"
         }
     }
 }
