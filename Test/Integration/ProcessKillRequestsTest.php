@@ -149,6 +149,7 @@ class ProcessKillRequestsTest extends TestCase
             // Now we fork again so that we can be attached init instead of the test (so we get reaped as expected).
             $cpid = pcntl_fork();
             if ($cpid === -1) {
+                // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
                 die('Could not fork again in child process');
             }
 
@@ -168,6 +169,7 @@ class ProcessKillRequestsTest extends TestCase
                 // Reap grandchild process. We probably won't get this far.
                 \pcntl_wait($status);
 
+                // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
                 exit(0);
             }
         }
