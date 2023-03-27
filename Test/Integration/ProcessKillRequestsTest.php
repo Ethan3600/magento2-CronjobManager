@@ -80,7 +80,7 @@ class ProcessKillRequestsTest extends TestCase
         }
     }
 
-    public function testDeadRunningJobsAreCleaned()
+    public function testRunningJobsMarkedForDeadOnThisHostAreCleaned()
     {
         $this->givenRunningScheduleWithKillRequest($schedule, $this->timeStampInThePast());
         $this->givenScheduleIsRunningOnHost($schedule, \gethostname());
@@ -90,7 +90,7 @@ class ProcessKillRequestsTest extends TestCase
         $this->andProcessIsKilled($schedule);
     }
 
-    public function testDeadRunningJobsOnAnotherHostAreNotCleaned()
+    public function testRunningJobsMarkedForDeadOnAnotherHostAreNotCleaned()
     {
         $this->givenRunningScheduleWithKillRequest($schedule, $this->timeStampInThePast());
         $this->givenScheduleIsRunningOnHost($schedule, self::REMOTE_HOSTNAME);
@@ -153,7 +153,7 @@ class ProcessKillRequestsTest extends TestCase
             }
 
             if (!$cpid) {
-                // We are the grandchild. It's our job to wait until killed.
+                // We are the grandchild. It's our job to wait to be killed.
                 while (true) {
                     sleep(1);
                 }
