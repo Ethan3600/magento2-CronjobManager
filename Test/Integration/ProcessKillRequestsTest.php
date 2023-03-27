@@ -103,8 +103,8 @@ class ProcessKillRequestsTest extends TestCase
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
-        $schedule->setData('pid', $this->createProcessToKill());
         $schedule->save();
+        $this->createProcessToKillForSchedule($schedule);
         $this->scheduleManagement->kill((int)$schedule->getId(), $timestamp);
     }
 
@@ -136,23 +136,58 @@ class ProcessKillRequestsTest extends TestCase
         return $this->clock->now() - 1;
     }
 
-    private function createProcessToKill(): int
+    private function createProcessToKillForSchedule(Schedule $schedule): int
     {
         $pid = \pcntl_fork();
         if ($pid === -1) {
             $this->fail('Could not fork process to test killing');
-        } elseif ($pid) {
-            $this->assertTrue($this->processManagement->isPidAlive($pid), 'Precondition: child is alive');
-            $this->childPid = $pid;
-            return $pid;
-        } else {
-            // we are the child, waiting to be killed
-            while (true) {
-                sleep(1);
+            return 0;
+        }
+
+        if (!$pid) {
+            // We are the child.
+            // Now we fork again so that we can be attached init instead of the test (so we get reaped as expected).
+            $cpid = pcntl_fork();
+            if ($cpid === -1) {
+                die('Could not fork again in child process');
+            }
+
+            if (!$cpid) {
+                // We are the grandchild. It's our job to wait until killed.
+                while (true) {
+                    sleep(1);
+                }
+            } else {
+                // We are the intermediary process. It's our job to pass up the grandchild process ID.
+                $schedule->setData('pid', $cpid);
+                $schedule->save();
+
+                // Kill this process forcefully to prevent any shut-down side effects when we terminate
+                $this->processManagement->killPid(\getmypid(), \gethostname());
+
+                // Reap grandchild process. We probably won't get this far.
+                \pcntl_wait($status);
+
+                exit(0);
             }
         }
 
-        return 0;
+        // We are the main process, where the test is running.
+
+        // Reap intermediary process
+        \pcntl_wait($status);
+
+        // Ensure we got the grandchild PID out
+        $this->reloadScheduleFromDatabase($schedule);
+        $this->childPid = (int) $schedule->getPid();
+
+        $this->assertGreaterThan(0, $this->childPid, 'Precondition: child process ID unknown');
+        $this->assertTrue(
+            $this->processManagement->isPidAlive($this->childPid),
+            'Precondition: child is alive'
+        );
+
+        return $this->childPid;
     }
 
     private function andProcessIsKilled(Schedule $schedule)
