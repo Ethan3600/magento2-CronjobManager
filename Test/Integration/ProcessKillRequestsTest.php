@@ -45,6 +45,9 @@ class ProcessKillRequestsTest extends TestCase
      */
     private $scheduleManagement;
 
+    /** @var \Magento\Cron\Model\ResourceModel\Schedule */
+    private $scheduleResource;
+
     /**
      * @var ProcessManagement
      */
@@ -64,6 +67,7 @@ class ProcessKillRequestsTest extends TestCase
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
         $this->processManagement = $this->objectManager->get(ProcessManagement::class);
+        $this->scheduleResource = $this->objectManager->get(\Magento\Cron\Model\ResourceModel\Schedule::class);
     }
 
     protected function tearDown(): void
@@ -117,17 +121,13 @@ class ProcessKillRequestsTest extends TestCase
 
     private function thenScheduleHasStatus(Schedule $schedule, $expectedStatus)
     {
-        /** @var \Magento\Cron\Model\ResourceModel\Schedule $scheduleResource */
-        $scheduleResource = $this->objectManager->get(\Magento\Cron\Model\ResourceModel\Schedule::class);
-        $scheduleResource->load($schedule, $schedule->getId());
+        $this->reloadScheduleFromDatabase($schedule);
         $this->assertEquals($expectedStatus, $schedule->getStatus(), 'Schedule should have expected status');
     }
 
     private function andScheduleHasMessage(Schedule $schedule, $expectedMessage)
     {
-        /** @var \Magento\Cron\Model\ResourceModel\Schedule $scheduleResource */
-        $scheduleResource = $this->objectManager->get(\Magento\Cron\Model\ResourceModel\Schedule::class);
-        $scheduleResource->load($schedule, $schedule->getId());
+        $this->reloadScheduleFromDatabase($schedule);
         $this->assertEquals($expectedMessage, $schedule->getMessages(), 'Schedule should have expected message');
     }
 
@@ -160,5 +160,10 @@ class ProcessKillRequestsTest extends TestCase
         \pcntl_wait($status); // killed children are zombies until we wait for them
         $pid = (int)$schedule->getData('pid');
         $this->assertFalse($this->processManagement->isPidAlive($pid), "Child with PID {$pid} should be killed");
+    }
+
+    private function reloadScheduleFromDatabase($schedule): void
+    {
+        $this->scheduleResource->load($schedule, $schedule->getId());
     }
 }
