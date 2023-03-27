@@ -109,8 +109,7 @@ class ErrorNotificationTest extends TestCase
 
     public function testSentIfScheduleHasErrorStatusProcessedByScheduleManagement()
     {
-        $this->markTestSkipped('Schedule management fails immediately instead of saving error status');
-        $this->givenCronjobThrows(new \Exception('Fake error message'), $executed);
+        $this->givenCronjobThrows(new \Exception('Fake error message'));
         $this->thenErrorNotificationShouldBeSentWithMessage('Fake error message');
         $this->whenCronjobsAreProcessedByScheduleManagement();
     }
@@ -125,7 +124,11 @@ class ErrorNotificationTest extends TestCase
     private function whenCronjobsAreProcessedByScheduleManagement(): void
     {
         $schedule = $this->scheduleManagement->schedule(FakeJobConfig::JOB_ID, $this->clock->now());
-        $this->scheduleManagement->execute((int)$schedule->getId());
+        try {
+            $this->scheduleManagement->execute((int)$schedule->getId());
+        } catch (\Exception) {
+            // We do not need to do anything when an exception is thrown here.
+        }
     }
 
     private function whenCronjobsAreProcessedByQueue(): void
