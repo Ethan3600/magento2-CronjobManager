@@ -15,6 +15,9 @@ require(
         validator.addRule(
             'cron-validation',
             function (value) {
+                if (value === '') {
+                    return true;
+                }
                 for (let regex in CRON_REGEXES) {
                     if (CRON_REGEXES[regex].test(value)) return true;
                 }
