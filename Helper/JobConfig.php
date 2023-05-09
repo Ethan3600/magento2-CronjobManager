@@ -4,9 +4,11 @@ namespace EthanYehuda\CronjobManager\Helper;
 
 use EthanYehuda\CronjobManager\Model\Manager;
 use EthanYehuda\CronjobManager\Model\ManagerFactory;
+use Magento\Cron\Model\ScheduleFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\Config\Storage\WriterInterface;
+use Magento\Framework\Exception\CronException;
 use Magento\Framework\Exception\ValidatorException;
 
 class JobConfig extends AbstractHelper
@@ -21,11 +23,13 @@ class JobConfig extends AbstractHelper
      * @param Context $context
      * @param WriterInterface $configWriter
      * @param ManagerFactory $managerFactory
+     * @param ScheduleFactory $scheduleFactory
      */
     public function __construct(
         Context $context,
         private readonly WriterInterface $configWriter,
-        ManagerFactory $managerFactory
+        ManagerFactory $managerFactory,
+        private readonly ScheduleFactory $scheduleFactory,
     ) {
         parent::__construct($context);
         $this->manager = $managerFactory->create();
@@ -121,5 +125,27 @@ class JobConfig extends AbstractHelper
         $job['instance'] = !empty($job['instance']) ? $job['instance'] : '';
         $job['method'] = !empty($job['method']) ? $job['method'] : '';
         return $job;
+    }
+
+    /**
+     * Validate cronjob frequency string
+     *
+     * @param string|null $frequency
+     *
+     * @throws CronException
+     * @see \Magento\Cron\Model\Schedule::trySchedule()
+     */
+    public function validateFrequency(?string $frequency): void
+    {
+        if ($frequency === null) {
+            return;
+        }
+
+        $schedule = $this->scheduleFactory->create();
+        $schedule->setCronExpr($frequency);
+
+        foreach ($schedule->getCronExprArr() as $expression) {
+            $schedule->matchCronExpression($expression, 0);
+        }
     }
 }

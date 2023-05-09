@@ -44,6 +44,8 @@ class Save extends Action
         $group = $params['group'] ?: null;
         $frequency = $params['frequency'] ?: null;
         try {
+            $this->helper->validateFrequency($frequency);
+
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->saveJobFrequencyConfig($path, $frequency);
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
