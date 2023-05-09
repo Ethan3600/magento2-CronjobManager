@@ -34,15 +34,15 @@ class Save extends Action
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        $jobCode = $params['job_code'] ? $params['job_code'] : null;
+        $jobCode = $params['job_code'] ?: null;
         if (!$jobCode) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/edit/');
             return;
         }
 
-        $group = $params['group'] ? $params['group'] : null;
-        $frequency = $params['frequency'] ? $params['frequency'] : null;
+        $group = $params['group'] ?: null;
+        $frequency = $params['frequency'] ?: null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->saveJobFrequencyConfig($path, $frequency);
