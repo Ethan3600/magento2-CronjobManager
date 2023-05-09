@@ -52,11 +52,10 @@ class ConfigDataProvider extends AbstractDataProvider
         $jobData = $this->helper->getJobData($jobCode);
 
         $jobData = [
-            'job_code'  => $jobData['name'],
-            'group'     => $jobData['group'],
-            'frequency' => $jobData['schedule'],
-            'class'     => $jobData["instance"]
-                        . '::' . $jobData['method'] . "()"
+            'job_code'  => $params['job_code'] ?? $jobData['name'],
+            'group'     => $params['group'] ?? $jobData['group'],
+            'frequency' => $params['frequency'] ?? $jobData['schedule'],
+            'class'     => $params['class'] ?? ($jobData["instance"] . '::' . $jobData['method'] . "()"),
         ];
 
         $this->loadedData[$jobCode] = $jobData;
