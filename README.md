@@ -18,9 +18,18 @@
     <img src="https://poser.pugx.org/ethanyehuda/magento2-cronjobmanager/downloads"
          alt="Total Downloads">
   </a>
-  <a href="https://travis-ci.org/Ethan3600/magento2-CronjobManager">
-    <img src="https://travis-ci.org/Ethan3600/magento2-CronjobManager.svg?branch=1.x"
-         alt="Travis CI build status">
+  <a href='https://coveralls.io/github/Ethan3600/magento2-CronjobManager'>
+    <img src='https://coveralls.io/repos/github/Ethan3600/magento2-CronjobManager/badge.svg' alt='Coverage Status' />
+  </a>
+  <br>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/coding-standard.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/coding-standard.yml/badge.svg" alt="ExtDN M2 Coding Standard">
+  </a>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/integration.yml/badge.svg" alt="ExtDN M2 Integration Tests">
+  </a>
+  <a href="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/unit.yml">
+    <img src="https://github.com/Ethan3600/magento2-CronjobManager/actions/workflows/unit.yml/badge.svg" alt="ExtDN M2 Unit Tests">
   </a>
 </p>
 
@@ -35,10 +44,16 @@ In your Magento2 root directory, you may install this package via composer:
 
 ## Support
 
-CJM Ver. | Magento 2.0 | Magento 2.1 | Magento 2.2 | Magento 2.3 | Magento 2.4
---- | :---: | :---: | :---: | :---: | :---:
-1.x | :x: | :x: | :white_check_mark: | :white_check_mark: | :question:
-
+Magento version | CronjobManager
+--- | ---
+Magento 2.4.6 | :white_check_mark: `^1.15 \|\| ^2.0`
+Magento 2.4.5 | :white_check_mark: `^1.13.3 \|\| ^2.0`
+Magento 2.4.4 | :white_check_mark: `^1.13.3 \|\| ^2.0`
+Magento 2.4.x | :white_check_mark: `^1.0`
+Magento 2.3.x | :white_check_mark: `^1.0`
+Magento 2.2.x | :white_check_mark: `^1.0`
+Magento 2.1.x | :x: Not supported
+Magento 2.0.x | :x: Not supported
 
 ## Features
 
@@ -72,13 +87,8 @@ The configuration panel boasts a list of features including:
 
 * Schedule Now
 
-   Gives the ability to schedule any task immediately and in the background. Unlike the dispatch feature on the dashboard, which runs the cron on the forefront, scheduling a task from the configuration panel will allow the system to call it asynchronously
-
-* Cron Runner
-
-   Forces Magento to run the scheduler queue on command
-
-<img src="https://user-images.githubusercontent.com/6549623/39410809-0163ad00-4bcc-11e8-9357-2d1e80c079af.png"/>
+   Gives the ability to schedule any task immediately and in the background.
+   Scheduling a task from the configuration panel will allow the system to call it asynchronously.
 
 ### Command Line Tools
 
@@ -90,7 +100,8 @@ For example: `php bin/magento cronmanager:showjobs`
 
 ### Email notifications
 
-You can configure email addresses to be notified if a job has an error:
+You can configure email addresses to be notified if a job has an error.
+These settings can be found in Stores -> Settings -> Configuration -> Advanced -> System -> Cron Job Manager.
 
 ![email-configuration](https://user-images.githubusercontent.com/367320/60760081-a3970000-a02f-11e9-9615-3eb6c3bd9adb.png)
 

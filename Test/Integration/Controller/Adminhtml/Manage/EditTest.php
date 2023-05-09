@@ -6,8 +6,10 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class EditTest extends AbstractBackendController
 {
+    /** @var string */
     protected $uri = 'backend/cronjobmanager/manage/edit/id/1';
 
+    /** @var string */
     protected $resource = 'EthanYehuda_CronjobManager::cronjobmanager';
 
     public function testEditAction()
@@ -15,6 +17,16 @@ class EditTest extends AbstractBackendController
         $this->dispatch($this->uri);
         $result = $this->getResponse()->getBody();
 
-        $this->assertContains('<title>Edit Cron Job / Tools / System / Magento Admin</title>', $result);
+        if (\method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString(
+                '<title>Edit Cron Job / Tools / System / Magento Admin</title>',
+                $result
+            );
+        } else {
+            $this->assertContains(
+                '<title>Edit Cron Job / Tools / System / Magento Admin</title>',
+                $result
+            );
+        }
     }
 }

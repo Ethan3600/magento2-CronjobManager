@@ -9,36 +9,23 @@ use Magento\Backend\App\Action;
 
 class Save extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var Manager
-     */
-    private $cronJobManager;
-
-    /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
+     * @param Manager $cronJobManager
      */
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        Manager $cronJobManager
+        private readonly Manager $cronJobManager,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager = $cronJobManager;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -49,6 +36,7 @@ class Save extends Action
             $this->_redirect('*/manage/edit/');
             return;
         }
+
         $jobCode = $params['job_code'] ? $params['job_code'] : null;
         $status = $params['status'] ? $params['status'] : null;
         $scheduledAt = $params['scheduled_at'] ? $params['scheduled_at'] : null;
@@ -59,6 +47,7 @@ class Save extends Action
             $this->_redirect('*/manage/edit/', ['id' => $jobId]);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
         if (!isset($params['back'])) {
             $this->_redirect("*/manage/index/");

@@ -6,8 +6,8 @@
     <preference for="EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface" type="EthanYehuda\CronjobManager\Model\ScheduleRepositoryAdapter" />
     <preference for="EthanYehuda\CronjobManager\Api\Data\ScheduleSearchResultsInterface" type="Magento\Framework\Api\SearchResults" />
     <preference for="EthanYehuda\CronjobManager\Api\Data\ScheduleInterface" type="EthanYehuda\CronjobManager\Model\Data\Schedule" />
-    <preference for="EthanYehuda\CronjobManager\Model\Clock" type="EthanYehuda\CronjobManager\Model\SystemClock" />
-    <preference for="EthanYehuda\CronjobManager\Model\ErrorNotification" type="EthanYehuda\CronjobManager\Model\ErrorNotificationEmail" />
+    <preference for="EthanYehuda\CronjobManager\Model\ClockInterface" type="EthanYehuda\CronjobManager\Model\SystemClock" />
+    <preference for="EthanYehuda\CronjobManager\Model\ErrorNotificationInterface" type="EthanYehuda\CronjobManager\Model\ErrorNotificationEmail" />
     <virtualType name="Magento\Cron\Model\ResourceModel\Schedule\Virtual\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">cron_schedule</argument>

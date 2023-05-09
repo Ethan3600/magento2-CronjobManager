@@ -4,6 +4,10 @@ namespace EthanYehuda\CronjobManager\Model;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
+use Magento\Cron\Model\Schedule;
+use Magento\Framework\Exception\CouldNotDeleteException;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * @deprecated
@@ -13,28 +17,40 @@ use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 class Manager
 {
     /**
-     * @var ScheduleManagementInterface
+     * @param ScheduleManagementInterface $scheduleManagement
+     * @param ScheduleRepositoryInterface $scheduleRepository
      */
-    private $scheduleManagement;
+    public function __construct(
+        private readonly ScheduleManagementInterface $scheduleManagement,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
+    ) {
+    }
 
     /**
-     * @var ScheduleRepositoryInterface
+     * Create a new schedule object for the given job code
+     *
+     * @param string $jobCode
+     * @param string $time
+     *
+     * @return Schedule
      */
-    private $scheduleRepository;
-    
-    public function __construct(
-        ScheduleManagementInterface $scheduleManagement,
-        ScheduleRepositoryInterface $scheduleRepository
-    ) {
-        $this->scheduleManagement = $scheduleManagement;
-        $this->scheduleRepository = $scheduleRepository;
-    }
-    
     public function createCronJob($jobCode, $time)
     {
         return $this->scheduleManagement->createSchedule($jobCode, strtotime($time));
     }
 
+    /**
+     * Save a schedule model and set some properties
+     *
+     * @param int $jobId
+     * @param string $jobCode
+     * @param string $status
+     * @param string $time
+     *
+     * @return void
+     * @throws CouldNotSaveException
+     * @throws NoSuchEntityException
+     */
     public function saveCronJob(
         $jobId,
         $jobCode = null,
@@ -43,74 +59,64 @@ class Manager
     ) {
         $schedule = $this->scheduleRepository->get($jobId);
 
-        if (!is_null($jobCode)) {
+        if ($jobCode !== null) {
             $schedule->setJobCode($jobCode);
         }
-        if (!is_null($status)) {
+
+        if ($status !== null) {
             $schedule->setStatus($status);
         }
-        if (!is_null($time)) {
-            $schedule->setScheduledAt(strftime(ScheduleManagementInterface::TIME_FORMAT, strtotime($time)));
+
+        if ($time !== null) {
+            $schedule->setScheduledAt(date(ScheduleManagementInterface::TIME_FORMAT, strtotime($time)));
         }
 
         $this->scheduleRepository->save($schedule);
     }
 
+    /**
+     * Delete cronjob run from the database
+     *
+     * @param int $jobId
+     *
+     * @return void
+     * @throws CouldNotDeleteException
+     */
     public function deleteCronJob($jobId)
     {
         $this->scheduleRepository->deleteById($jobId);
     }
 
+    /**
+     * Clean up all jobs
+     *
+     * @return void
+     */
     public function flushCrons()
     {
         $this->scheduleManagement->flush();
     }
 
     /**
-     * Dispatches cron schedule
-     * 
-     * @param int $jobId
-     * @param string $jobCode
-     * @param \Magento\Cron\Model\Schedule $schedule
-     * @deprecated
-     */
-    public function dispatchCron($jobId = null, $jobCode, $schedule = null)
-    {
-        if (is_null($schedule)) {
-            $schedule = $this->scheduleRepository->get($jobId);
-        }
-
-        $this->scheduleManagement->execute($schedule->getId());
-    }
-    
-    /**
-     * Dispatches cron schedule
+     * Get a list of all cron jobs
      *
-     * @param int $jobId
-     * @param \Magento\Cron\Model\Schedule $schedule
+     * @return string[]
      */
-    public function dispatchSchedule($jobId, $schedule = null)
-    {
-        $this->scheduleManagement->execute($jobId);
-    }
-
     public function getCronJobs()
     {
         return $this->scheduleManagement->listJobs();
     }
-    
+
     /**
+     * Get cron group for the specified job code
+     *
      * @param String $jobCode
-     * @param array | null $groups
+     * @param array|null $groups
+     *
      * @return String | Boolean $groupId
      */
     public function getGroupId($jobCode, $groups = null)
     {
         return $this->scheduleManagement->getGroupId($jobCode, $groups);
-    }
-    
-    public function scheduleNow($jobCode)
-    {
-        return $this->scheduleManagement->scheduleNow($jobCode);
     }
 }

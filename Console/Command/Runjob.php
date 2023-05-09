@@ -2,6 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Console\Command;
 
+use EthanYehuda\CronjobManager\Model\Cron\Runner;
 use Magento\Framework\App\ObjectManagerFactory;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManager;
@@ -12,20 +13,20 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Runjob extends Command
 {
-    const INPUT_KEY_JOB_CODE = 'job_code';
+    protected const INPUT_KEY_JOB_CODE = 'job_code';
 
     /**
-     * @var ObjectManagerFactory
+     * @param ObjectManagerFactory $objectManagerFactory
      */
-    private $objectManagerFactory;
-
     public function __construct(
-        ObjectManagerFactory $objectManagerFactory
+        private readonly ObjectManagerFactory $objectManagerFactory,
     ) {
-        $this->objectManagerFactory = $objectManagerFactory;
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure()
     {
         $arguments = [
@@ -42,18 +43,22 @@ class Runjob extends Command
         parent::configure();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /**
          * @todo Find a way to avoid using `ObjectManager`
          */
+        // phpcs:ignore Magento2.Security.Superglobal.SuperglobalUsageWarning
         $omParams = $_SERVER;
         $omParams[StoreManager::PARAM_RUN_CODE] = Store::ADMIN_CODE;
         $omParams[Store::CUSTOM_ENTRY_POINT_PARAM] = true;
         $objectManager = $this->objectManagerFactory->create($omParams);
 
         $jobCode = $input->getArgument(self::INPUT_KEY_JOB_CODE);
-        $cron = $objectManager->create(\EthanYehuda\CronjobManager\Model\Cron\Runner::class);
+        $cron = $objectManager->create(Runner::class);
         list($resultCode, $resultMessage) = $cron->runCron($jobCode);
         $output->writeln($resultMessage);
         return $resultCode;

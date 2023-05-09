@@ -8,33 +8,24 @@ use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 
 class MassScheduleNow extends Action
-{   
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+{
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @param Context $context
+     * @param ManagerFactory $managerFactory
      */
-    private $resultPageFactory;
-    
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-    
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        ManagerFactory $managerFactory
+        private readonly ManagerFactory $managerFactory,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->managerFactory = $managerFactory;
     }
-    
+
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -45,6 +36,7 @@ class MassScheduleNow extends Action
             $this->_redirect('*/config/index');
             return;
         }
+
         try {
             foreach ($params as $jobCode) {
                 $manager->scheduleNow($jobCode);
@@ -54,6 +46,7 @@ class MassScheduleNow extends Action
             $this->_redirect('*/config/index/');
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully Ran Schedule Now Action");
         $this->_redirect("*/config/index/");
     }

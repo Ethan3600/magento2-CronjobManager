@@ -1,0 +1,10 @@
+# https://php.watch/articles/composer-gitattributes
+
+# Exclude build/test files from archive
+/.coveralls.yml export-ignore
+/.gitattributes export-ignore
+/.github/ export-ignore
+/Test/ export-ignore
+
+# Configure diff output for .php files.
+*.php diff=php

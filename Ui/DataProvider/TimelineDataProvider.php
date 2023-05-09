@@ -3,25 +3,23 @@
 namespace EthanYehuda\CronjobManager\Ui\DataProvider;
 
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Framework\DataObject;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Framework\Message\ManagerInterface;
 
 class TimelineDataProvider extends AbstractDataProvider
 {
-    const MAX_PAGE_SIZE = 35000;
+    protected const MAX_PAGE_SIZE = 35000;
 
+    /** @var array */
     private $loadedData;
-
-    /**
-     * @var \Magento\Framework\Message\ManagerInterface
-     */
-    private $messageManager;
 
     /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
      * @param CollectionFactory $collectionFactory
+     * @param ManagerInterface $messageManager
      * @param array $meta
      * @param array $data
      */
@@ -30,17 +28,16 @@ class TimelineDataProvider extends AbstractDataProvider
         $primaryFieldName,
         $requestFieldName,
         CollectionFactory $collectionFactory,
-        ManagerInterface $messageManager,
+        private readonly ManagerInterface $messageManager,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->messageManager = $messageManager;
         $this->collection = $collectionFactory->create();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getData()
     {
@@ -56,7 +53,8 @@ class TimelineDataProvider extends AbstractDataProvider
             ->addOrder('job_code', 'ASC')
             ->setPageSize(self::MAX_PAGE_SIZE)
             ->addFieldToFilter(
-                'scheduled_at', [
+                'scheduled_at',
+                [
                     'gt' => date(
                         'Y-m-d H:m:s',
                         strtotime(date('Y-m-d H:m:s') . ' -7 day')
@@ -73,68 +71,76 @@ class TimelineDataProvider extends AbstractDataProvider
         }
 
         foreach ($this->collection->getItems() as $item) {
+            /** \Magento\Framework\DataObject $item */
             $this->loadedData[$item->getJobCode()][] = $item->getData();
-            
-            $minimumTime = $this->getFirstHour($item);
-            $firstHour = is_null($firstHour) ?
-                $minimumTime: min($firstHour, $this->getFirstHour($item));
 
-            $lastHour  = is_null($lastHour) ?
-                $minimumTime: max($lastHour, $this->getLastHour($item));
+            if ($firstHour === null) {
+                $firstHour = $this->getFirstHour($item);
+                $lastHour = $this->getLastHour($item);
+            } else {
+                $firstHour = min($firstHour, $this->getFirstHour($item));
+                $lastHour = max($lastHour, $this->getLastHour($item));
+            }
         }
 
         array_unshift($this->loadedData, [
-            'total' => $collectionSize, 
-            'range' => $this->getRange($firstHour, $lastHour)
+            'total' => $collectionSize,
+            'range' => [
+                'first' => $firstHour,
+                'last' => $lastHour,
+            ],
         ]);
 
         return $this->loadedData;
     }
 
     /**
-     * {@inheritdoc}
+     * Calculate the first time of a particular job
+     *
+     * @param DataObject $item
+     *
+     * @return int
      */
-    public function getMeta()
-    {
-        $meta = parent::getMeta();
-        return $meta;
-    }
-
-    private  function getRange($firstHour, $lastHour)
-    {
-        return [
-            'first' => $firstHour,
-            'last' => $lastHour
-        ];
-    }
-
-    private function getFirstHour($item)
+    private function getFirstHour(DataObject $item): int
     {
         $firstHour = $item->getScheduledAt();
         if (empty($firstHour)) {
             $firstHour = $item->getExecutedAt();
         }
+
         if (empty($firstHour)) {
             $firstHour = $item->getFinishedAt();
         }
+
         if (empty($firstHour)) {
             $firstHour = $item->getCreatedAt();
         }
-        return strtotime($firstHour);
+
+        return (int) strtotime($firstHour);
     }
 
-    private function getLastHour($item)
+    /**
+     * Calculate the last time of a particular job
+     *
+     * @param DataObject $item
+     *
+     * @return int
+     */
+    private function getLastHour(DataObject $item): int
     {
         $lastHour = $item->getFinishedAt();
         if (empty($lastHour)) {
             $lastHour = $item->getExecutedAt();
         }
+
         if (empty($lastHour)) {
             $lastHour = $item->getScheduledAt();
         }
+
         if (empty($lastHour)) {
             $lastHour = $item->getCreatedAt();
         }
-        return strtotime($lastHour);
+
+        return (int) strtotime($lastHour);
     }
 }

@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
-use EthanYehuda\CronjobManager\Model\ErrorNotification;
+use EthanYehuda\CronjobManager\Model\ClockInterface;
+use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
@@ -27,7 +29,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ErrorNotificationTest extends TestCase
 {
-    const NOW = '2019-02-09 18:33:00';
+    protected const NOW = '2019-02-09 18:33:00';
+
     /**
      * @var ObjectManager
      */
@@ -37,39 +40,44 @@ class ErrorNotificationTest extends TestCase
      * @var ScheduleManagementInterface
      */
     private $scheduleManagement;
+
     /**
      * @var ScheduleRepositoryInterface
      */
     private $scheduleRepository;
+
     /**
      * @var FakeClock
      */
     private $clock;
+
     /**
      * @var \Magento\Framework\App\CacheInterface
      */
     private $cache;
+
     /**
-     * @var ErrorNotification|\PHPUnit_Framework_MockObject_MockObject
+     * @var ErrorNotificationInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $errorNotification;
+
     /**
      * @var ProcessCronQueueObserver
      */
     private $processCronQueueObserver;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->objectManager->configure(
             [
                 'preferences' => [
                     ConfigInterface::class => FakeJobConfig::class,
-                    Clock::class           => FakeClock::class,
+                    ClockInterface::class => FakeClock::class,
                 ],
             ]
         );
-        $this->clock = $this->objectManager->get(Clock::class);
+        $this->clock = $this->objectManager->get(ClockInterface::class);
         $this->clock->setTimestamp(strtotime(self::NOW));
         $this->setUpMocks();
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
@@ -84,6 +92,7 @@ class ErrorNotificationTest extends TestCase
         foreach ($this->scheduleRepository->getList(new SearchCriteria())->getItems() as $schedule) {
             $this->scheduleRepository->delete($schedule);
         }
+
         // Crontab cache contains last schedule generation timestamp
         $this->cache->clean(['crontab']);
     }
@@ -93,15 +102,14 @@ class ErrorNotificationTest extends TestCase
         $dateTime = $this->createMock(DateTime::class);
         $dateTime->method('gmtTimestamp')->willReturnCallback([$this->clock, 'now']);
         $this->objectManager->addSharedInstance($dateTime, DateTime::class);
-        $this->errorNotification = $this->createMock(ErrorNotification::class);
-        $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotification::class);
+        $this->errorNotification = $this->createMock(ErrorNotificationInterface::class);
+        $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotificationInterface::class);
         $this->objectManager->addSharedInstance($this->errorNotification, ErrorNotificationEmail::class);
     }
 
     public function testSentIfScheduleHasErrorStatusProcessedByScheduleManagement()
     {
-        $this->markTestSkipped('Schedule management fails immediately instead of saving error status');
-        $this->givenCronjobThrows(new \Exception('Fake error message'), $executed);
+        $this->givenCronjobThrows(new \Exception('Fake error message'));
         $this->thenErrorNotificationShouldBeSentWithMessage('Fake error message');
         $this->whenCronjobsAreProcessedByScheduleManagement();
     }
@@ -116,7 +124,11 @@ class ErrorNotificationTest extends TestCase
     private function whenCronjobsAreProcessedByScheduleManagement(): void
     {
         $schedule = $this->scheduleManagement->schedule(FakeJobConfig::JOB_ID, $this->clock->now());
-        $this->scheduleManagement->execute((int)$schedule->getId());
+        try {
+            $this->scheduleManagement->execute((int)$schedule->getId());
+        } catch (\Exception) {
+            // We do not need to do anything when an exception is thrown here.
+        }
     }
 
     private function whenCronjobsAreProcessedByQueue(): void
@@ -124,7 +136,7 @@ class ErrorNotificationTest extends TestCase
         $this->objectManager->get(\Magento\Framework\App\Console\Request::class)->setParams(
             [ProcessCronQueueObserver::STANDALONE_PROCESS_STARTED => '1']
         );
-        $this->processCronQueueObserver->execute(new \Magento\Framework\Event\Observer);
+        $this->processCronQueueObserver->execute(new \Magento\Framework\Event\Observer());
     }
 
     private function givenCronjobThrows(\Exception $exception): void

@@ -1,20 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Util;
 
-use EthanYehuda\CronjobManager\Model\Clock;
+use EthanYehuda\CronjobManager\Model\ClockInterface;
 
-class FakeClock implements Clock
+class FakeClock implements ClockInterface
 {
-    /**
-     * @var int
-     */
-    private $timestamp;
-
-    public function __construct(int $timestamp = 0)
-    {
-        $this->timestamp = $timestamp;
+    public function __construct(
+        private int $timestamp = 0
+    ) {
     }
 
     public function setTimestamp(int $timestamp): void
@@ -31,5 +27,4 @@ class FakeClock implements Clock
     {
         return $this->timestamp;
     }
-
 }

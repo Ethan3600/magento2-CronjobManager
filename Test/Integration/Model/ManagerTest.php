@@ -7,10 +7,12 @@ use PHPUnit\Framework\TestCase;
 use Magento\TestFramework\Helper\Bootstrap;
 use EthanYehuda\CronjobManager\Model\Manager;
 use Magento\Cron\Model\ScheduleFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class ManagerTest extends TestCase
 {
-    const FIXTURE_CRON_ID = 1;
+    public const FIXTURE_CRON_ID = 1;
+
     /**
      * @var Manager
      */
@@ -21,10 +23,10 @@ class ManagerTest extends TestCase
      */
     private $scheduleFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $objectManager = Bootstrap::getObjectManager();
-        
+
         $this->manager = $objectManager->create(Manager::class);
         $this->scheduleFactory = $objectManager->create(ScheduleFactory::class);
     }
@@ -33,7 +35,7 @@ class ManagerTest extends TestCase
     {
         $cronJob = $this->manager->createCronJob(
             'expired_tokens_cleanup',
-            strftime('%Y-%m-%dT%H:%M', strtotime('+5 minutes'))
+            date('Y-m-d\TH:i', strtotime('+5 minutes'))
         );
 
         $this->assertInstanceOf(Schedule::class, $cronJob);
@@ -50,11 +52,10 @@ class ManagerTest extends TestCase
         $this->assertEquals(Schedule::STATUS_SUCCESS, $cron->getStatus());
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
-     */
     public function testSaveCronInvalidId()
     {
+        $this->expectException(NoSuchEntityException::class);
+        $this->expectExceptionMessage('The Schedule with the "99999" ID doesn\'t exist');
         $this->manager->saveCronJob(99999);
     }
 
@@ -69,11 +70,10 @@ class ManagerTest extends TestCase
         $this->assertNull($cron->getScheduleId());
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
-     */
     public function testDeleteInvalidId()
     {
+        $this->expectException(NoSuchEntityException::class);
+        $this->expectExceptionMessage('The Schedule with the "99999" ID doesn\'t exist');
         $this->manager->deleteCronJob(99999);
     }
 
@@ -91,11 +91,13 @@ class ManagerTest extends TestCase
 
     /**
      * @param int $id
+     *
      * @return \Magento\Cron\Model\Schedule
      */
     private function loadCron($id)
     {
         $cron = $this->scheduleFactory->create();
+        // phpcs:ignore Magento2.Methods.DeprecatedModelMethod.FoundDeprecatedModelMethod
         $cron->getResource()->load($cron, $id);
 
         return $cron;

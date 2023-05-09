@@ -9,36 +9,23 @@ use Magento\Backend\App\Action;
 
 class Create extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * @var Manager
-     */
-    private $cronJobManager;
-
-    /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param Context $context
+     * @param Manager $cronJobManager
      */
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        Manager $cronJobManager
+        private readonly Manager $cronJobManager,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cronJobManager = $cronJobManager;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -51,6 +38,7 @@ class Create extends Action
             $this->_redirect('*/manage/create/');
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully Created Cron Job: {$jobCode}");
         $this->_redirect('*/manage/index/');
     }

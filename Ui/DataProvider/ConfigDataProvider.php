@@ -5,28 +5,21 @@ namespace EthanYehuda\CronjobManager\Ui\DataProvider;
 use EthanYehuda\CronjobManager\Model\RegistryConstants;
 use EthanYehuda\CronjobManager\Helper\JobConfig;
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
+use Magento\Framework\Api\Filter;
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Magento\Framework\Registry;
 
 class ConfigDataProvider extends AbstractDataProvider
 {
+    /** @var array */
     private $loadedData = [];
-    
-    /**
-     * @var Magento\Framework\Registry;
-     */
-    private $coreRegistry;
-    
-    /**
-     * @var JobConfig;
-     */
-    private $helper;
 
     /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param CollectionFactory $collectionFactory
+     * @param JobConfig $helper
+     * @param Registry $coreRegistry
      * @param array $meta
      * @param array $data
      */
@@ -34,18 +27,16 @@ class ConfigDataProvider extends AbstractDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        JobConfig $helper,
-        Registry $coreRegistry,
+        private readonly JobConfig $helper,
+        private readonly Registry $coreRegistry,
         array $meta = [],
         array $data = []
     ) {
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
-        $this->helper = $helper;
-        $this->coreRegistry = $coreRegistry;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getData()
     {
@@ -56,39 +47,42 @@ class ConfigDataProvider extends AbstractDataProvider
         $params = $this->coreRegistry->registry(
             RegistryConstants::CURRENT_CRON_CONFIG
         );
-        
+
         $jobCode = $params['job_code'];
         $jobData = $this->helper->getJobData($jobCode);
-        
+
         $jobData = [
-            'job_code'  => $jobData['name'],
-            'group'     => $jobData['group'],
-            'frequency' => $jobData['schedule'],
-            'class'     => $jobData["instance"] 
-                        . '::' . $jobData['method'] . "()"
+            'job_code'  => $params['job_code'] ?? $jobData['name'],
+            'group'     => $params['group'] ?? $jobData['group'],
+            'frequency' => $params['frequency'] ?? $jobData['schedule'],
+            'class'     => $params['class'] ?? ($jobData["instance"] . '::' . $jobData['method'] . "()"),
         ];
-        
+
         $this->loadedData[$jobCode] = $jobData;
-        return $this->loadedData;    
+        return $this->loadedData;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getMeta()
     {
         $meta = parent::getMeta();
         return $meta;
     }
-    
+
     /**
      * Remove dependency to the collections
-     * 
-     * @see \Magento\Ui\DataProvider\AbstractDataProvider::addFilter()
+     *
+     * @see AbstractDataProvider::addFilter()
+     *
+     * @param Filter $filter
+     *
      * @return void
      */
-    public function addFilter(\Magento\Framework\Api\Filter $filter)
+    public function addFilter(Filter $filter)
     {
+        // phpcs:ignore Squiz.PHP.NonExecutableCode.ReturnNotRequired
         return;
     }
 }

@@ -11,48 +11,28 @@ use Magento\Ui\Component\MassAction\Filter;
 
 class MassDelete extends Action
 {
-    const MAX_QUERY_SIZE = 10;
-    
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
-    
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    protected const MAX_QUERY_SIZE = 10;
+
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @param ManagerFactory $managerFactory
+     * @param Filter $filter
+     * @param CollectionFactory $collectionFactory
+     * @param Context $context
      */
-    private $resultPageFactory;
-    
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-    
-    /**
-     * @var Filter
-     */
-    private $filter;
-    
-    /**
-     * @var CollectionFactory
-     */
-    private $collectionFactory;
-    
     public function __construct(
-        ManagerFactory $managerFactory,
-        PageFactory $resultPageFactory,
-        Filter $filter,
-        CollectionFactory $collectionFactory,
+        private readonly ManagerFactory $managerFactory,
+        private readonly Filter $filter,
+        private readonly CollectionFactory $collectionFactory,
         Context $context
     ) {
         parent::__construct($context);
-        $this->managerFactory = $managerFactory;
-        $this->resultPageFactory = $resultPageFactory;
-        $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -64,7 +44,7 @@ class MassDelete extends Action
             $this->_redirect('*/manage/index');
             return;
         }
-        
+
         if ($size > self::MAX_QUERY_SIZE) {
             $deleteQuery = $collection->getSelect()->deleteFromSelect('main_table');
             $collection->getConnection()->query($deleteQuery);
@@ -77,7 +57,7 @@ class MassDelete extends Action
                 }
             }
         }
-        
+
         $this->getMessageManager()->addSuccessMessage("Successfully Deleted Schedules");
         $this->_redirect("*/manage/index/");
     }

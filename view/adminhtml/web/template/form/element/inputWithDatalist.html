@@ -1,0 +1,22 @@
+<!-- This template is based on
+    app/code/Magento/Ui/view/base/web/templates/form/element/input.html
+with a <datalist> element added to the input -->
+
+<input class="admin__control-text" type="text"
+    data-bind="
+        event: {change: userChanges},
+        value: value,
+        hasFocus: focused,
+        valueUpdate: valueUpdate,
+        attr: {
+            name: inputName,
+            placeholder: placeholder,
+            'aria-describedby': noticeId,
+            id: uid,
+            list: uid + '-options',
+            disabled: disabled,
+            maxlength: 255
+    }">
+<datalist attr="id: uid + '-options'" each="options">
+    <option attr="value: $data.value"></option>
+</datalist>

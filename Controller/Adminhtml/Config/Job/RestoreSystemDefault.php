@@ -10,46 +10,26 @@ use Magento\Backend\App\Action;
 
 class RestoreSystemDefault extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
-    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
-    
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @param Context $context
+     * @param CacheInterface $cache
+     * @param JobConfig $helper
      */
-    private $resultPageFactory;
-    
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-    
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-    
-    /**
-     * @var JobConfig
-     */
-    private $helper;
-
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        CacheInterface $cache,
-        JobConfig $helper
+        private readonly CacheInterface $cache,
+        private readonly JobConfig $helper,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cache = $cache;
-        $this->helper = $helper;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -60,6 +40,7 @@ class RestoreSystemDefault extends Action
             $this->_redirect('*/config/edit/');
             return;
         }
+
         $group = isset($params['group']) ? $params['group'] : null;
         try {
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
@@ -71,6 +52,7 @@ class RestoreSystemDefault extends Action
             $this->_redirect('*/config/edit/', $params);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully restored Cron Job: {$jobCode} to system defaults");
         $this->_redirect('*/config/index/');
     }

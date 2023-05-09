@@ -8,23 +8,17 @@ use Magento\Backend\App\Action;
 
 class Create extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
-
-    /**
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    private $resultPageFactory;
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
      * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
      * @param \Magento\Backend\App\Action\Context $context
      */
     public function __construct(
-        PageFactory $resultPageFactory,
+        private readonly PageFactory $resultPageFactory,
         Context $context
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**

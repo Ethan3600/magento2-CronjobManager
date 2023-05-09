@@ -13,25 +13,12 @@ class CronActions extends Column
     /**
      * Url path
      */
-    const URL_PATH_EDIT     = 'cronjobmanager/manage/edit';
-    const URL_PATH_DELETE   = 'cronjobmanager/manage_job/delete';
-    const URL_PATH_DISPATCH = 'cronjobmanager/manage_job/dispatch';
-    const URL_PATH_KILL     = 'cronjobmanager/manage_job/kill';
+    protected const URL_PATH_EDIT = 'cronjobmanager/manage/edit';
+    protected const URL_PATH_DELETE = 'cronjobmanager/manage_job/delete';
+    protected const URL_PATH_DISPATCH = 'cronjobmanager/manage_job/dispatch';
+    protected const URL_PATH_KILL = 'cronjobmanager/manage_job/kill';
 
     /**
-     * @var UrlInterface
-     */
-    private $urlBuilder;
-
-    /**
-     * Escaper.
-     *
-     * @var Escaper
-     */
-    private $escaper;
-
-    /**
-     * CronActions constructor.
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder
@@ -42,13 +29,11 @@ class CronActions extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlInterface $urlBuilder,
-        Escaper $escaper,
+        private readonly UrlInterface $urlBuilder,
+        private readonly Escaper $escaper,
         array $components = [],
         array $data = []
     ) {
-        $this->urlBuilder = $urlBuilder;
-        $this->escaper = $escaper;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
@@ -56,6 +41,7 @@ class CronActions extends Column
      * Prepare Data Source.
      *
      * @param array $dataSource
+     *
      * @return array
      */
     public function prepareDataSource(array $dataSource)
@@ -96,11 +82,12 @@ class CronActions extends Column
                                     'job_code' => $item['job_code'],
                                 ]
                             ),
-                            'label' => __('Dispatch'),
+                            'label' => __('Schedule duplicate job'),
                             'confirm' => [
-                                'job_code' => __('Dispatch %1', $jobCode),
+                                'job_code' => __('Schedule %1', $jobCode),
                                 'message' => __(
-                                    'Are you sure you want to <b>dispatch %1</b>? This may be time consuming and resource intensive.',
+                                    'Are you sure you want to <b>schedule %1</b> to run (again) now?'
+                                    . ' This may be time consuming and resource intensive.',
                                     $jobCode
                                 ),
                             ],

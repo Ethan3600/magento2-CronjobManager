@@ -8,29 +8,23 @@ use Magento\Backend\App\Action\Context;
 
 class Kill extends AbstractAction
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
 
     /**
-     * @var ScheduleManagementInterface
-     */
-    private $scheduleManagement;
-
-    /**
-     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
-     * @param \Magento\Backend\App\Action\Context $context
+     * @param Context $context
+     * @param ScheduleManagementInterface $scheduleManagement
      */
     public function __construct(
         Context $context,
-        ScheduleManagementInterface $scheduleManagement
+        private readonly ScheduleManagementInterface $scheduleManagement,
     ) {
         parent::__construct($context);
-        $this->scheduleManagement = $scheduleManagement;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
@@ -47,6 +41,7 @@ class Kill extends AbstractAction
             $this->_redirect('*/manage/index/');
             return;
         }
+
         $this->_redirect('*/manage/index/');
     }
 }

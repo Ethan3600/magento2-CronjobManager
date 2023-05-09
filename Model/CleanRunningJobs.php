@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Model;
@@ -15,32 +16,17 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 class CleanRunningJobs
 {
     /**
-     * @var ProcessManagement
+     * @param ScheduleRepositoryAdapterInterface $scheduleRepository
+     * @param ProcessManagement $processManagement
+     * @param DateTime $dateTime
+     * @param ClockInterface $clock
      */
-    private $processManagement;
-    /**
-     * @var ScheduleRepositoryAdapterInterface
-     */
-    private $scheduleRepository;
-    /**
-     * @var Clock
-     */
-    private $clock;
-    /**
-     * @var DateTime
-     */
-    private $dateTime;
-
     public function __construct(
-        ScheduleRepositoryAdapterInterface $scheduleRepository,
-        ProcessManagement $processManagement,
-        DateTime $dateTime,
-        Clock $clock
+        private readonly ScheduleRepositoryAdapterInterface $scheduleRepository,
+        private readonly ProcessManagement $processManagement,
+        private readonly DateTime $dateTime,
+        private readonly ClockInterface $clock,
     ) {
-        $this->processManagement = $processManagement;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->dateTime = $dateTime;
-        $this->clock = $clock;
     }
 
     /**
@@ -53,6 +39,10 @@ class CleanRunningJobs
         $runningJobs = $this->scheduleRepository->getByStatus(ScheduleInterface::STATUS_RUNNING);
 
         foreach ($runningJobs as $schedule) {
+            if ($schedule->getHostname() !== \gethostname()) {
+                continue;
+            }
+
             if ($this->processManagement->isPidAlive($schedule->getPid())) {
                 continue;
             }

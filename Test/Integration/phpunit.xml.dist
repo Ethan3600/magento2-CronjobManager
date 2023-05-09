@@ -14,7 +14,7 @@
     </testsuites>
     <!-- Code coverage filters -->
     <filter>
-        <whitelist addUncoveredFilesFromWhiteList="true">
+        <whitelist>
             <directory suffix=".php">../../../vendor/ethanyehuda/magento2-cronjobmanager</directory>
             <exclude>
                 <directory>../../../vendor/ethanyehuda/magento2-cronjobmanager/Test</directory>
@@ -64,4 +64,7 @@
         <listener class="Magento\TestFramework\Event\PhpUnit"/>
         <listener class="Magento\TestFramework\ErrorLog\Listener"/>
     </listeners>
+    <logging>
+        <log type="coverage-clover" target="tmp/clover.xml"/>
+    </logging>
 </phpunit>

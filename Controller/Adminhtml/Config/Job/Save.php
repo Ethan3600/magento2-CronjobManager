@@ -10,59 +10,42 @@ use Magento\Backend\App\Action;
 
 class Save extends Action
 {
-    const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const ADMIN_RESOURCE = "EthanYehuda_CronjobManager::cronjobmanager";
+    public const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
 
-    const SYSTEM_DEFAULT_IDENTIFIER = 'system_default';
-    
     /**
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @param Context $context
+     * @param CacheInterface $cache
+     * @param JobConfig $helper
      */
-    private $resultPageFactory;
-    
-    /**
-     * @var ManagerFactory
-     */
-    private $managerFactory;
-    
-    /**
-     * @var CacheInterface
-     */
-    private $cache;
-    
-    /**
-     * @var JobConfig
-     */
-    private $helper;
-
     public function __construct(
-        PageFactory $resultPageFactory,
         Context $context,
-        CacheInterface $cache,
-        JobConfig $helper
+        private readonly CacheInterface $cache,
+        private readonly JobConfig $helper,
     ) {
         parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->cache = $cache;
-        $this->helper = $helper;
     }
 
     /**
      * Save cronjob
      *
-     * @return Void
+     * @return void
      */
     public function execute()
     {
         $params = $this->getRequest()->getParams();
-        $jobCode = $params['job_code'] ? $params['job_code'] : null;
+        $jobCode = $params['job_code'] ?: null;
         if (!$jobCode) {
             $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
             $this->_redirect('*/config/edit/');
             return;
         }
-        $group = $params['group'] ? $params['group'] : null;
-        $frequency = $params['frequency'] ? $params['frequency'] : null;
+
+        $group = $params['group'] ?: null;
+        $frequency = $params['frequency'] ?: null;
         try {
+            $this->helper->validateFrequency($frequency);
+
             $path = $this->helper->constructFrequencyPath($jobCode, $group);
             $this->helper->saveJobFrequencyConfig($path, $frequency);
             $this->cache->remove(self::SYSTEM_DEFAULT_IDENTIFIER);
@@ -72,6 +55,7 @@ class Save extends Action
             $this->_redirect('*/config/edit/', $params);
             return;
         }
+
         $this->getMessageManager()->addSuccessMessage("Successfully saved Cron Job: {$jobCode}");
         if (!isset($params['back'])) {
             $this->_redirect("*/config/index/");

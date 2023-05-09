@@ -6,8 +6,10 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class IndexTest extends AbstractBackendController
 {
+    /** @var string */
     protected $uri = 'backend/cronjobmanager/manage';
 
+    /** @var string */
     protected $resource = 'EthanYehuda_CronjobManager::cronjobmanager';
 
     /**
@@ -18,7 +20,17 @@ class IndexTest extends AbstractBackendController
         $this->dispatch($this->uri);
         $result = $this->getResponse()->getBody();
 
-        $this->assertContains('<title>Cron Job Dashboard / Tools / System / Magento Admin</title>', $result);
+        if (\method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString(
+                '<title>Cron Job Dashboard / Tools / System / Magento Admin</title>',
+                $result
+            );
+        } else {
+            $this->assertContains(
+                '<title>Cron Job Dashboard / Tools / System / Magento Admin</title>',
+                $result
+            );
+        }
     }
 
     public static function loadDataFixtureCron()

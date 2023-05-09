@@ -9,45 +9,45 @@
                parentScope: '[data-tooltip-search-scope=search-scope-' + $index + ']'">
     <div>
         <div class="data-tooltip-title" ko-scope="requestChild('name')">
-            <text args="getLabel($row())"/>
+            <text args="getLabel($row())"></text>
         </div>
- 
+
         <div class="data-tooltip-content">
             <dl class="staging-events-summary">
             	<dt>
-                    <translate args="'Schedule Id'"/>:
+                    <translate args="'Schedule Id'"></translate>:
                 </dt>
                 <dd ko-scope="requestChild('schedule_id')">
-                    <text args="getLabel($row())"/>
+                    <text args="getLabel($row())"></text>
                 </dd>
-                
+
             	<dt>
-                    <translate args="'Job Code'"/>:
+                    <translate args="'Job Code'"></translate>:
                 </dt>
                 <dd ko-scope="requestChild('job_code')">
-                    <text args="getLabel($row())"/>
+                    <text args="getLabel($row())"></text>
                 </dd>
-            
+
                 <dt>
-                    <translate args="'Status'"/>:
+                    <translate args="'Status'"></translate>:
                 </dt>
                 <dd ko-scope="requestChild('status')">
-                    <text args="getLabel($row())"/>
+                    <text args="getLabel($row())"></text>
                 </dd>
- 
+
                 <dt>
-                    <translate args="'Start'"/>:
+                    <translate args="'Start'"></translate>:
                 </dt>
                 <dd>
-                    <time text="formatDetails(getStartDate($row()))"/>
+                    <time text="formatDetails(getStartDate($row()))"></time>
                 </dd>
- 
+
                 <ifnot args="isPermanent($row())">
                     <dt>
-                        <translate args="'End'"/>:
+                        <translate args="'End'"></translate>:
                     </dt>
                     <dd>
-                        <time text="formatDetails(getEndDate($row()))"/>
+                        <time text="formatDetails(getEndDate($row()))"></time>
                     </dd>
                 </ifnot>
             </dl>
@@ -57,7 +57,7 @@
                     repeat="foreach: getVisibleActions($row()._rowIndex), item: '$action'"
                     attr="href: $action().href"
                     click="getActionHandler($action())">
-                    <span text="$action().label"/>
+                    <span text="$action().label"></span>
                 </a>
             </div>
         </div>

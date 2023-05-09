@@ -13,30 +13,23 @@ use Magento\Framework\Console\Cli;
 
 class Showjobs extends Command
 {
-    /**
-     * @var \EthanYehuda\CronjobManager\Model\ManagerFactory $managerFactory
-     */
-    private $managerFactory;
-
-    /**
-     * @var \Magento\Framework\App\State $state
-     */
-    private $state;
-
-    /**
-     * @var array $headers
-     */
+    /** @var array */
     private $headers = ['Job Code', 'Group', 'Frequency', 'Class'];
 
+    /**
+     * @param State $state
+     * @param ManagerFactory $managerFactory
+     */
     public function __construct(
-        State $state,
-        ManagerFactory $managerFactory
+        private readonly State $state,
+        private readonly ManagerFactory $managerFactory
     ) {
-        $this->managerFactory = $managerFactory;
-        $this->state = $state;
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure()
     {
         $this->setName("cronmanager:showjobs");
@@ -44,6 +37,9 @@ class Showjobs extends Command
         parent::configure();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $manager = $this->managerFactory->create();
@@ -52,6 +48,13 @@ class Showjobs extends Command
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
         } catch (\Magento\Framework\Exception\LocalizedException $exception) {
             // Area code is already set
+            $output->writeln(
+                __(
+                    'WARNING: cannot set area code. This is usually caused by a'
+                    . ' command in a third party module calling'
+                    . ' state->setAreaCode() in its "configure()" method.'
+                )
+            );
         }
 
         try {
@@ -61,9 +64,9 @@ class Showjobs extends Command
 
             foreach ($jobs as $group => $crons) {
                 foreach ($crons as $code => $job) {
-                    $instance = $job['instance'];
-                    $method = $job['method'];
-                    $schedule = (isset($job['schedule']) ? $job['schedule'] : "");
+                    $instance   = (isset($job['instance']) ? $job['instance'] : "");
+                    $method     = (isset($job['method']) ? $job['method'] : "");
+                    $schedule   = (isset($job['schedule']) ? $job['schedule'] : "");
                     $jobData = [
                         $code,
                         $group,

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
@@ -7,9 +8,9 @@ use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\Template\TransportBuilder;
-use Magento\TestFramework\ObjectManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Mail\Template\TransportBuilderMock;
+use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,16 +23,18 @@ class ErrorNotificationEmailTest extends TestCase
      * @var ObjectManager
      */
     private $objectManager;
+
     /**
      * @var ErrorNotificationEmail
      */
     private $errorNotificationEmail;
+
     /**
      * @var \Magento\TestFramework\Mail\Template\TransportBuilderMock
      */
     private $transportBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->transportBuilder = $this->objectManager->get(TransportBuilderMock::class);
@@ -43,9 +46,9 @@ class ErrorNotificationEmailTest extends TestCase
     }
 
     /**
-     * @magentoConfigFixture default_store system/cron_job_manager/email_notification 0
      * @magentoAdminConfigFixture system/cron_job_manager/email_recipients errors@example.com,other@example.com
      * @magentoAdminConfigFixture system/cron_job_manager/email_identity general
+     * @magentoConfigFixture default_store system/cron_job_manager/email_notification 0
      * @magentoConfigFixture current_store trans_email/ident_general/name No-Reply
      * @magentoConfigFixture current_store trans_email/ident_general/email noreply@example.com
      */
@@ -129,8 +132,13 @@ class ErrorNotificationEmailTest extends TestCase
     private function andEmailShouldHaveContents(Message $sentMessage, array $expectedContents): void
     {
         $content = $sentMessage->getBody()->getParts()[0]->getContent();
+        $content = \Zend_Mime_Decode::decodeQuotedPrintable($content);
         foreach ($expectedContents as $expectedKey => $expectedContent) {
-            $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
+            if (\method_exists($this, 'assertStringContainsString')) {
+                $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
+            } else {
+                $this->assertContains($expectedContent, $content, "Content should contain $expectedKey");
+            }
         }
     }
 }

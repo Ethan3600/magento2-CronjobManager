@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use Magento\Cron\Model\Schedule;
@@ -18,10 +20,11 @@ class ProcessIdTest extends TestCase
      */
     private $objectManager;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
     }
+
     public function testProcessIdSavedOnStart()
     {
         $this->givenPid($pid);
@@ -29,6 +32,7 @@ class ProcessIdTest extends TestCase
         $this->whenTryLockJob($schedule);
         $this->thenScheduleIsSavedWithPid($schedule, $pid);
     }
+
     public function testProcessIdMaintainedAfterSuccesfulRun()
     {
         $this->givenPid($pid);

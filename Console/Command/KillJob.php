@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Console\Command;
@@ -17,84 +18,52 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
-use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface\Proxy as ScheduleManagementInterface;
+use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
 
 class KillJob extends Command
 {
-    const INPUT_KEY_JOB_CODE = 'job_code';
+    protected const INPUT_KEY_JOB_CODE = 'job_code';
+    protected const OPTION_KEY_PROC_KILL = 'process-kill';
 
-    const OPTION_KEY_PROC_KILL = 'process-kill';
-
-    /**
-     * @var State
-     */
-    private $state;
-
-    /**
-     * @var ScheduleRepositoryInterface
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var ScheduleManagementInterface 
-     */
-    private $scheduleManagement;
-
-    /**
-     * @var SearchCriteriaBuilder 
-     */
-    private $searchCriteriaBuilder;
-    
-    /**
-     * @var FilterBuilder 
-     */
-    private $filterBuilder;
-
-    /**
-     * @var FilterGroupBuilder 
-     */
-    private $filterGroupBuilder;
-    
-    /**
-     * @var ProcessManagement 
-     */
-    private $processManagement;
-
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $errors = [];
 
+    /**
+     * @param State $state
+     * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param ScheduleManagementInterface $scheduleManagement
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
+     * @param FilterGroupBuilder $filterGroupBuilder
+     * @param ProcessManagement $processManagement
+     */
     public function __construct(
-        State $state,
-        ScheduleRepositoryInterface $scheduleRepository,
-        ScheduleManagementInterface $scheduleManagement,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        ProcessManagement $processManagement
+        private readonly State $state,
+        private readonly ScheduleRepositoryInterface $scheduleRepository,
+        private readonly ScheduleManagementInterface $scheduleManagement,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly FilterBuilder $filterBuilder,
+        private readonly FilterGroupBuilder $filterGroupBuilder,
+        private readonly ProcessManagement $processManagement,
     ) {
-        $this->state = $state;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->scheduleManagement = $scheduleManagement;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->filterBuilder = $filterBuilder;
-        $this->filterGroupBuilder = $filterGroupBuilder;
-        $this->processManagement = $processManagement;
         parent::__construct();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function configure()
     {
         $arguments = [
             new InputArgument(
                 self::INPUT_KEY_JOB_CODE,
                 InputArgument::REQUIRED,
-                "Job code input (ex. 'sitemap_generate')
-                \nSends \"kill request\" to all the cron jobs given a specified job_code.
-                \nKill requests will not kill jobs immediately; instead it will be scheduled to be killed and handled by Magento's cron scheduler"
+                "Job code input (ex. 'sitemap_generate')" .
+                    "\nSends \"kill request\" to all the cron jobs given a specified job_code." .
+                    "\nKill requests will not kill jobs immediately; instead it will be scheduled" .
+                    " to be killed and handled by Magento's cron scheduler"
             ),
             new InputOption(
                 self::OPTION_KEY_PROC_KILL,
@@ -110,12 +79,22 @@ class KillJob extends Command
         parent::configure();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
-        } catch (LocalizedException $exception) {
+        } catch (LocalizedException) {
             // Area code is already set
+            $output->writeln(
+                __(
+                    'WARNING: cannot set area code. This is usually caused by a'
+                    . ' command in a third party module calling'
+                    . ' state->setAreaCode() in its "configure()" method.'
+                )
+            );
         }
 
         /** @var string $jobCode */
@@ -124,25 +103,32 @@ class KillJob extends Command
         /** @var bool $optionProcKill */
         $optionProcKill = $input->getOption(self::OPTION_KEY_PROC_KILL);
 
-        /** @var Schedule[] $runningJobs */
         $runningJobs = $this->loadRunningJobsByCode($jobCode);
 
-        /** @var Schedule $job */
+        if (!count($runningJobs)) {
+            $output->writeln("No jobs for '$jobCode' are currently running.");
+            return Cli::RETURN_SUCCESS;
+        }
+
+        $killCount = 0;
+
         foreach ($runningJobs as $job) {
-            /** @var int $id */
-            $id = (int)$job->getScheduleId();
-            /** @var int $pid */
-            $pid = (int)$job->getPid();
-            if ($id !== null && $pid !== null) {
-                /** @var bool $killed */
-                $killed = false;
+            $id = (int) $job->getScheduleId();
+            $pid = (int) $job->getPid();
+            if ($id && $pid) {
                 if ($optionProcKill) {
-                    $killed = $this->processManagement->killPid($pid);
+                    $killed = $this->processManagement->killPid($pid, $job->getHostname());
+                    if ($killed) {
+                        $job->setStatus(Schedule::STATUS_KILLED);
+                        $this->scheduleRepository->save($job);
+                    }
                 } else {
                     $killed = $this->scheduleManagement->kill($id, \time());
                 }
 
-                if (!$killed) {
+                if ($killed) {
+                    $killCount++;
+                } else {
                     $this->errors[] = "Unable to kill {$job->getJobCode()} with PID: $pid";
                 }
             }
@@ -150,17 +136,26 @@ class KillJob extends Command
 
         if (\count($this->errors) > 0) {
             foreach ($this->errors as $error) {
-                /** @var string $error */
                 $output->writeln($error);
             }
+
             return Cli::RETURN_FAILURE;
         }
-        $output->writeln("$jobCode successfully killed");
+
+        if ($optionProcKill) {
+            $output->writeln("$jobCode successfully sent SIG_KILL to $killCount process(es)");
+        } else {
+            $output->writeln("$jobCode successfully marked $killCount jobs for termination");
+        }
         return Cli::RETURN_SUCCESS;
     }
 
     /**
-     * @return Schedule[]
+     * Load running jobs by code
+     *
+     * @param string $jobCode
+     *
+     * @return \Magento\Cron\Model\Schedule[]
      */
     private function loadRunningJobsByCode(string $jobCode): array
     {
@@ -190,7 +185,7 @@ class KillJob extends Command
         $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups(
             [$jobCodeFilterGroup, $statusFilterGroup]
         )->create();
-        
+
         /** @var \Magento\Framework\Api\SearchResultsInterface $result */
         $result = $this->scheduleRepository->getList($searchCriteria);
         return $result->getItems();

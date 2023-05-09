@@ -8,13 +8,13 @@ define([
     'Magento_Ui/js/timeline/timeline'
 ], function (_, moment, layout, Timeline) {
     'use strict';
-    
+
     // milliseconds in a day: 24 * 60 * 60 * 1000 = 86400000
     var ONE_DAY = 86400000 / 24;
 
     return Timeline.extend({
         defaults: {
-        	dateFormat: 'YYYY-MM-DD HH:mm:ss',
+            dateFormat: 'YYYY-MM-DD HH:mm:ss',
             headerFormat: 'ddd MM/DD hh:mm',
             scale: 5,
             scaleStep: 1,
@@ -65,7 +65,7 @@ define([
          */
         initConfig: function () {
             this._super();
-            delete this.displayModes['list']; 
+            delete this.displayModes['list'];
             delete this.displayModes['timeline'];
             this.maxScale = Math.min(this.minHours, this.maxScale);
             this.minScale = Math.min(this.maxScale, this.minScale);
@@ -95,72 +95,72 @@ define([
 
             return this;
         },
-        
+
         /**
          * Checks if cron ran successfully
-         * 
+         *
          * @param {Object} record
          * @returns {Boolean}
          */
         isSuccess: function (record) {
-        	if(!record) {
-        		return false;
-        	}
-        	return record.status === 'success';
+            if(!record) {
+                return false;
+            }
+            return record.status === 'success';
         },
-        
+
         /**
          * Checks if cron failed
-         * 
+         *
          * @param {Object} record
          * @returns {Boolean}
          */
         isError: function (record) {
-        	if(!record) {
-        		return false;
-        	}
-        	return record.status === 'error';
+            if(!record) {
+                return false;
+            }
+            return record.status === 'error';
         },
-        
+
         /**
          * Checks if cron was missed
-         * 
+         *
          * @param {Object} record
          * @returns {Boolean}
          */
         isMissed: function (record) {
-        	if(!record) {
-        		return false;
-        	}
-        	return record.status === 'missed';
+            if(!record) {
+                return false;
+            }
+            return record.status === 'missed';
         },
-        
+
         /**
          * Checks if cron is pending
-         * 
+         *
          * @param {Object} record
          * @returns {Boolean}
          */
         isPending: function (record) {
-        	if(!record) {
-        		return false;
-        	}
-        	return record.status === 'pending';
+            if(!record) {
+                return false;
+            }
+            return record.status === 'pending';
         },
-        
+
         /**
          * Checks if cron is running
-         * 
+         *
          * @param {Object} record
          * @returns {Boolean}
          */
         isRunning: function (record) {
-        	if(!record) {
-        		return false;
-        	}
-        	return record.status === 'running';
+            if(!record) {
+                return false;
+            }
+            return record.status === 'running';
         },
-        
+
         /**
          * Checks if provided event record is active,
          * i.e. it has already started.
@@ -169,9 +169,9 @@ define([
          * @returns {Boolean}
          */
         isActive: function (record) {
-        	if(!record) {
-        		return false;
-        	}
+            if(!record) {
+                return false;
+            }
             return record.status === 'pending' || record.status === 'running';
         },
 
@@ -238,24 +238,23 @@ define([
 
             return start.diff(firstHour, 'hours', true);
         },
-        
+
         /**
          * Returns the left offset for the current time
-         * 
+         *
          * @returns {String}
          */
         getNowOffset: function () {
-        	var unitScale = 100 / this.scale,
-        		now = moment().format();
-        	
-        	var fakeRecord = {
-        		'scheduled_at' : now
-        	};
-        	
-        	var offset = this.getStartDelta(fakeRecord);
-        	
-        	return (offset * unitScale) + '%';
-        	
+            var unitScale = 100 / this.scale,
+                now = moment().format();
+
+            var fakeRecord = {
+                'scheduled_at' : now
+            };
+
+            var offset = this.getStartDelta(fakeRecord);
+
+            return (offset * unitScale) + '%';
         },
 
         /**
@@ -326,11 +325,11 @@ define([
             var dates = [];
 
             this.rows.forEach(function (record) {
-            	var date = this.createDate(record[key]);
-            	if (date.isValid()) {
+                var date = this.createDate(record[key]);
+                if (date.isValid()) {
                     dates.push(date);
                 } else {
-                	dates.push(this.createDate(record[fallback]));
+                    dates.push(this.createDate(record[fallback]));
                 }
             }, this);
 
