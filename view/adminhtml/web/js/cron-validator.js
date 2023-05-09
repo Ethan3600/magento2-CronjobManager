@@ -7,9 +7,9 @@ require(
     function (validator, $) {
 
         const CRON_REGEXES = [
-            /((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})/i, //Regular regex terms
-            /@(annually|yearly|monthly|weekly|daily|hourly|reboot)/i, //Predefined cron macros (non-standard)
-            /@every (\d+(ns|us|µs|ms|s|m|h))+/i, //Other cron macros
+            /^((((\d+,)+\d+|(\d+(\/|-)\d+)|\d+|\*) ?){5,7})$/i, //Regular regex terms
+            /^@(annually|yearly|monthly|weekly|daily|hourly|reboot)$/i, //Predefined cron macros (non-standard)
+            /^@every (\d+(ns|us|µs|ms|s|m|h))+$/i, //Other cron macros
         ];
 
         validator.addRule(
