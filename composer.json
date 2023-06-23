@@ -10,7 +10,7 @@
         "magento/module-store": "^100.0 || ^101.0",
         "magento/module-ui": "^100.0 || ^101.0",
         "psr/log": "^1.0 || ^2.0 || ^3.0",
-        "symfony/console": "^5.0"
+        "symfony/console": "^4.0 || ^5.0"
     },
     "require-dev": {
         "ext-pcntl": "*"
