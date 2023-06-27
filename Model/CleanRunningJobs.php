@@ -5,8 +5,10 @@ namespace EthanYehuda\CronjobManager\Model;
 
 use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
+use EthanYehuda\CronjobManager\Scope\Config;
 use Magento\Cron\Model\ResourceModel\Schedule\CollectionFactory;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ScheduleFactory;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 
 /**
@@ -14,10 +16,17 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
  */
 class CleanRunningJobs
 {
+    /** @var Config */
+    private $config;
+
     /**
      * @var ProcessManagement
      */
     private $processManagement;
+
+    /** @var ScheduleFactory */
+    private $scheduleFactory;
+
     /**
      * @var ScheduleRepositoryAdapterInterface
      */
@@ -32,11 +41,15 @@ class CleanRunningJobs
     private $dateTime;
 
     public function __construct(
+        Config $config,
+        ScheduleFactory $scheduleFactory,
         ScheduleRepositoryAdapterInterface $scheduleRepository,
         ProcessManagement $processManagement,
         DateTime $dateTime,
         Clock $clock
     ) {
+        $this->config = $config;
+        $this->scheduleFactory = $scheduleFactory;
         $this->processManagement = $processManagement;
         $this->scheduleRepository = $scheduleRepository;
         $this->dateTime = $dateTime;
@@ -73,6 +86,16 @@ class CleanRunningJobs
                 ->setMessages(implode("\n", $messages));
 
             $this->scheduleRepository->save($schedule);
+
+            // We check 'scheduled_at' to avoid scheduling jobs run via command line
+            if ($schedule->getScheduledAt() && $this->config->isRetryJobsGoneAway()) {
+                $this->scheduleFactory->create()
+                    ->setJobCode($schedule->getJobCode())
+                    ->setStatus(Schedule::STATUS_PENDING)
+                    ->setCreatedAt(strftime('%Y-%m-%d %H:%M:%S'))
+                    ->setScheduledAt(strftime('%Y-%m-%d %H:%M:%S'))
+                    ->save();
+            }
         }
     }
 }
