@@ -2,8 +2,7 @@
 
 namespace EthanYehuda\CronjobManager\Controller\Adminhtml\Config\Job;
 
-use EthanYehuda\CronjobManager\Model\ManagerFactory;
-use Magento\Framework\View\Result\PageFactory;
+use EthanYehuda\CronjobManager\Model\ScheduleManagement;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\App\Action;
 
@@ -13,11 +12,11 @@ class MassScheduleNow extends Action
 
     /**
      * @param Context $context
-     * @param ManagerFactory $managerFactory
+     * @param ScheduleManagement $scheduleManagement
      */
     public function __construct(
         Context $context,
-        private readonly ManagerFactory $managerFactory,
+        private readonly ScheduleManagement $scheduleManagement,
     ) {
         parent::__construct($context);
     }
@@ -29,17 +28,16 @@ class MassScheduleNow extends Action
      */
     public function execute()
     {
-        $manager = $this->managerFactory->create();
         $params = $this->getRequest()->getParam('selected');
         if (!isset($params)) {
-            $this->getMessageManager()->addErrorMessage("Something went wrong when recieving the request");
+            $this->getMessageManager()->addErrorMessage("Something went wrong when receiving the request");
             $this->_redirect('*/config/index');
             return;
         }
 
         try {
             foreach ($params as $jobCode) {
-                $manager->scheduleNow($jobCode);
+                $this->scheduleManagement->scheduleNow($jobCode);
             }
         } catch (\Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
