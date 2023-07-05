@@ -59,10 +59,9 @@ Magento 2.0.x | :x: Not supported
 
 ### Full Control Over All Scheduled Cron Jobs
 
-
 Take command of all processes running on your Magento 2 instance. You will be able to manage all scheduled cron jobs, which means you have complete control over what tasks fire behind the scenes. An administrator will have the ability of scheduling, removing, editing, analyzing, and running any, and all cron jobs in the cron_schedule table.
 
-<img src="https://user-images.githubusercontent.com/6549623/39410796-d3ec4e72-4bcb-11e8-85ef-325e8a580df2.png"/>
+![](https://github.com/Ethan3600/magento2-CronjobManager/assets/334786/c8f227a3-eb68-4837-90fb-bb0f387b7b2e)
 
 ### Informative Timeline
 
