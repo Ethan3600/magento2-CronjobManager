@@ -202,25 +202,19 @@ define([
                 }
             };
 
-            var windowTimer = null;
-            $(window).on('scroll', function() {
-                if (windowTimer !== null) {
-                    clearTimeout(windowTimer);
+            var debounceRefresh = function() {
+                if (debounceRefresh.timer) {
+                    clearTimeout(debounceRefresh.timer);
                 }
-                windowTimer = setTimeout(function() {
+
+                debounceRefresh.timer = setTimeout(function() {
                     raf(refresh);
                 }, 150);
-            });
+            };
 
-            var panelTimer = null;
-            $timelinePanel.on('scroll', function() {
-                if (panelTimer !== null) {
-                    clearTimeout(panelTimer);
-                }
-                panelTimer = setTimeout(function() {
-                    raf(refresh);
-                }, 1000);
-            });
+            $(window).on('scroll', debounceRefresh);
+            $timelinePanel.on('scroll', debounceRefresh);
+            $timelineCont.on('scroll', debounceRefresh);
 
             $timelineCont.on('timeline.ready', function() {
                 $(window).trigger('scroll');
