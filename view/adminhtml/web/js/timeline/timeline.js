@@ -116,6 +116,7 @@ define([
             }
             duration = Math.round(duration);
             duration = duration > minWidth ? duration : minWidth;
+            job.timelineWidth = duration;
             return duration;
         },
 

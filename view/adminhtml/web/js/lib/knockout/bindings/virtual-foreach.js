@@ -67,6 +67,7 @@ define([
         ///////////////Horizontal Offset////////////////
         var timeOffset = viewModel.getOffset(cron, true);
         cronOffset.left = timeOffset + panelOffset();
+        cronOffset.right = cronOffset.left + (cron.timelineWidth || 0);
 
         return cronOffset;
     };
@@ -190,13 +191,21 @@ define([
                 function isInBounds(cronOffset) {
                     var cTop = cronOffset.top;
                     var cLeft = cronOffset.left;
+                    var cRight = cronOffset.right;
 
                     if (cTop > topBoundry && cTop <= bottomBoundry) {
                         if (cLeft > leftBoundry && cLeft <= rightBoundry) {
                             return true;
                         }
+                        if (cRight > leftBoundry && cRight <= rightBoundry) {
+                            return true;
+                        }
+                        if (cLeft < leftBoundry && cRight >= rightBoundry) {
+                            return true;
+                        }
                         return false;
                     }
+
                     isVerticallyInBounds = false;
                     return false;
                 }
