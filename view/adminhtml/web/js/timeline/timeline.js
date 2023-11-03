@@ -111,7 +111,7 @@ define([
                 duration = (now - start) / this.scale;
             }
 
-            if (moment(end).isValid() && job.executed_at != null) {
+            if (moment(end).isValid() && job.finished_at != null) {
                 duration = (end - start) / this.scale;
             }
             duration = Math.round(duration);
