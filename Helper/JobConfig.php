@@ -124,6 +124,9 @@ class JobConfig extends AbstractHelper
         $job['schedule'] = !empty($job['schedule']) ? $job['schedule'] : '';
         $job['instance'] = !empty($job['instance']) ? $job['instance'] : '';
         $job['method'] = !empty($job['method']) ? $job['method'] : '';
+        if (isset($job['config_path'])) {
+            $job['schedule'] = $this->parseCronConfigPath($job);
+        }
         return $job;
     }
 
@@ -147,5 +150,10 @@ class JobConfig extends AbstractHelper
         foreach ($schedule->getCronExprArr() as $expression) {
             $schedule->matchCronExpression($expression, 0);
         }
+    }
+
+    public function parseCronConfigPath(array $job): string
+    {
+        return $this->scopeConfig->getValue($job['config_path']) ?? '';
     }
 }
