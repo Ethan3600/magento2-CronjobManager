@@ -132,7 +132,7 @@ class ErrorNotificationEmailTest extends TestCase
     private function andEmailShouldHaveContents(Message $sentMessage, array $expectedContents): void
     {
         $content = $sentMessage->getBody()->getParts()[0]->getContent();
-        $content = \Zend_Mime_Decode::decodeQuotedPrintable($content);
+        $content = \Laminas\Mime\Decode::decodeQuotedPrintable($content);
         foreach ($expectedContents as $expectedKey => $expectedContent) {
             if (\method_exists($this, 'assertStringContainsString')) {
                 $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
