@@ -119,7 +119,7 @@ class ErrorNotificationEmailTest extends TestCase
     private function thenEmailShouldBeSent(?Message $sentMessage, string $expectedSender, array $expectedRecipients)
     {
         $this->assertNotNull($sentMessage, 'A mail should have been sent');
-        $messageDetails = \Zend\Mail\Message::fromString($sentMessage->getRawMessage());
+        $messageDetails = \Laminas\Mail\Message::fromString($sentMessage->getRawMessage());
         $this->assertEquals([$expectedSender], \array_keys(\iterator_to_array($messageDetails->getFrom())));
         $this->assertEquals($expectedRecipients, \array_keys(\iterator_to_array($messageDetails->getTo())));
     }
