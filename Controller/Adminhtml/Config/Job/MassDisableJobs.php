@@ -45,9 +45,10 @@ class MassDisableJobs extends Action
                 $path = $this->helper->constructFrequencyPath($jobCode);
                 // Empty frequency disables the job
                 $this->helper->saveJobFrequencyConfig($path, '');
-                // Clear the config cache
-                $this->cache->clean([ConfigCache::CACHE_TAG]);
             }
+
+            // Clear the config cache
+            $this->cache->clean([ConfigCache::CACHE_TAG]);
         } catch (Exception $e) {
             $this->getMessageManager()->addErrorMessage($e->getMessage());
             $this->_redirect('*/config/index/');
