@@ -7,13 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.2
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.2@master
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
           COMPOSER_VERSION: 2
-          MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
-          MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.6'
 
   unit-tests-mage245:
@@ -21,13 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
           COMPOSER_VERSION: 2
-          MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
-          MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.5'
 
   unit-tests-mage244:
@@ -35,11 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: docker://yireo/github-actions-magento-unit-tests:8.1
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
           COMPOSER_VERSION: 2
-          MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
-          MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.4'
