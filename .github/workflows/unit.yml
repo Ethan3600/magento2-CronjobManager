@@ -11,6 +11,7 @@ jobs:
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+          COMPOSER_VERSION: 2
           MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
           MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.6'
@@ -24,6 +25,7 @@ jobs:
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+          COMPOSER_VERSION: 2
           MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
           MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.5'
@@ -37,6 +39,7 @@ jobs:
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+          COMPOSER_VERSION: 2
           MAGENTO_MARKETPLACE_USERNAME: ${{env.MAGENTO_MARKETPLACE_USERNAME}}
           MAGENTO_MARKETPLACE_PASSWORD: ${{secrets.MAGENTO_MARKETPLACE_PASSWORD}}
           MAGENTO_VERSION: '2.4.4'
