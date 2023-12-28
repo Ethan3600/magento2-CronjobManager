@@ -89,6 +89,19 @@
 					</item>
 				</argument>
 			</action>
+			<action name="disable_jobs">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+						<item name="confirm" xsi:type="array">
+							<item name="title" xsi:type="string" translate="true">Disable Jobs</item>
+							<item name="message" xsi:type="string" translate="true">Are you sure you want to disable these cron jobs (use Restore to re-enable them)?</item>
+						</item>
+						<item name="type" xsi:type="string">disable_jobs</item>
+						<item name="label" xsi:type="string" translate="true">Disable Jobs</item>
+						<item name="url" xsi:type="url" path="cronjobmanager/config_job/massDisableJobs" />
+					</item>
+				</argument>
+			</action>
 			<action name="restore">
 				<argument name="data" xsi:type="array">
 					<item name="config" xsi:type="array">
@@ -138,7 +151,7 @@
 				</item>
 			</argument>
 		</column>
-		<column name="frequency">
+		<column name="frequency" class="EthanYehuda\CronjobManager\Ui\Component\Listing\Column\Frequency">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
 					<item name="filter" xsi:type="string">text</item>
