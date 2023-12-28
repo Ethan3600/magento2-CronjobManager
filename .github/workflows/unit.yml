@@ -6,7 +6,7 @@ jobs:
     name: Magento 2 Unit Tests (M 2.4.6)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: docker://yireo/github-actions-magento-unit-tests:8.2
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
@@ -19,7 +19,7 @@ jobs:
     name: Magento 2 Unit Tests (M 2.4.5)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: docker://yireo/github-actions-magento-unit-tests:8.1
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
@@ -32,7 +32,7 @@ jobs:
     name: Magento 2 Unit Tests (M 2.4.4)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: docker://yireo/github-actions-magento-unit-tests:8.1
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
