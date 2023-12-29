@@ -78,7 +78,7 @@ class ScheduleRepository implements ScheduleRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function save(Schedule $schedule): Schedule
+    public function save(Schedule|Data\Schedule $schedule): Schedule
     {
         try {
             $this->scheduleResource->save($schedule);

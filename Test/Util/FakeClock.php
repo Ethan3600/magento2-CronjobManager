@@ -20,7 +20,7 @@ class FakeClock implements ClockInterface
 
     public function advance(string $expression): void
     {
-        $this->timestamp = strtotime("+$expression", $this->timestamp);
+        $this->timestamp = (int) strtotime("+$expression", $this->timestamp);
     }
 
     public function now(): int

@@ -32,12 +32,12 @@ interface ScheduleRepositoryInterface
     /**
      * Store the given model to the database
      *
-     * @param \Magento\Cron\Model\Schedule $schedule
+     * @param \Magento\Cron\Model\Schedule|\EthanYehuda\CronjobManager\Model\Data\Schedule $schedule
      *
      * @return \Magento\Cron\Model\Schedule
      * @throws CouldNotSaveException
      */
-    public function save(\Magento\Cron\Model\Schedule $schedule): \Magento\Cron\Model\Schedule;
+    public function save(\Magento\Cron\Model\Schedule|\EthanYehuda\CronjobManager\Model\Data\Schedule $schedule): \Magento\Cron\Model\Schedule;
 
     /**
      * Delete the given model from the database

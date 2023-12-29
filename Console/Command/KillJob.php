@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Console\Command;
 
+use EthanYehuda\CronjobManager\Api\Data\ScheduleInterface;
 use Magento\Framework\App\State;
 use Magento\Framework\App\Area;
 use Magento\Framework\Console\Cli;
@@ -11,7 +12,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\Api\SearchCriteria;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -119,7 +119,7 @@ class KillJob extends Command
                 if ($optionProcKill) {
                     $killed = $this->processManagement->killPid($pid, $job->getHostname());
                     if ($killed) {
-                        $job->setStatus(Schedule::STATUS_KILLED);
+                        $job->setStatus(ScheduleInterface::STATUS_KILLED);
                         $this->scheduleRepository->save($job);
                     }
                 } else {
@@ -159,34 +159,28 @@ class KillJob extends Command
      */
     private function loadRunningJobsByCode(string $jobCode): array
     {
-        /** @var AbstractSimpleObject $jobCode */
         $jobCodeFilter = $this->filterBuilder
             ->setField(Schedule::KEY_JOB_CODE)
             ->setConditionType('eq')
             ->setValue($jobCode)
             ->create();
-        /** @var AbstractSimpleObject $jobCodeFilterGroup */
         $jobCodeFilterGroup = $this->filterGroupBuilder
             ->addFilter($jobCodeFilter)
             ->create();
 
-        /** @var AbstractSimpleObject $jobCode */
         $statusFilter = $this->filterBuilder
             ->setField(Schedule::KEY_STATUS)
             ->setConditionType('eq')
             ->setValue(Schedule::STATUS_RUNNING)
             ->create();
-        /** @var AbstractSimpleObject $statusFilterGroup */
         $statusFilterGroup = $this->filterGroupBuilder
             ->addFilter($statusFilter)
             ->create();
 
-        /** @var SearchCriteria $searchCriteria */
         $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups(
             [$jobCodeFilterGroup, $statusFilterGroup]
         )->create();
 
-        /** @var \Magento\Framework\Api\SearchResultsInterface $result */
         $result = $this->scheduleRepository->getList($searchCriteria);
         return $result->getItems();
     }

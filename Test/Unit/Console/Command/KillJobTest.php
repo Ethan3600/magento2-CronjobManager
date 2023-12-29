@@ -56,34 +56,20 @@ class KillJobTest extends TestCase
             State::MODE_PRODUCTION
         ])->getMock();
 
-        $this->mockScheduleRepository = $this->getMockBuilder(ScheduleRepositoryInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethodsExcept([])
-            ->getMock();
+        $this->mockScheduleRepository = $this->createMock(ScheduleRepositoryInterface::class);
+        $this->mockScheduleManagement = $this->createMock(ScheduleManagementInterface::class);
+        $this->mockProcessManagement = $this->createMock(ProcessManagement::class);
 
-        $this->mockScheduleManagement = $this->getMockBuilder(ScheduleManagementInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['kill'])
-            ->getMock();
+        $this->mockFilterBuilder = $this->createMock(FilterBuilder::class);
+        $this->mockFilterBuilder->method('setField')->willReturnSelf();
+        $this->mockFilterBuilder->method('setConditionType')->willReturnSelf();
+        $this->mockFilterBuilder->method('setValue')->willReturnSelf();
 
-        $this->mockSearchCriteriaBuilder = $this->getMockBuilder(SearchCriteriaBuilder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
+        $this->mockFilterGroupBuilder = $this->createMock(FilterGroupBuilder::class);
+        $this->mockFilterGroupBuilder->method('addFilter')->willReturnSelf();
 
-        $this->mockFilterBuilder = $this->getMockBuilder(FilterBuilder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-
-        $this->mockFilterGroupBuilder = $this->getMockBuilder(FilterGroupBuilder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-
-        $this->mockProcessManagement = $this->getMockBuilder(ProcessManagement::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->mockSearchCriteriaBuilder = $this->createMock(SearchCriteriaBuilder::class);
+        $this->mockSearchCriteriaBuilder->method('setFilterGroups')->willReturnSelf();
 
         $this->command = new KillJob(
             $this->mockState,
@@ -166,7 +152,6 @@ class KillJobTest extends TestCase
     public function testExecuteWithKillFailures()
     {
         $numOfSchedules = 3;
-        /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
         $this->mockQueryResults($mockedSchedules);
@@ -203,7 +188,6 @@ class KillJobTest extends TestCase
     public function testExecuteUsingProcKillWithKillFailures()
     {
         $numOfSchedules = 3;
-        /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
         $this->mockQueryResults($mockedSchedules);
@@ -242,7 +226,6 @@ class KillJobTest extends TestCase
     public function testExecuteWithPartialKillFailures()
     {
         $numOfSchedules = 2;
-        /** @var Schedule[] $mockedSchedules */
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
         $this->mockQueryResults($mockedSchedules);
@@ -304,6 +287,9 @@ class KillJobTest extends TestCase
             ->willReturn($queryResults);
     }
 
+    /**
+     * @return Schedule[]
+     */
     private function mockMultipleSchedules(int $numOfSchedules): array
     {
         $mockSchedules = [];
