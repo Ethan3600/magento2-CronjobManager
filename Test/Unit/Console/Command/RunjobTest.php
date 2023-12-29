@@ -14,7 +14,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class RunjobTest extends TestCase
 {
-    /** @var Runner|(Runner&MockObject)|MockObject */
+    /** @var (Runner&MockObject)|MockObject */
     protected $runner;
 
     protected function setUp(): void

@@ -9,17 +9,17 @@ use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
-use EthanYehuda\CronjobManager\Plugin\Cron\Model\ScheduleResourcePlugin;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use EthanYehuda\CronjobManager\Test\Util\FakeJobConfig;
 use Magento\Cron\Model\ConfigInterface;
 use Magento\Cron\Model\Schedule;
 use Magento\Cron\Observer\ProcessCronQueueObserver;
 use Magento\Framework\Api\SearchCriteria;
-use Magento\Framework\Event;
+use Magento\Framework\App\CacheInterface;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\TestFramework\ObjectManager;
 use Magento\TestFramework\Helper\Bootstrap;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,9 +31,7 @@ class ErrorNotificationTest extends TestCase
 {
     protected const NOW = '2019-02-09 18:33:00';
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     /**
@@ -51,14 +49,10 @@ class ErrorNotificationTest extends TestCase
      */
     private $clock;
 
-    /**
-     * @var \Magento\Framework\App\CacheInterface
-     */
+    /** @var CacheInterface */
     private $cache;
 
-    /**
-     * @var ErrorNotificationInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
+    /** @var (ErrorNotificationInterface&MockObject)|MockObject */
     private $errorNotification;
 
     /**
@@ -82,7 +76,7 @@ class ErrorNotificationTest extends TestCase
         $this->setUpMocks();
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
         $this->scheduleRepository = $this->objectManager->get(ScheduleRepositoryInterface::class);
-        $this->cache = $this->objectManager->get(\Magento\Framework\App\CacheInterface::class);
+        $this->cache = $this->objectManager->get(CacheInterface::class);
         $this->processCronQueueObserver = $this->objectManager->get(ProcessCronQueueObserver::class);
         $this->cleanSchedule();
     }

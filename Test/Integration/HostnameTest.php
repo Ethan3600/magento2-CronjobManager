@@ -6,7 +6,7 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Cron\Model\Schedule;
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
@@ -16,9 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class HostnameTest extends TestCase
 {
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     protected $objectManager;
 
     /**

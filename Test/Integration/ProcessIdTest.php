@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use Magento\Cron\Model\Schedule;
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ProcessIdTest extends TestCase
 {
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     protected function setUp(): void

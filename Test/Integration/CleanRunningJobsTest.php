@@ -8,7 +8,7 @@ use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\Event;
@@ -23,9 +23,7 @@ class CleanRunningJobsTest extends TestCase
     protected const REMOTE_HOSTNAME = 'hostname.example.net';
     protected const DEAD_PID = 99999999;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     /**

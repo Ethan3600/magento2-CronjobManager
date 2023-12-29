@@ -11,7 +11,7 @@ use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Event;
-use Magento\Framework\ObjectManager\ObjectManager;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
@@ -30,9 +30,7 @@ class ProcessKillRequestsTest extends TestCase
      */
     private $childPid = 0;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     /**

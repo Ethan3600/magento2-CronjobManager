@@ -8,9 +8,9 @@ use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Mail\Message;
 use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Mail\Template\TransportBuilderMock;
-use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,9 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ErrorNotificationEmailTest extends TestCase
 {
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     /**
@@ -29,9 +27,7 @@ class ErrorNotificationEmailTest extends TestCase
      */
     private $errorNotificationEmail;
 
-    /**
-     * @var \Magento\TestFramework\Mail\Template\TransportBuilderMock
-     */
+    /** @var TransportBuilderMock */
     private $transportBuilder;
 
     protected function setUp(): void

@@ -7,8 +7,8 @@ namespace Test\Integration\Model;
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use Magento\Cron\Model\Schedule;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,9 +21,7 @@ class ScheduleManagementTest extends TestCase
      */
     private $scheduleManagement;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManagerInterface */
     private $objectManager;
 
     protected const NOW = '2019-02-09 18:33:00';
