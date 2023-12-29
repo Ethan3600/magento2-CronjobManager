@@ -17,6 +17,9 @@ class RunjobTest extends TestCase
     /** @var (Runner&MockObject)|MockObject */
     protected $runner;
 
+    /** @var CommandTester */
+    private $commandTester;
+
     protected function setUp(): void
     {
         $this->runner = $this->createMock(Runner::class);

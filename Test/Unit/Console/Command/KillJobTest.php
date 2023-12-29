@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Unit\Console\Command;
 
+use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use EthanYehuda\CronjobManager\Console\Command\KillJob;
 use Magento\Framework\Api\SearchResultsInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,6 +45,9 @@ class KillJobTest extends TestCase
 
     /** @var (FilterGroupBuilder&MockObject)|MockObject */
     private $mockFilterGroupBuilder;
+
+    /** @var (ProcessManagement&MockObject)|MockObject */
+    private $mockProcessManagement;
 
     protected function setUp(): void
     {
