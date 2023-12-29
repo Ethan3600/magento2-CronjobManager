@@ -136,7 +136,7 @@ class ErrorNotificationTest extends TestCase
     private function givenCronjobThrows(\Exception $exception): void
     {
         FakeJobConfig::setCallback(
-            function () use (&$executed, $exception) {
+            static function () use ($exception) {
                 throw $exception;
             }
         );

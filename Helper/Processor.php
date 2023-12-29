@@ -45,8 +45,7 @@ class Processor
      * @param string $jobConfig
      * @param Schedule $schedule
      *
-     * @throws \Exception
-     * @throws Ambigous <\Exception, \RuntimeException>
+     * @throws LocalizedException|\RuntimeException
      */
     public function runScheduledJob($jobConfig, $schedule)
     {

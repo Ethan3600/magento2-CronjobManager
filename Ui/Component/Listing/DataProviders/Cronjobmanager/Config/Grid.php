@@ -96,8 +96,10 @@ class Grid extends AbstractDataProvider
     /**
      * Sets limits on pagination size
      *
-     * @param type $offset
-     * @param type $size
+     * @param int $offset
+     * @param int $size
+     *
+     * @return void
      */
     public function setLimit($offset, $size)
     {
@@ -131,7 +133,7 @@ class Grid extends AbstractDataProvider
             case 'like':
                 $filterRegistry['filter'] = function ($v) {
                     $reg = $this->currentFilter;
-                    return strpos($v[$reg['field']], $reg['condition']) !== false;
+                    return str_contains($v[$reg['field']], $reg['condition']);
                 };
                 $filterRegistry['condition'] = trim($filterRegistry['condition'], "%");
                 $filterRegistry['condition'] = str_replace(['\%', '\_'], ['%', '_'], $filterRegistry['condition']);
@@ -147,6 +149,8 @@ class Grid extends AbstractDataProvider
             default:
                 break;
         }
+
+        return $this;
     }
 
     /**

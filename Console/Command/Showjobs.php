@@ -77,7 +77,7 @@ class Showjobs extends Command
                 }
             }
 
-            $table->render($output);
+            $table->render();
             return Cli::RETURN_SUCCESS;
         } catch (\Magento\Framework\Exception\LocalizedException $e) {
             $output->writeln($e->getMessage());

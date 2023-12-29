@@ -51,7 +51,7 @@ class MassDelete extends Action
         } else {
             foreach ($collection->getItems() as $schedule) {
                 try {
-                    $manager->deleteCronJob($schedule->getId(), $schedule);
+                    $manager->deleteCronJob($schedule->getId());
                 } catch (\Exception $e) {
                     $this->getMessageManager()->addErrorMessage($e->getMessage());
                 }
