@@ -2,7 +2,7 @@
     "name": "ethanyehuda/magento2-cronjobmanager",
     "description": "A module for managing scheduled cron jobs from magento's admin panel",
     "require": {
-        "php": "~8.1.0 || ~8.2.0",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "ext-posix": "*",
         "magento/framework": "^102.0 || ^103.0",
         "magento/module-backend": "^100.0 || ^101.0 || ^102.0",

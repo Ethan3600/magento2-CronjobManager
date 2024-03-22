@@ -2,6 +2,18 @@ name: ExtDN M2 Unit Tests
 on: [ push, pull_request ]
 
 jobs:
+  unit-tests-mage247:
+    name: Magento 2 Unit Tests (M 2.4.7)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.3@master
+        env:
+          MODULE_NAME: EthanYehuda_CronjobManager
+          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+          COMPOSER_VERSION: 2
+          MAGENTO_VERSION: '2.4.7'
+
   unit-tests-mage246:
     name: Magento 2 Unit Tests (M 2.4.6)
     runs-on: ubuntu-latest
