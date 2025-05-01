@@ -238,16 +238,7 @@ class KillJobTest extends TestCase
 
         $this->mockScheduleManagement->expects($this->exactly($numOfSchedules))
             ->method('kill')
-            ->withConsecutive(
-                [
-                    $this->isType('int'),
-                    $this->isType('int')
-                ],
-                [
-                    $this->isType('int'),
-                    $this->isType('int')
-                ]
-            )->willReturnOnConsecutiveCalls(false, true);
+            ->willReturnOnConsecutiveCalls(false, true);
 
         $commandTester = new CommandTester($this->command);
         $resultCode = $commandTester->execute(
