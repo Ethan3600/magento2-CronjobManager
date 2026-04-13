@@ -26,7 +26,7 @@ jobs:
 
   unit-tests-mage248:
     name: Magento 2 Unit Tests (M 2.4.8)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
@@ -38,7 +38,7 @@ jobs:
 
   unit-tests-mage247:
     name: Magento 2 Unit Tests (M 2.4.7)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: extdn/github-actions-m2/magento-unit-tests/8.3@master
@@ -50,7 +50,7 @@ jobs:
 
   unit-tests-mage246:
     name: Magento 2 Unit Tests (M 2.4.6)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: extdn/github-actions-m2/magento-unit-tests/8.2@master
@@ -62,7 +62,7 @@ jobs:
 
   unit-tests-mage245:
     name: Magento 2 Unit Tests (M 2.4.5)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
@@ -74,7 +74,7 @@ jobs:
 
   unit-tests-mage244:
     name: Magento 2 Unit Tests (M 2.4.4)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
