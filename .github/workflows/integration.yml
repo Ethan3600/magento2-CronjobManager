@@ -14,7 +14,7 @@ on:
 jobs:
   mage248:
     name: Magento 2 Integration Tests (Magento v2.4.8)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       mysql:
         image: mysql:8.0
@@ -43,7 +43,7 @@ jobs:
 
   mage247:
     name: Magento 2 Integration Tests (Magento v2.4.7)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       mysql:
         image: mysql:8.0
@@ -72,7 +72,7 @@ jobs:
 
   mage246:
     name: Magento 2 Integration Tests (Magento v2.4.6)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       mysql:
         image: mysql:8.0
@@ -101,7 +101,7 @@ jobs:
 
   mage245:
     name: Magento 2 Integration Tests (Magento v2.4.5)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       mysql:
         image: mysql:8.0
@@ -130,7 +130,7 @@ jobs:
 
   mage244:
     name: Magento 2 Integration Tests (Magento v2.4.4)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     services:
       mysql:
         image: mysql:8.0
