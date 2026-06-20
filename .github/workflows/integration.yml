@@ -39,7 +39,8 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          ce_version: 2.4.8
+          magento_version: 2.4.8
+          block_insecure: false
 
   mage247:
     name: Magento 2 Integration Tests (Magento v2.4.7)
@@ -68,7 +69,8 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          ce_version: 2.4.7
+          magento_version: 2.4.7
+          block_insecure: false
 
   mage246:
     name: Magento 2 Integration Tests (Magento v2.4.6)
@@ -97,7 +99,8 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          ce_version: 2.4.6
+          magento_version: 2.4.6
+          block_insecure: false
 
   mage245:
     name: Magento 2 Integration Tests (Magento v2.4.5)
@@ -126,7 +129,8 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          ce_version: 2.4.5
+          magento_version: 2.4.5
+          block_insecure: false
 
   mage244:
     name: Magento 2 Integration Tests (Magento v2.4.4)
@@ -155,4 +159,5 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          ce_version: 2.4.4
+          magento_version: 2.4.4
+          block_insecure: false
