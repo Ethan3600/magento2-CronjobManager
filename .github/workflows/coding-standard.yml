@@ -16,5 +16,5 @@ jobs:
     name: M2 Coding Standard
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: extdn/github-actions-m2/magento-coding-standard/8.4@master
