@@ -40,7 +40,7 @@ class Showjobs extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $manager = $this->managerFactory->create();
 
