@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
+use EthanYehuda\CronjobManager\Api\ScheduleRepositoryAdapterInterface;
+use EthanYehuda\CronjobManager\Model\CleanRunningJobs;
 use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
@@ -71,6 +73,49 @@ class CleanRunningJobsTest extends TestCase
         $this->givenRunningScheduleWithActiveProcess($schedule);
         $this->whenEventIsDispatched('process_cron_queue_before');
         $this->thenScheduleHasStatus($schedule, Schedule::STATUS_RUNNING);
+    }
+
+    /**
+     * A short-lived job can save its final status and exit between the watchdog
+     * loading its list of "running" schedules and checking the job's PID. The
+     * watchdog must not overwrite that final status with "Process went away".
+     */
+    public function testJobFinishedAfterSnapshotIsNotMarkedAsError()
+    {
+        $this->givenRunningScheduleWithInactiveProcess($schedule);
+        $this->givenScheduleIsRunningOnHost($schedule, \gethostname());
+        $staleSnapshot = $this->givenWatchdogSnapshotContaining($schedule);
+
+        $schedule->setStatus(Schedule::STATUS_SUCCESS);
+        $schedule->save();
+
+        $this->whenCleanRunningJobsExecutesWithSnapshot($staleSnapshot);
+        $this->thenScheduleHasStatus($schedule, Schedule::STATUS_SUCCESS);
+    }
+
+    private function givenWatchdogSnapshotContaining(Schedule $schedule): array
+    {
+        /** @var ScheduleRepositoryAdapterInterface $scheduleRepository */
+        $scheduleRepository = $this->objectManager->get(ScheduleRepositoryAdapterInterface::class);
+
+        return [$scheduleRepository->get((int)$schedule->getId())];
+    }
+
+    private function whenCleanRunningJobsExecutesWithSnapshot(array $staleSnapshot): void
+    {
+        $realRepository = $this->objectManager->get(ScheduleRepositoryAdapterInterface::class);
+        $staleRepository = $this->createMock(ScheduleRepositoryAdapterInterface::class);
+        $staleRepository->method('getByStatus')->willReturn($staleSnapshot);
+        $staleRepository->method('save')->willReturnCallback(
+            fn ($schedule, $scheduleId = null) => $realRepository->save($schedule, $scheduleId)
+        );
+
+        /** @var CleanRunningJobs $cleanRunningJobs */
+        $cleanRunningJobs = $this->objectManager->create(
+            CleanRunningJobs::class,
+            ['scheduleRepository' => $staleRepository]
+        );
+        $cleanRunningJobs->execute();
     }
 
     private function givenRunningScheduleWithInactiveProcess(&$schedule)
