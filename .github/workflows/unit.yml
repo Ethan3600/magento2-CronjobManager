@@ -12,6 +12,18 @@ on:
       - 2.x
 
 jobs:
+  unit-tests-mage249:
+    name: Magento 2 Unit Tests (M 2.4.9)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
+        env:
+          MODULE_NAME: EthanYehuda_CronjobManager
+          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
+          COMPOSER_VERSION: 2
+          MAGENTO_VERSION: '2.4.9'
+
   unit-tests-mage248:
     name: Magento 2 Unit Tests (M 2.4.8)
     runs-on: ubuntu-latest
