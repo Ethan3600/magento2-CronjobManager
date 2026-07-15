@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: /magento-unit-tests/8.5@master
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
         env:
           MODULE_NAME: EthanYehuda_CronjobManager
           COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
