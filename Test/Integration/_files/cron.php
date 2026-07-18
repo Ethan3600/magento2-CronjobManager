@@ -9,8 +9,7 @@ $objectManager = Bootstrap::getObjectManager();
 /** @var Schedule $cron */
 $cron = $objectManager->create(Schedule::class);
 
-$cron->setId(ManagerTest::FIXTURE_CRON_ID)
-    ->setJobCode('fake_job')
+$cron->setJobCode(ManagerTest::FIXTURE_CRON_JOB_CODE)
     ->setStatus(Schedule::STATUS_PENDING)
     ->setCreatedAt(date('Y-m-d H:i:s', time()))
     ->setScheduledAt(date('Y-m-d H:i:s', strtotime('+5 minutes')));
