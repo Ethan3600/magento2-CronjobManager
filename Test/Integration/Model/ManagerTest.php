@@ -11,7 +11,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 
 class ManagerTest extends TestCase
 {
-    public const FIXTURE_CRON_ID = 1;
+    public const FIXTURE_CRON_JOB_CODE = 'ethanyehuda_cronjobmanager_fixture_job';
 
     /**
      * @var Manager
@@ -46,8 +46,12 @@ class ManagerTest extends TestCase
      */
     public function testSaveCronJob()
     {
-        $this->manager->saveCronJob(self::FIXTURE_CRON_ID, null, Schedule::STATUS_SUCCESS);
-        $cron = $this->loadCron(self::FIXTURE_CRON_ID);
+        $cron = $this->loadCron(self::FIXTURE_CRON_JOB_CODE, 'job_code');
+        $cronId = (int) $cron->getScheduleId();
+        $this->assertGreaterThan(0, $cronId);
+
+        $this->manager->saveCronJob($cronId, null, Schedule::STATUS_SUCCESS);
+        $cron = $this->loadCron($cronId);
 
         $this->assertEquals(Schedule::STATUS_SUCCESS, $cron->getStatus());
     }
@@ -64,8 +68,12 @@ class ManagerTest extends TestCase
      */
     public function testDeleteCronJob()
     {
-        $this->manager->deleteCronJob(self::FIXTURE_CRON_ID);
-        $cron = $this->loadCron(self::FIXTURE_CRON_ID);
+        $cron = $this->loadCron(self::FIXTURE_CRON_JOB_CODE, 'job_code');
+        $cronId = (int) $cron->getScheduleId();
+        $this->assertGreaterThan(0, $cronId);
+
+        $this->manager->deleteCronJob($cronId);
+        $cron = $this->loadCron($cronId);
 
         $this->assertNull($cron->getScheduleId());
     }
@@ -90,15 +98,16 @@ class ManagerTest extends TestCase
     }
 
     /**
-     * @param int $id
+     * @param int|string $value
+     * @param string|null $field
      *
      * @return \Magento\Cron\Model\Schedule
      */
-    private function loadCron($id)
+    private function loadCron($value, $field = null)
     {
         $cron = $this->scheduleFactory->create();
         // phpcs:ignore Magento2.Methods.DeprecatedModelMethod.FoundDeprecatedModelMethod
-        $cron->getResource()->load($cron, $id);
+        $cron->getResource()->load($cron, $value, $field);
 
         return $cron;
     }
