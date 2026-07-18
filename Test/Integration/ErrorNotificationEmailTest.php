@@ -6,7 +6,8 @@ namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use EthanYehuda\CronjobManager\Model\ErrorNotificationEmail;
 use Magento\Cron\Model\Schedule;
-use Magento\Framework\Mail\Message;
+use Magento\Framework\Mail\Address;
+use Magento\Framework\Mail\EmailMessageInterface;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -112,23 +113,40 @@ class ErrorNotificationEmailTest extends TestCase
         $sentMessage = $this->transportBuilder->getSentMessage();
     }
 
-    private function thenEmailShouldBeSent(?Message $sentMessage, string $expectedSender, array $expectedRecipients)
-    {
+    private function thenEmailShouldBeSent(
+        ?EmailMessageInterface $sentMessage,
+        string $expectedSender,
+        array $expectedRecipients
+    ) {
         $this->assertNotNull($sentMessage, 'A mail should have been sent');
-        $messageDetails = \Laminas\Mail\Message::fromString($sentMessage->getRawMessage());
-        $this->assertEquals([$expectedSender], \array_keys(\iterator_to_array($messageDetails->getFrom())));
-        $this->assertEquals($expectedRecipients, \array_keys(\iterator_to_array($messageDetails->getTo())));
+        $this->assertEquals(
+            [$expectedSender],
+            \array_map(
+                static function (Address $address): ?string {
+                    return $address->getEmail();
+                },
+                $sentMessage->getFrom() ?? []
+            )
+        );
+        $this->assertEquals(
+            $expectedRecipients,
+            \array_map(
+                static function (Address $address): ?string {
+                    return $address->getEmail();
+                },
+                $sentMessage->getTo()
+            )
+        );
     }
 
-    private function thenEmailShouldNotBeSent(?Message $sentMessage)
+    private function thenEmailShouldNotBeSent(?EmailMessageInterface $sentMessage)
     {
         $this->assertNull($sentMessage, 'A mail should not have been sent');
     }
 
-    private function andEmailShouldHaveContents(Message $sentMessage, array $expectedContents): void
+    private function andEmailShouldHaveContents(EmailMessageInterface $sentMessage, array $expectedContents): void
     {
-        $content = $sentMessage->getBody()->getParts()[0]->getContent();
-        $content = quoted_printable_decode($content);
+        $content = \str_replace("\r\n", "\n", quoted_printable_decode($sentMessage->getRawMessage()));
         foreach ($expectedContents as $expectedKey => $expectedContent) {
             if (\method_exists($this, 'assertStringContainsString')) {
                 $this->assertStringContainsString($expectedContent, $content, "Content should contain $expectedKey");
