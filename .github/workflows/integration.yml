@@ -188,5 +188,5 @@ jobs:
         with:
           module_name: EthanYehuda_CronjobManager
           composer_name: ethanyehuda/magento2-cronjobmanager
-          magento_version: 2.4.4
+          magento_version: 2.4.4-p13
           block_insecure: false
