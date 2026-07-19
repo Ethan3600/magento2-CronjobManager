@@ -195,7 +195,8 @@ class ProcessKillRequestsTest extends TestCase
             $this->terminateIntermediaryProcess();
         }
 
-        if (!$childPid) {
+        if ($childPid === 0) {
+            // We are the grandchild. It's our job to wait to be killed.
             \fclose($ipcSocket);
             while (true) {
                 \sleep(1);
