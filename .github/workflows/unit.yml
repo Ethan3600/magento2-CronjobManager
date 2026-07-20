@@ -12,50 +12,62 @@ on:
       - 2.x
 
 jobs:
+  unit-tests-mage248:
+    name: Magento 2 Unit Tests (M 2.4.8)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: extdn/github-actions-m2/magento-unit-tests/8.4@master
+        with:
+          module_name: EthanYehuda_CronjobManager
+          composer_name: ethanyehuda/magento2-cronjobmanager
+          magento_version: 2.4.8
+          block_insecure: false
+
   unit-tests-mage247:
     name: Magento 2 Unit Tests (M 2.4.7)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: extdn/github-actions-m2/magento-unit-tests/8.3@master
-        env:
-          MODULE_NAME: EthanYehuda_CronjobManager
-          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
-          COMPOSER_VERSION: 2
-          MAGENTO_VERSION: '2.4.7'
+        with:
+          module_name: EthanYehuda_CronjobManager
+          composer_name: ethanyehuda/magento2-cronjobmanager
+          magento_version: 2.4.7
+          block_insecure: false
 
   unit-tests-mage246:
     name: Magento 2 Unit Tests (M 2.4.6)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: extdn/github-actions-m2/magento-unit-tests/8.2@master
-        env:
-          MODULE_NAME: EthanYehuda_CronjobManager
-          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
-          COMPOSER_VERSION: 2
-          MAGENTO_VERSION: '2.4.6'
+        with:
+          module_name: EthanYehuda_CronjobManager
+          composer_name: ethanyehuda/magento2-cronjobmanager
+          magento_version: 2.4.6
+          block_insecure: false
 
   unit-tests-mage245:
     name: Magento 2 Unit Tests (M 2.4.5)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
-        env:
-          MODULE_NAME: EthanYehuda_CronjobManager
-          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
-          COMPOSER_VERSION: 2
-          MAGENTO_VERSION: '2.4.5'
+        with:
+          module_name: EthanYehuda_CronjobManager
+          composer_name: ethanyehuda/magento2-cronjobmanager
+          magento_version: 2.4.5
+          block_insecure: false
 
   unit-tests-mage244:
     name: Magento 2 Unit Tests (M 2.4.4)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: extdn/github-actions-m2/magento-unit-tests/8.1@master
-        env:
-          MODULE_NAME: EthanYehuda_CronjobManager
-          COMPOSER_NAME: ethanyehuda/magento2-cronjobmanager
-          COMPOSER_VERSION: 2
-          MAGENTO_VERSION: '2.4.4'
+        with:
+          module_name: EthanYehuda_CronjobManager
+          composer_name: ethanyehuda/magento2-cronjobmanager
+          magento_version: 2.4.4-p13
+          block_insecure: false

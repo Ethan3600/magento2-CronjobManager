@@ -24,6 +24,9 @@ class ProcessKillRequestsTest extends TestCase
     protected const NOW = '2019-02-09 18:33:00';
     protected const REMOTE_HOSTNAME = 'hostname.example.net';
     protected const SIGKILL = 9;
+    private const IPC_TIMEOUT_SECONDS = 5;
+    private const IPC_MAX_PAYLOAD_LENGTH = 32;
+    private const IPC_ACKNOWLEDGEMENT = "ACK\n";
 
     /**
      * @var int
@@ -136,65 +139,166 @@ class ProcessKillRequestsTest extends TestCase
 
     private function createProcessToKillForSchedule(Schedule $schedule): int
     {
+        $ipcSockets = \stream_socket_pair(\STREAM_PF_UNIX, \STREAM_SOCK_STREAM, \STREAM_IPPROTO_IP);
+        if ($ipcSockets === false) {
+            $this->fail('Could not create process ID channel');
+            return 0;
+        }
+
         $pid = \pcntl_fork();
         if ($pid === -1) {
+            \fclose($ipcSockets[0]);
+            \fclose($ipcSockets[1]);
             $this->fail('Could not fork process to test killing');
             return 0;
         }
 
         if (!$pid) {
-            // We are the child.
-            // Now we fork again so that we can be attached init instead of the test (so we get reaped as expected).
-            $cpid = pcntl_fork();
-            if ($cpid === -1) {
-                // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
-                die('Could not fork again in child process');
-            }
-
-            if (!$cpid) {
-                // We are the grandchild. It's our job to wait to be killed.
-                while (true) {
-                    sleep(1);
-                }
-            } else {
-                // We are the intermediary process. It's our job to pass up the grandchild process ID.
-                $schedule->setData('pid', $cpid);
-                $schedule->save();
-
-                // Kill this process forcefully to prevent any shut-down side effects when we terminate
-                $this->processManagement->killPid(\getmypid(), \gethostname());
-
-                // Reap grandchild process. We probably won't get this far.
-                \pcntl_wait($status);
-
-                // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
-                exit(0);
-            }
+            \fclose($ipcSockets[0]);
+            $this->runIntermediaryProcess($ipcSockets[1]);
+            return 0;
         }
 
         // We are the main process, where the test is running.
+        \fclose($ipcSockets[1]);
 
-        // Reap intermediary process
-        \pcntl_wait($status);
+        try {
+            $this->childPid = $this->readChildPid($ipcSockets[0]);
+            $acknowledgementLength = \strlen(self::IPC_ACKNOWLEDGEMENT);
+            if (\fwrite($ipcSockets[0], self::IPC_ACKNOWLEDGEMENT) !== $acknowledgementLength) {
+                $this->fail('Could not acknowledge grandchild process ID');
+            }
+        } finally {
+            \fclose($ipcSockets[0]);
+            $this->reapIntermediaryProcess($pid);
+        }
 
-        // Ensure we got the grandchild PID out
-        $this->reloadScheduleFromDatabase($schedule);
-        $this->childPid = (int) $schedule->getPid();
-
-        $this->assertGreaterThan(0, $this->childPid, 'Precondition: child process ID unknown');
         $this->assertTrue(
             $this->processManagement->isPidAlive($this->childPid),
             'Precondition: child is alive'
         );
 
+        $schedule->setData('pid', $this->childPid);
+        $schedule->save();
+
         return $this->childPid;
+    }
+
+    /**
+     * @param resource $ipcSocket
+     */
+    private function runIntermediaryProcess($ipcSocket): void
+    {
+        $childPid = \pcntl_fork();
+        if ($childPid === -1) {
+            \fclose($ipcSocket);
+            $this->terminateIntermediaryProcess();
+        }
+
+        if ($childPid === 0) {
+            // We are the grandchild. It's our job to wait to be killed.
+            \fclose($ipcSocket);
+            while (true) {
+                \sleep(1);
+            }
+        }
+
+        $acknowledged = false;
+        try {
+            $payload = $childPid . "\n";
+            $payloadWritten = \fwrite($ipcSocket, $payload) === \strlen($payload);
+            $timeoutConfigured = \stream_set_timeout($ipcSocket, self::IPC_TIMEOUT_SECONDS);
+            $acknowledgement = $payloadWritten && $timeoutConfigured
+                ? \fgets($ipcSocket, \strlen(self::IPC_ACKNOWLEDGEMENT) + 1)
+                : false;
+            $acknowledged = $acknowledgement === self::IPC_ACKNOWLEDGEMENT;
+        } finally {
+            try {
+                if (!$acknowledged) {
+                    $this->killAndReapOwnedProcess($childPid);
+                }
+            } finally {
+                try {
+                    \fclose($ipcSocket);
+                } finally {
+                    $this->terminateIntermediaryProcess();
+                }
+            }
+        }
+    }
+
+    /**
+     * @param resource $ipcSocket
+     */
+    private function readChildPid($ipcSocket): int
+    {
+        if (!\stream_set_timeout($ipcSocket, self::IPC_TIMEOUT_SECONDS)) {
+            $this->fail('Could not configure process ID channel timeout');
+            return 0;
+        }
+
+        $payload = \fgets($ipcSocket, self::IPC_MAX_PAYLOAD_LENGTH);
+        if ($payload === false) {
+            $metadata = \stream_get_meta_data($ipcSocket);
+            $message = $metadata['timed_out']
+                ? 'Timed out waiting for grandchild process ID'
+                : 'Process ID channel closed before receiving a payload';
+            $this->fail($message);
+            return 0;
+        }
+
+        if (\substr($payload, -1) !== "\n") {
+            $this->fail('Grandchild process ID payload was not newline-terminated');
+            return 0;
+        }
+
+        $pid = \substr($payload, 0, -1);
+        if (!\ctype_digit($pid) || (int) $pid <= 0) {
+            $this->fail('Grandchild process ID payload was not a positive integer');
+            return 0;
+        }
+
+        return (int) $pid;
+    }
+
+    private function reapIntermediaryProcess(int $pid): void
+    {
+        $deadline = \microtime(true) + self::IPC_TIMEOUT_SECONDS;
+        do {
+            $waitResult = \pcntl_waitpid($pid, $status, \WNOHANG);
+            if ($waitResult === $pid || $waitResult === -1) {
+                return;
+            }
+            \usleep(10000);
+        } while (\microtime(true) < $deadline);
+
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
+        \posix_kill($pid, self::SIGKILL);
+        \pcntl_waitpid($pid, $status);
+        $this->fail('Timed out waiting for intermediary process to exit');
+    }
+
+    private function killAndReapOwnedProcess(int $pid): void
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction.Discouraged
+        if (\posix_kill($pid, self::SIGKILL)) {
+            \pcntl_waitpid($pid, $status);
+        }
+    }
+
+    private function terminateIntermediaryProcess(): void
+    {
+        $this->processManagement->killPid(\getmypid(), \gethostname());
+
+        // phpcs:ignore Magento2.Security.LanguageConstruct.ExitUsage
+        exit(1);
     }
 
     private function andProcessIsKilled(Schedule $schedule)
     {
-        \pcntl_wait($status); // killed children are zombies until we wait for them
         $pid = (int)$schedule->getData('pid');
         $this->assertFalse($this->processManagement->isPidAlive($pid), "Child with PID {$pid} should be killed");
+        $this->childPid = 0;
     }
 
     private function reloadScheduleFromDatabase($schedule): void
