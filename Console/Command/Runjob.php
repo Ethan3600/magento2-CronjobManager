@@ -46,7 +46,7 @@ class Runjob extends Command
     /**
      * @inheritDoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /**
          * @todo Find a way to avoid using `ObjectManager`

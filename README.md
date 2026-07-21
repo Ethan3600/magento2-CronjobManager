@@ -46,6 +46,7 @@ In your Magento2 root directory, you may install this package via composer:
 
 Magento version | CronjobManager
 --- | ---
+Magento 2.4.9 | :white_check_mark: `^2.0`
 Magento 2.4.8 | :white_check_mark: `^1.15 \|\| ^2.0`
 Magento 2.4.7 | :white_check_mark: `^1.15 \|\| ^2.0`
 Magento 2.4.6 | :white_check_mark: `^1.15 \|\| ^2.0`
