@@ -13,7 +13,11 @@
         "symfony/console": "^4.0 || ^5.0 || ^6.0 || ^7.0"
     },
     "require-dev": {
-        "ext-pcntl": "*"
+        "ext-pcntl": "*",
+        "magento/magento-coding-standard": "^41",
+        "phpstan/phpstan": "^2.1",
+        "bitexpert/phpstan-magento": "^0.44",
+        "phpstan/extension-installer": "^1.4"
     },
     "type": "magento2-module",
     "license": "OSL-3.0",
@@ -31,6 +35,12 @@
     "autoload-dev": {
         "psr-4": {
             "EthanYehuda\\CronjobManager\\Test\\": "Test/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
         }
     }
 }
