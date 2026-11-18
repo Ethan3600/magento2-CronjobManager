@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EthanYehuda\CronjobManager\Test\Integration;
 
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
@@ -18,9 +19,13 @@ class ProcessIdTest extends TestCase
     /** @var ObjectManagerInterface */
     private $objectManager;
 
+    /** @var ScheduleResource */
+    private $scheduleResource;
+
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->scheduleResource = $this->objectManager->get(ScheduleResource::class);
     }
 
     public function testProcessIdSavedOnStart()
@@ -46,10 +51,10 @@ class ProcessIdTest extends TestCase
         $newSchedule = $this->objectManager->create(Schedule::class);
         $newSchedule->setStatus(Schedule::STATUS_PENDING);
         $newSchedule->setJobCode('test_job_code');
-        $newSchedule->save();
+        $this->scheduleResource->save($newSchedule);
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
-        $schedule->load($newSchedule->getId());
+        $this->scheduleResource->load($schedule, $newSchedule->getId());
     }
 
     private function whenTryLockJob(Schedule $schedule)
@@ -61,7 +66,7 @@ class ProcessIdTest extends TestCase
     private function andScheduleSavedWithSuccess(Schedule $schedule)
     {
         $schedule->setStatus(Schedule::STATUS_SUCCESS);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function thenScheduleIsSavedWithPid(Schedule $schedule, $pid)

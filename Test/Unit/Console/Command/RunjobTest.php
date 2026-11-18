@@ -24,14 +24,12 @@ class RunjobTest extends TestCase
     {
         $this->runner = $this->createMock(Runner::class);
 
-        $objectManager = $this->createMock(ObjectManagerInterface::class);
-        $objectManager->expects($this->any())
-            ->method('create')
+        $objectManager = $this->createStub(ObjectManagerInterface::class);
+        $objectManager->method('create')
             ->willReturn($this->runner);
 
-        $objectManagerFactory = $this->createMock(ObjectManagerFactory::class);
-        $objectManagerFactory->expects($this->any())
-            ->method('create')
+        $objectManagerFactory = $this->createStub(ObjectManagerFactory::class);
+        $objectManagerFactory->method('create')
             ->willReturn($objectManager);
 
         $command = new Runjob($objectManagerFactory);
@@ -40,6 +38,7 @@ class RunjobTest extends TestCase
 
     public function testExecuteThrowsWithoutRequiredArgument()
     {
+        $this->runner->expects($this->never())->method('runCron');
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Not enough arguments (missing: "job_code").');
 

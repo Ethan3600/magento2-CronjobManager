@@ -10,6 +10,7 @@ use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Framework\Event;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -46,7 +47,7 @@ class ProcessKillRequestsTest extends TestCase
      */
     private $scheduleManagement;
 
-    /** @var \Magento\Cron\Model\ResourceModel\Schedule */
+    /** @var ScheduleResource */
     private $scheduleResource;
 
     /**
@@ -68,7 +69,7 @@ class ProcessKillRequestsTest extends TestCase
         $this->eventManager = $this->objectManager->get(Event\ManagerInterface::class);
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
         $this->processManagement = $this->objectManager->get(ProcessManagement::class);
-        $this->scheduleResource = $this->objectManager->get(\Magento\Cron\Model\ResourceModel\Schedule::class);
+        $this->scheduleResource = $this->objectManager->get(ScheduleResource::class);
     }
 
     protected function tearDown(): void
@@ -104,7 +105,7 @@ class ProcessKillRequestsTest extends TestCase
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
         $this->createProcessToKillForSchedule($schedule);
         $this->scheduleManagement->kill((int)$schedule->getId(), $timestamp);
     }
@@ -112,7 +113,7 @@ class ProcessKillRequestsTest extends TestCase
     private function givenScheduleIsRunningOnHost(Schedule &$schedule, string $hostname): void
     {
         $schedule->setData('hostname', $hostname);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function whenEventIsDispatched($eventName)
@@ -179,7 +180,7 @@ class ProcessKillRequestsTest extends TestCase
         );
 
         $schedule->setData('pid', $this->childPid);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
 
         return $this->childPid;
     }

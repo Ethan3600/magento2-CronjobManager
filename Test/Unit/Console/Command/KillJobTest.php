@@ -18,7 +18,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Filter;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteria;
-use Magento\Framework\Config\ScopeInterface;
 use EthanYehuda\CronjobManager\Api\ScheduleRepositoryInterface;
 use EthanYehuda\CronjobManager\Model\Data\Schedule;
 use EthanYehuda\CronjobManager\Model\ProcessManagement;
@@ -51,10 +50,7 @@ class KillJobTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->mockState = $this->getMockBuilder(State::class)->setConstructorArgs([
-            $this->createMock(ScopeInterface::class),
-            State::MODE_PRODUCTION
-        ])->getMock();
+        $this->mockState = $this->createMock(State::class);
 
         $this->mockScheduleRepository = $this->createMock(ScheduleRepositoryInterface::class);
         $this->mockScheduleManagement = $this->createMock(ScheduleManagementInterface::class);
@@ -84,6 +80,7 @@ class KillJobTest extends TestCase
 
     public function testExecute()
     {
+        $this->mockProcessManagement->expects($this->never())->method('killPid');
         $mockSchedule = new Schedule([
             "schedule_id" => "2246",
             "job_code" => "long_running_cron",
@@ -117,6 +114,7 @@ class KillJobTest extends TestCase
 
     public function testExecuteWithProcKillFlag()
     {
+        $this->mockScheduleManagement->expects($this->never())->method('kill');
         $mockSchedule = new Schedule([
             "schedule_id" => "2246",
             "job_code" => "long_running_cron",
@@ -151,6 +149,7 @@ class KillJobTest extends TestCase
 
     public function testExecuteWithKillFailures()
     {
+        $this->mockProcessManagement->expects($this->never())->method('killPid');
         $numOfSchedules = 3;
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
@@ -187,6 +186,7 @@ class KillJobTest extends TestCase
 
     public function testExecuteUsingProcKillWithKillFailures()
     {
+        $this->mockScheduleManagement->expects($this->never())->method('kill');
         $numOfSchedules = 3;
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
@@ -225,6 +225,7 @@ class KillJobTest extends TestCase
 
     public function testExecuteWithPartialKillFailures()
     {
+        $this->mockProcessManagement->expects($this->never())->method('killPid');
         $numOfSchedules = 2;
         $mockedSchedules = $this->mockMultipleSchedules($numOfSchedules);
 
@@ -260,13 +261,13 @@ class KillJobTest extends TestCase
     {
         $this->mockFilterBuilder->expects($this->exactly(2))
             ->method('create')
-            ->willReturn($this->createMock(Filter::class));
+            ->willReturn($this->createStub(Filter::class));
         $this->mockFilterGroupBuilder->expects($this->exactly(2))
             ->method('create')
-            ->willReturn($this->createMock(FilterGroup::class));
+            ->willReturn($this->createStub(FilterGroup::class));
         $this->mockSearchCriteriaBuilder->expects($this->once())
             ->method('create')
-            ->willReturn($this->createMock(SearchCriteria::class));
+            ->willReturn($this->createStub(SearchCriteria::class));
 
         $searchResults = $this->createMock(SearchResultsInterface::class);
 
