@@ -10,6 +10,7 @@ use EthanYehuda\CronjobManager\Model\ClockInterface;
 use EthanYehuda\CronjobManager\Model\ErrorNotificationInterface;
 use EthanYehuda\CronjobManager\Test\Util\FakeClock;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
@@ -38,9 +39,13 @@ class CleanRunningJobsTest extends TestCase
      */
     private $clock;
 
+    /** @var ScheduleResource */
+    private $scheduleResource;
+
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->scheduleResource = $this->objectManager->get(ScheduleResource::class);
         $this->objectManager->configure(['preferences' => [ClockInterface::class => FakeClock::class]]);
         $this->objectManager->addSharedInstance(
             $this->createMock(ErrorNotificationInterface::class),
@@ -87,7 +92,7 @@ class CleanRunningJobsTest extends TestCase
         $staleSnapshot = $this->givenWatchdogSnapshotContaining($schedule);
 
         $schedule->setStatus(Schedule::STATUS_SUCCESS);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
 
         $this->whenCleanRunningJobsExecutesWithSnapshot($staleSnapshot);
         $this->thenScheduleHasStatus($schedule, Schedule::STATUS_SUCCESS);
@@ -124,13 +129,13 @@ class CleanRunningJobsTest extends TestCase
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
         $schedule->setData('pid', self::DEAD_PID);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function givenScheduleIsRunningOnHost(Schedule &$schedule, string $hostname): void
     {
         $schedule->setData('hostname', $hostname);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function givenRunningScheduleWithActiveProcess(&$schedule)
@@ -139,7 +144,7 @@ class CleanRunningJobsTest extends TestCase
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
         $schedule->setData('pid', \getmypid());
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function whenEventIsDispatched($eventName)

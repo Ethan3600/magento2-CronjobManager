@@ -53,10 +53,10 @@ class HostnameTest extends TestCase
         $newSchedule = $this->objectManager->create(Schedule::class);
         $newSchedule->setStatus(Schedule::STATUS_PENDING);
         $newSchedule->setJobCode('test_job_code');
-        $newSchedule->save();
+        $this->scheduleResource->save($newSchedule);
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
-        $schedule->load($newSchedule->getId());
+        $this->scheduleResource->load($schedule, $newSchedule->getId());
     }
 
     private function whenTryLockJob(Schedule $schedule): void

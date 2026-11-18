@@ -3,6 +3,7 @@
 namespace EthanYehuda\CronjobManager\Test\Integration\Model;
 
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use PHPUnit\Framework\TestCase;
 use Magento\TestFramework\Helper\Bootstrap;
 use EthanYehuda\CronjobManager\Model\Manager;
@@ -23,9 +24,13 @@ class ManagerTest extends TestCase
      */
     private $scheduleFactory;
 
+    /** @var ScheduleResource */
+    private $scheduleResource;
+
     protected function setUp(): void
     {
         $objectManager = Bootstrap::getObjectManager();
+        $this->scheduleResource = $objectManager->get(ScheduleResource::class);
 
         $this->manager = $objectManager->create(Manager::class);
         $this->scheduleFactory = $objectManager->create(ScheduleFactory::class);
@@ -106,8 +111,7 @@ class ManagerTest extends TestCase
     private function loadCron($value, $field = null)
     {
         $cron = $this->scheduleFactory->create();
-        // phpcs:ignore Magento2.Methods.DeprecatedModelMethod.FoundDeprecatedModelMethod
-        $cron->getResource()->load($cron, $value, $field);
+        $this->scheduleResource->load($cron, $value, $field);
 
         return $cron;
     }

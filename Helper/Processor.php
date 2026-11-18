@@ -7,7 +7,7 @@ use EthanYehuda\CronjobManager\Model\Cron\InstanceFactory as CronInstanceFactory
 use Psr\Log\LoggerInterface;
 use Magento\Cron\Observer\ProcessCronQueueObserver;
 use Magento\Cron\Model\Schedule;
-use Magento\Cron\Model\ScheduleFactory;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Framework\App\CacheInterface;
 use Magento\Cron\Model\ConfigInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -19,23 +19,23 @@ class Processor
 {
     /**
      * @param CronInstanceFactory $cronInstanceFactory
-     * @param ScheduleFactory $scheduleFactory
      * @param CacheInterface $cache
      * @param ConfigInterface $config
      * @param ScopeConfigInterface $scopeConfig
      * @param DateTime $dateTime
      * @param LoggerInterface $logger
      * @param ScheduleRepositoryInterface $scheduleRepository
+     * @param ScheduleResource $scheduleResource
      */
     public function __construct(
         private readonly CronInstanceFactory $cronInstanceFactory,
-        private readonly ScheduleFactory $scheduleFactory,
         private readonly CacheInterface $cache,
         private readonly ConfigInterface $config,
         private readonly ScopeConfigInterface $scopeConfig,
         private readonly DateTime $dateTime,
         private readonly LoggerInterface $logger,
         private readonly ScheduleRepositoryInterface $scheduleRepository,
+        private readonly ScheduleResource $scheduleResource,
     ) {
     }
 
@@ -158,7 +158,7 @@ class Processor
         ];
 
         $jobs = $this->config->getJobs()[$groupId];
-        $scheduleResource = $this->scheduleFactory->create()->getResource();
+        $scheduleResource = $this->scheduleResource;
         $connection = $scheduleResource->getConnection();
         $count = 0;
         foreach ($historyLifetimes as $time) {
@@ -194,7 +194,7 @@ class Processor
         }
 
         if (count($jobsToCleanup) > 0) {
-            $scheduleResource = $this->scheduleFactory->create()->getResource();
+            $scheduleResource = $this->scheduleResource;
             $count = $scheduleResource->getConnection()->delete(
                 $scheduleResource->getMainTable(),
                 [

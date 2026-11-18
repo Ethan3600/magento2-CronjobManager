@@ -6,6 +6,7 @@ namespace Test\Integration\Model;
 
 use EthanYehuda\CronjobManager\Api\ScheduleManagementInterface;
 use Magento\Cron\Model\Schedule;
+use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -26,9 +27,13 @@ class ScheduleManagementTest extends TestCase
 
     protected const NOW = '2019-02-09 18:33:00';
 
+    /** @var ScheduleResource */
+    private $scheduleResource;
+
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
+        $this->scheduleResource = $this->objectManager->get(ScheduleResource::class);
         $this->scheduleManagement = $this->objectManager->get(ScheduleManagementInterface::class);
     }
 
@@ -64,7 +69,7 @@ class ScheduleManagementTest extends TestCase
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_RUNNING);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function givenFinishedSchedule(&$schedule)
@@ -72,7 +77,7 @@ class ScheduleManagementTest extends TestCase
         /** @var Schedule $schedule */
         $schedule = $this->objectManager->create(Schedule::class);
         $schedule->setStatus(Schedule::STATUS_SUCCESS);
-        $schedule->save();
+        $this->scheduleResource->save($schedule);
     }
 
     private function whenKillRequestedFor(Schedule $schedule, $timestamp)
